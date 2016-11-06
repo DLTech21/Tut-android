@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="bgcolor">#55555555</color>
+    
+    <color name="common_top_bar_blue">#22292c</color>
+    <color name="listview_color">#F0F0F0</color>
+    <color name="message_date">#20465A</color>
+    <color name="panel_bk_color">#fffafafa</color>
+    <color name="emo_bk_color">#ffffffff</color>
+    <color name="default_light_black_color">#424242</color>
+    <color name="txt_hint_color">#999999</color>
+
+    <!-- contact item color -->
+    <color name="messgae_uname_color">#ffee4566</color>
+    <color name="messgae_uname_dark_color">#000000</color>
+    <color name="message_body_text_color">#999999</color>
+    <color name="message_body_nottext_color">#ffee4566</color>
+    <color name="message_time_color">#a0a0a0</color>
+
+    <!-- album -->
+    <color name="list_divider_color">#d1d1d1</color>
+    <color name="album_list_item_count_color">#bcbcbc</color>
+    <color name="user_portrait_bk">#20465A</color>
+
+    <!-- login -->
+    <color name="default_bk">#ffffff</color>
+    <color name="half_transparent_dark">#e0000000</color>
+    <color name="half_transparent_light">#AA000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="login_hint_color">#d4d4d4</color>
+
+    <!-- default -->
+    <color name="default_light_grey_color">#929292</color>
+    <color name="default_blue_color">#01aff4</color>
+    <color name="default_black_color">#000000</color>
+    <color name="default_title_color">#343434</color>
+    <color name="default_fragment_bk_color">#f2f2f2</color>
+    <color name="default_fragment_title_bk_color">#f4f5f7</color>
+    <color name="default_fragment_search_bk_color">#e3e4e6</color>
+    <color name="default_value_color">#333333</color>
+    <color name="contact_name_color">#222222</color>
+    <color name="contact_realname_color">#aaaaaa</color>
+    <color name="default_key_color">#999999</color>
+    <color name="default_line_color">#cccccc</color>
+
+    <!-- contact -->
+    <color name="contact_default_bk">#dedee0</color>
+    <color name="contact_category_title_bk">#f1f0f6</color>
+    <color name="contact_list_item_bk">#ffffff</color>
+    <color name="contact_category_text_color">#858585</color>
+    <color name="contact_side_word_color">#909293</color>
+
+    <!-- group manager -->
+    <color name="group_manager_group_title">#010101</color>
+    <color name="group_manager_user_title">#666666</color>
+    <color name="list_item_sel_color">#eaeaea</color>
+
+    <!--user detail-->
+    <color name="user_detail_base">#ececec</color>
+    <color name="pickimage_item_bg">#ffffff</color>
+
+    <color name="ec_voip_interface_text_color">#bababa</color>
+    <color name="ec_voip_talk_bg_color">#ff404040</color>
+
+    <color name="green_btn_color_pressed">#ff298409</color>
+    <color name="ccp_green_alpha">#7f00B486</color>
+    <item name="green_btn_color_disable" type="color">@color/ccp_green_alpha</item>
+
+    <color name="red_btn_color_normal">#ffff5454</color>
+    <color name="red_btn_color_pressed">#ffd24242</color>
+    <color name="red_btn_color_disable">#7fff5454</color>
+
+    <color name="ec_grey_btn_color_normal">#fff1f1f1</color>
+    <color name="ec_grey_btn_color_pressed">#ffd8d8d8</color>white_color_selector
+    <color name="ec_grey_btn_color_disable">#7fd8d8d8</color>
+
+    <color name="ec_grey_btn_stroke_color_normal">#ffbebebe</color>
+    <color name="ec_grey_btn_stroke_color_pressed">#ff9e9e9e</color>
+    <color name="ec_grey_btn_stroke_color_disable">#7f9e9e9e</color>
+
+    <color name="ec_normal_text_color_disable">#7f353535</color>
+    <color name="normal_text_color_disable">#7f353535</color>
+    <color name="normal_text_color">#ff353535</color>
+
+    <color name="navpage">#ffffffff</color>
+
+    <color name="action_bar_tittle_color">#ffcfcfcf</color>
+
+    <color name="list_devider_color">#fff2f2f2</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="black2">#ffeeeeee</color>
+    <color name="red">#FC2828</color>
+    <color name="black1">#7A7E83</color>
+    <!-- 透明 -->
+    <color name="transgray">#33555555</color>
+    <color name="transparent2">#50000000</color>
+    <!--窗体颜色 -->
+    <color name="windows_color">#F5F5F5</color>
+    <color name="greeny">#00CB0D</color>
+    <color name="bar_color">#232325</color>
+
+    <color name="darkgray">#404040ff</color>
+    <color name="green">#0ff0ff</color>
+    <color name="lightgray">#c0c0c0ff</color>
+    <color name="yellow">#ffFF33ff</color>
+    <color name="blue">#ff0f81d9</color>
+    <color name="gray">#ff666666</color>
+    <color name="text_gray2">#ffC3C3C3</color>
+    <color name="magenta">#ff6699ff</color>
+    <color name="cyan">#66ffffff</color>
+    <color name="transparent_black">#ff000000</color>
+    <color name="background_dark">#f0f0f0</color>
+    <color name="camera_bg">#2c2c2c</color>
+    <color name="camera_progress">#2980B9</color>
+    <color name="camera_progress_split">#005084</color>
+    <color name="camera_progress_three">#24ff00</color>
+    <color name="camera_progress_overflow">#1b5d89</color>
+    <color name="camera_theme_selected_bgcolor">#2980B9</color>
+    <color name="camera_bottom_press_bg">#1b1c1f</color>
+    <color name="title_background_color">#fcb840</color>
+    <color name="camera_progress_delete">#f68b2b</color>
+    <color name="translucent_background_80">#CC000000</color>
+    <color name="translucent_background_50">#7f000000</color>
+    <color name="transparent_black_40">#66000000</color>
+    <color name="transparent_black_85">#DA000000</color>
+    <color name="transparent_black_30">#4D000000</color>
+</resources>

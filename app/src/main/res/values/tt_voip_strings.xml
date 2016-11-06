@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ec_voip_unknown_user">未知联系人</string>
+    <string name="ec_str_call_status" formatted="false">延迟时间%d（毫秒）丢包率:%d</string>
+    <string name="ec_call_number_error">呼叫的号码错误</string>
+    <string name="ec_voip_calling_finish">通话结束</string>
+    <string name="ec_no_support_voip">呼叫失败或者对方不在线！</string>
+    <string name="ec_voip_calling_wait">等待对方接听&#8230;</string>
+    <string name="ec_voip_calling_accepting">正在接听...</string>
+    <string name="ec_voip_calling_timeout">呼叫超时，请稍后再拨</string>
+    <string name="ec_voip_calling_no_answer">无人应答，请稍后再拨</string>
+    <string name="ec_voip_call_fail">呼叫失败，请稍后重试&#8230;</string>
+    <string name="ec_voip_calling_network_instability">对方不在线或者网络不给力,请直呼</string>
+    <string name="ec_voip_call_back_success">回拨呼叫成功，请注意接听系统来电!</string>
+    <string name="ec_voip_call_connecting_server">正在连接服务器&#8230;</string>
+    <string name="ec_voip_call_connect">正在呼叫对方，请稍后&#8230;</string>
+    <string name="ec_voip_call_back_connect">正在呼叫，请稍后&#8230;</string>
+    <string name="ec_voip_calling_refuse">对方拒绝您的呼叫请求</string>
+    <string name="ec_voip_calling_busy">对方正忙，请稍后再拨</string>
+    <string name="ec_voip_call_fail_no_cash">呼叫失败，请查询余额</string>
+    <string name="ec_voip_is_talking_tip">正在通话中, 轻击以继续</string>
+    <string name="ec_app_err_disconnect_server_tip">无法连接服务器，请稍后再试</string>
+    <string name="ec_voip_call_fail_connection_failed_auth">第三方鉴权地址连接失败</string>
+    <string name="ec_voip_call_fail_no_pay_account">第三方主账号余额不足</string>
+    <string name="ec_voip_call_fail_not_find_appid">第三方应用ID未找到</string>
+    <string name="ec_voip_call_fail_not_online_only_call">第三方未上线应用仅限呼叫已配置测试号码</string>
+    <string name="ec_voip_call_auth_failed">第三方鉴权失败，子账号余额不足</string>
+    <string name="ec_voip_calling_notfound">对方不在线，请稍后重试</string>
+    <string name="ec_meeting_not_exist">会议号已解散或不存在</string>
+    <string name="ec_meeting_pass_error">会议号密码验证失败</string>
+    <string name="ec_voip_call_error">媒体协商失败</string>
+    <string name="ec_talk_mode_select">选择呼叫方式</string>
+    <string name="ec_talk_codec_select">选择通话编码</string>
+    <string name="ec_regsetinfo_name">昵称</string>
+    <string name="ec_voip_invite_waiting_tip">正在等待对方接受邀请&#8230;</string>
+    <string name="ec_voip_invited_video_tip">邀请你进行视频聊天&#8230;</string>
+    <string name="ec_voip_invited_audio_tip">邀请你进行语音通话&#8230;</string>
+    <string name="ec_voip_shutdown_tip">对方已挂断，通话结束</string>
+    <string name="ec_voip_disconnect_tip">网络异常，通话结束</string>
+    <string name="ec_voip_no_resp">对方无响应</string>
+    <string name="ec_voip_reject_btn">拒绝</string>
+    <string name="ec_voip_audioaccpet">切到语音接听</string>
+    <string name="ec_voip_switchto_audio">切到语音通话</string>
+    <string name="ec_voip_waitting">连接中&#8230;</string>
+    <string name="ec_voip_outcalling">正在呼叫中&#8230;</string>
+    <string name="ec_voip_speaker_on">免提</string>
+    <string name="ec_voip_mute_on">静音</string>
+    <string name="ec_voip_hungup">挂断</string>
+    <string name="ec_voip_accept_call">接听</string>
+    <string name="vedio_switch">音视频切换</string>
+    <string name="str_video_call_stop">结束视频通话</string>
+    <string name="str_video_call_begin">开始视频通话</string>
+    <string name="str_video_btn_call_end">结束</string>
+    <string name="str_tips_wait_invited">正在等待对方接受邀请&#8230;</string>
+    <string name="str_call_status" formatted="false">延迟时间%d（毫秒）丢包率:%d</string>
+    <string name="str_video_bottom_time" formatted="false">与%1$s视频通话中\t</string>
+
+    <string name="camera_switch_front">切换至前置摄像头</string>
+    <string name="camera_switch_back">切换至后置摄像头</string>
+</resources>

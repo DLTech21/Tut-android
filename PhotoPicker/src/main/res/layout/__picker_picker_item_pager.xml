@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<ScrollView -->
+    <!--android:orientation="vertical"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:fillViewport="true"-->
+    <!--&gt;-->
+
+  <me.iwf.photopicker.widget.TouchImageView
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:gravity="center"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:src="@drawable/__picker_ic_photo_black_48dp"
+      android:id="@+id/iv_pager"
+      />
+
+<!--</ScrollView>-->

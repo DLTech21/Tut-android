@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:clickable="true"
+        android:id="@+id/new_friend_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="8.5dp"
+        android:paddingBottom="9dp"
+        android:layout_weight="1"
+        android:background="@drawable/tt_list_item_bk" >
+
+        <ImageView
+            android:id="@+id/contact_portrait"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tt_icon_new_friend"
+            />
+        <TextView
+            android:id="@+id/contact_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/contact_portrait"
+            android:textColor="@color/contact_name_color"
+            android:textSize="17sp"
+            android:text="@string/new_friend"
+            />
+        <TextView
+            android:id="@+id/new_friend_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/contact_tile"
+            android:background="@drawable/tt_message_notify"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="1"
+            android:visibility="invisible"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/md_grey_400"
+        />
+
+    <RelativeLayout
+        android:clickable="true"
+        android:id="@+id/group_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="8.5dp"
+        android:paddingBottom="9dp"
+        android:layout_weight="1"
+        android:background="@drawable/tt_list_item_bk" >
+
+        <ImageView
+            android:id="@+id/group_portrait"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tt_icon_group"
+            />
+        <TextView
+            android:id="@+id/group_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/group_portrait"
+            android:textColor="@color/contact_name_color"
+            android:textSize="17sp"
+            android:text="@string/own_group"
+            />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/md_grey_400"
+        />
+
+</LinearLayout>

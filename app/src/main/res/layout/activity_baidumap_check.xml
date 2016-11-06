@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee"
+    android:orientation="vertical" >
+
+    <com.baidu.mapapi.map.MapView
+	    android:id="@+id/bmapView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="8.5"
+	    android:clickable="true" />
+   	<RelativeLayout 
+   	    android:layout_width="match_parent"
+   	    android:layout_height="0dp"
+   	    android:layout_weight="1.5"
+   	    android:background="@color/md_white"
+   	    >
+   	    <TextView 
+   	        android:id="@+id/tv1"
+   	        android:layout_width="wrap_content"
+   	        android:layout_height="wrap_content"
+   	        android:text="位置"
+   	        android:textColor="@color/default_black_color"
+   	        android:textSize="16dp"
+   	        android:layout_marginLeft="20dp"
+   	        android:layout_marginTop="10dp"
+   	        />
+   	    <TextView 
+   	        android:layout_below="@+id/tv1"
+   	        android:id="@+id/tvLocation"
+   	        android:layout_width="wrap_content"
+   	        android:layout_height="wrap_content"
+   	        android:text="位置"
+   	        android:textColor="#dddddd"
+   	        android:textSize="15dp"
+   	        android:layout_marginLeft="20dp"
+   	        android:layout_marginTop="5dp"
+   	        android:layout_toLeftOf="@+id/btnNav"
+   	        android:layout_alignParentLeft="true"
+   	        />
+   	    <Button 
+   	        android:id="@+id/btnNav"
+   	        android:layout_width="48dp"
+   	        android:layout_height="48dp"
+   	        android:onClick="onClick"
+   	        android:background="@drawable/btn_nav"
+   	        android:layout_centerVertical="true"
+   	        android:layout_alignParentRight="true"
+   	        android:layout_marginRight="10dp"
+   	        />
+   	</RelativeLayout> 
+</LinearLayout>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:background="#ebebeb"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:textColor="#888888"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/view_temp"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#d9d9d9"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="52dp" >
+
+        <CheckBox
+           	 	android:layout_alignParentLeft="true"
+            	android:layout_marginLeft="12dp"
+                android:id="@+id/btnSelect"
+                android:layout_width="36dp"
+            	android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:focusable="false" />
+        
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_toRightOf="@+id/btnSelect"
+            android:layout_centerVertical="true"
+            
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:text="微信客服"
+            android:textColor="#353535"
+            android:textSize="15dp" />
+        
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_below="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:textColor="#353535"
+            android:textSize="13dp" />
+        
+        <Button 
+        android:id="@+id/btn_invite"
+        android:layout_width="60dip"
+        android:layout_height="30dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/smssdk_invite"
+        android:textSize="14sp"
+        android:textColor="#797979"
+        android:background="@drawable/smssdk_corners_bg"/>
+        
+        <Button 
+        android:id="@+id/btn_add"
+        android:layout_width="60dip"
+        android:layout_height="30dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/smssdk_add_contact"
+        android:textSize="14sp"
+        android:textColor="#797979"
+        android:background="@drawable/smssdk_corners_bg"/>
+        
+        <TextView 
+        android:id="@+id/tv_add"
+        android:layout_width="60dip"
+        android:layout_height="30dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/smssdk_added_contact"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:textColor="#797979"
+        />
+    </RelativeLayout>
+    
+
+</LinearLayout>

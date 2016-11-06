@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/voip_talking_bar_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/voip_talking_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/voip_switchto_audio_btn"
+            style="@style/CCPBigGreyButton"
+            android:layout_width="fill_parent"
+            android:layout_marginBottom="10.0dip"
+            android:text="@string/ec_voip_switchto_audio"
+            android:textColor="#ff5b5b5b"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/voip_hangup_btn"
+            style="@style/CCPBigRedButton"
+            android:layout_width="fill_parent"
+            android:text="@string/tt_cancel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/voip_incall_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="10.0dip"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/voip_invite_reject_btn"
+                style="@style/CCPBigRedButton"
+                android:layout_width="0.0dip"
+                android:layout_weight="1.0"
+                android:text="@string/ec_voip_reject_btn" />
+
+            <Button
+                android:id="@+id/invite_accept_video"
+                style="@style/CCPBigGreenButton"
+                android:layout_width="0.0dip"
+                android:layout_marginLeft="8.0dip"
+                android:layout_weight="1.0"
+                android:text="@string/ec_voip_accept_call" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/invite_accept_audio"
+            style="@style/CCPBigGreyButton"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="10.0dip"
+            android:layout_weight="1.0"
+            android:text="@string/ec_voip_audioaccpet"
+            android:textColor="#ff5b5b5b" />
+    </LinearLayout>
+</LinearLayout>

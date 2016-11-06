@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item android:state_selected="true">
+    <shape>
+      <stroke android:color="@color/__picker_item_photo_border_selected"
+          android:width="1dip"/>
+    </shape>
+  </item>
+
+  <item>
+    <shape>
+      <stroke android:color="@color/__picker_item_photo_border_n"
+          android:width="1dip"/>
+    </shape>
+  </item>
+
+
+</selector>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dtalk.dd.ui.widget.message.LocationRenderView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/default_bk"
+    android:paddingBottom="20dp"
+    android:paddingLeft="10dp" >
+
+    <com.dtalk.dd.ui.widget.IMBaseImageView
+        android:id="@+id/user_portrait"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tt_default_user_portrait_corner" />
+
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/user_portrait"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="60dp"
+        android:layout_toRightOf="@id/user_portrait"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="5dp"
+            android:text="小明"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_toRightOf="@id/user_portrait"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:id="@+id/message_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tt_other_image_vertical_bk"
+                >
+                <com.dtalk.dd.ui.widget.BubbleImageView
+                    android:id="@+id/message_image"
+                    android:layout_width="80dp"
+                    android:layout_height="150dp"
+                    android:maxHeight="150dp"
+                    android:maxWidth="80dp"
+                    android:adjustViewBounds="true"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"/>
+                <!--BubbleImageView:bubble_angle="5dp"-->
+                <!--BubbleImageView:bubble_arrowHeight="10dp"-->
+                <!--BubbleImageView:bubble_arrowLocation="left"-->
+                <!--BubbleImageView:bubble_arrowOffset="-5dp"-->
+                <!--BubbleImageView:bubble_arrowTop="15dp"-->
+                <!--BubbleImageView:bubble_arrowWidth="5dp" />-->
+
+            </FrameLayout>
+
+
+            <ImageView
+                android:id="@+id/message_state_failed"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/message_image_desc"
+                android:src="@drawable/tt_msg_tip"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</com.dtalk.dd.ui.widget.message.LocationRenderView>

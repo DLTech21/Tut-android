@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="fontPath" />
+
+    <declare-styleable name="call_control">
+        <attr name="call_direct">
+            <enum name="incoming" value="0" />
+            <enum name="outgoing" value="1" />
+            <enum name="inCall" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

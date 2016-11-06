@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="8.5dp"
+        android:paddingBottom="9dp"
+        android:layout_weight="1"
+        android:background="@drawable/tt_list_item_bk" >
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:button="@color/checkbox_background"
+            android:clickable="false"
+            android:focusable="false"
+            android:visibility="gone" />
+
+        <com.dtalk.dd.ui.widget.IMBaseImageView
+            android:id="@+id/contact_portrait"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/checkBox"
+            android:scaleType="centerCrop"
+            />
+
+        <TextView
+            android:id="@+id/contact_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/contact_portrait"
+            android:textColor="@color/contact_name_color"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/contact_realname_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/contact_item_title"
+            android:textColor="@color/contact_realname_color"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/confrim_btn"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/tt_default_btn_bk"
+            android:text="@string/new_friend_confirm"
+            android:textColor="@android:color/white"
+            android:textSize="19sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            />
+        <TextView
+            android:id="@+id/confrim_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_friend_confirmed"
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+    <View
+        android:id="@+id/contact_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/default_line_color" />
+</LinearLayout>

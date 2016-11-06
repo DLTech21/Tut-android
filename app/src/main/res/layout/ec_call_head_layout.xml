@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/call_head"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/layout_call_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ec_voip_unknown_user"
+            android:textColor="@color/ec_voip_interface_text_color"
+            android:textSize="24dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/layout_call_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/ec_voip_interface_text_color"
+            android:textSize="20dp" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="40.0dip"
+            android:textColor="@color/ec_voip_interface_text_color"
+            android:textSize="15.0sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/layout_call_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="40.0dip"
+            android:lines="2"
+            android:gravity="center_horizontal"
+            android:textColor="@color/ec_voip_interface_text_color"
+            android:textSize="15dp"
+            android:visibility="visible"/>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:id="@+id/layout_centre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ec_call_interface_bg_02"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="20dip">
+
+            <ImageView
+                android:id="@+id/layout_call_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ec_call_interface_head_portrait" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
