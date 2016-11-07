@@ -52,6 +52,8 @@ public class ImageLoadManager {
     public void setCirclePubGlide(String PicURL, ImageView mImageView) {
         glideRequest.load(PicURL)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.tt_default_album_grid_image)
+                .error(R.drawable.tt_default_image_error)
                 .dontAnimate()
                 .into(mImageView);
     }
@@ -59,6 +61,7 @@ public class ImageLoadManager {
     public void setDrawableGlide(int drawable, ImageView mImageView) {
         glideRequest.load(drawable)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(drawable)
                 .dontAnimate()
                 .into(mImageView);
     }

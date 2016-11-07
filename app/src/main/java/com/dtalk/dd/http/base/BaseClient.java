@@ -32,6 +32,7 @@ public class BaseClient {
          */
         abstract void onSuccess(Object data);
 
+
         /**
          * 连接api失败
          *

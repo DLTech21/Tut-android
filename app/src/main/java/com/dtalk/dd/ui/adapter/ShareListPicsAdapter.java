@@ -14,6 +14,7 @@ import com.dtalk.dd.R;
 import com.dtalk.dd.model.Photo4Gallery;
 import com.dtalk.dd.ui.activity.CircleImagePubActivity;
 import com.dtalk.dd.ui.plugin.ImageLoadManager;
+import com.dtalk.dd.utils.Logger;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -72,6 +73,7 @@ public class ShareListPicsAdapter extends BaseAdapter{
 			ImageLoadManager.getInstance(context).setDrawableGlide( R.drawable.tt_group_manager_add_user, viewHolder.imgPic);
         }
 		else {
+			Logger.i("file://"+mj.path);
 			ImageLoadManager.getInstance(context).setCirclePubGlide("file://"+mj.path, viewHolder.imgPic);
 		}
 		clickImg(viewHolder, mj, position);

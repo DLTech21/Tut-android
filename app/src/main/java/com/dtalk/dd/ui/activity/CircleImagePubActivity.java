@@ -16,18 +16,25 @@ import android.widget.Toast;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.dtalk.dd.R;
+import com.dtalk.dd.app.IMApplication;
+import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.moment.MomentClient;
+import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.model.Photo4Gallery;
 import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.adapter.ShareListPicsAdapter;
 import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.widget.GridViewForScrollView;
 import com.dtalk.dd.utils.KeyboardUtils;
+import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.tools.ScreenTools;
 import com.lidroid.xutils.ViewUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import me.iwf.photopicker.PhotoPicker;
@@ -40,7 +47,7 @@ import top.zibin.luban.OnCompressListener;
  */
 
 public class CircleImagePubActivity extends TTBaseActivity implements
-        View.OnClickListener {
+        View.OnClickListener, QNUploadManager.OnQNUploadCallback {
     private static final int EVENT_MESSAGE_MAX_COUNT = 500;
 
     private boolean iSPublic = true;
@@ -174,7 +181,7 @@ public class CircleImagePubActivity extends TTBaseActivity implements
     }
 
     private void handleImagePickData(List<String> list) {
-        QNUploadManager.getInstance(this).uploadCircleFiles(list);
+        QNUploadManager.getInstance(this).uploadCircleFiles(list, svProgressHUD, this);
     }
 
     private void compressWithLs(final List<String> list) {
@@ -271,5 +278,47 @@ public class CircleImagePubActivity extends TTBaseActivity implements
                 }).create();
         imageDialog.show();
     }
+
+    private void postImage(List<String> images) {
+        MomentClient.postImageMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), editText.getText().toString(), images, new BaseClient.ClientCallback() {
+            @Override
+            public void onPreConnection() {
+                svProgressHUD.showWithStatus("发送朋友圈");
+            }
+
+            @Override
+            public void onCloseConnection() {
+                svProgressHUD.dismiss();
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                BaseResponse response = (BaseResponse) data;
+                if (response.getStatus() == 1) {
+                    finish();
+                } else {
+                    svProgressHUD.showErrorWithStatus(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                svProgressHUD.showErrorWithStatus(message);
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
+    }
+
+    @Override
+    public void uploadCompleted(Map<String, String> uploadedFiles) {
+        List<String> imgs = new ArrayList<>();
+        imgs.addAll(uploadedFiles.values());
+        postImage(imgs);
+    }
+
 }
 

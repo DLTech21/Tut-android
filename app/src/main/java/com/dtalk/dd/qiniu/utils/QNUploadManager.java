@@ -2,6 +2,7 @@ package com.dtalk.dd.qiniu.utils;
 
 import android.content.Context;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.MD5Util;
 import com.qiniu.android.http.ResponseInfo;
@@ -48,7 +49,7 @@ public class QNUploadManager {
         return auploadToken;
     }
 
-    public void uploadCircleFiles(final List<String> path) {
+    public void uploadCircleFiles(final List<String> path, final SVProgressHUD svProgressHUD, final OnQNUploadCallback callback) {
         String token = initQNToken();
         final Map<String, String> uploadedFiles = new HashMap<>();
         for (String item : path) {
@@ -58,15 +59,22 @@ public class QNUploadManager {
                 public void complete(String key, ResponseInfo info, JSONObject response) {
                     uploadedFiles.put(key, Config.QINIU_PREFIX+key);
                     if (uploadedFiles.size() == path.size()) {
-
+                        if (callback != null) {
+                            callback.uploadCompleted(uploadedFiles);
+                        }
                     }
                 }
             }, new UploadOptions(null, null, false,
                     new UpProgressHandler(){
                         public void progress(String key, double percent){
                             Logger.i(key + ": " + percent);
+                            svProgressHUD.getProgressBar().setProgress((int)(percent*100));
                         }
                     }, null));
         }
+    }
+
+    public interface OnQNUploadCallback {
+        abstract void uploadCompleted(Map<String, String> uploadedFiles);
     }
 }

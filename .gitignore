@@ -2,3 +2,6 @@
 /.gradle
 /.idea
 /gradle
+/app/build
+/mgimlibs/build
+/vitamioRecorderLibrary/build
