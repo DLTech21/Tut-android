@@ -163,6 +163,6 @@ public class BaseCircleRenderView extends RelativeLayout {
 
 
     public void setImageGlide(Context mContext, String PicURL, ImageView mImageView) {
-        ImageLoadManager.getInstance(mContext).setCircleGlide(PicURL, mImageView);
+        ImageLoadManager.setCircleGlide(mContext, PicURL, mImageView);
     }
 }

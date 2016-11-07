@@ -3,6 +3,7 @@ package com.dtalk.dd.qiniu.utils;
 import android.content.Context;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.MD5Util;
 import com.qiniu.android.http.ResponseInfo;
@@ -32,7 +33,7 @@ public class QNUploadManager {
     public static QNUploadManager getInstance(Context context) {
         synchronized (QNUploadManager.class) {
             if (qnUploadManager == null) {
-                qnUploadManager = new QNUploadManager(context);
+                qnUploadManager = new QNUploadManager(IMApplication.getInstance());
             }
             return qnUploadManager;
         }

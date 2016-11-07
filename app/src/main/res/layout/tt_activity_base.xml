@@ -52,12 +52,15 @@
             android:scaleType="center" />
 
         <TextView
+            android:gravity="center_vertical"
             android:id="@+id/right_txt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
             android:textColor="@color/default_title_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:paddingRight="15dp"
+            />
     </FrameLayout>
     
     <View

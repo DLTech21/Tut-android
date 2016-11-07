@@ -62,7 +62,6 @@ public class ShareListPicsAdapter extends BaseAdapter{
 			LayoutParams p = (LayoutParams) viewHolder.imgPic.getLayoutParams();
 			p.width = columnWidth;
 			p.height = columnWidth;
-//			viewHolder.imgPic.setLayoutParams(p);
 			convertView.setTag(viewHolder);
 		}
 		else {
@@ -70,11 +69,11 @@ public class ShareListPicsAdapter extends BaseAdapter{
 		}
 		Photo4Gallery mj = datas.get(position);
 		if (mj.type == Photo4Gallery.FUNCTION_TYPE) {
-			ImageLoadManager.getInstance(context).setDrawableGlide( R.drawable.tt_group_manager_add_user, viewHolder.imgPic);
+			ImageLoadManager.setDrawableGlide(context, R.drawable.tt_group_manager_add_user, viewHolder.imgPic);
         }
 		else {
 			Logger.i("file://"+mj.path);
-			ImageLoadManager.getInstance(context).setCirclePubGlide("file://"+mj.path, viewHolder.imgPic);
+			ImageLoadManager.setCirclePubGlide(context, "file://"+mj.path, viewHolder.imgPic);
 		}
 		clickImg(viewHolder, mj, position);
 		return convertView;

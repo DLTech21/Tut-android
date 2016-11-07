@@ -13,26 +13,9 @@ import com.dtalk.dd.R;
  */
 
 public class ImageLoadManager {
-    private RequestManager glideRequest;
-    private static ImageLoadManager imageLoadManager;
 
-    public ImageLoadManager(Context context) {
-        if (glideRequest == null) {
-            glideRequest = Glide.with(context);
-        }
-    }
-
-    public static ImageLoadManager getInstance(Context context) {
-        synchronized (ImageLoadManager.class) {
-            if (imageLoadManager == null) {
-                imageLoadManager = new ImageLoadManager(context);
-            }
-            return imageLoadManager;
-        }
-    }
-
-    public void setImageGlide(String PicURL, ImageView mImageView) {
-        glideRequest.load(PicURL)
+    public static void setImageGlide(Context context, String PicURL, ImageView mImageView) {
+        Glide.with(context).load(PicURL)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .placeholder(R.drawable.tt_message_image_default)
@@ -40,8 +23,8 @@ public class ImageLoadManager {
                 .into(mImageView);
     }
 
-    public void setCircleGlide(String PicURL, ImageView mImageView) {
-        glideRequest.load(PicURL)
+    public static void setCircleGlide(Context context, String PicURL, ImageView mImageView) {
+        Glide.with(context).load(PicURL)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .placeholder(R.drawable.tt_default_album_grid_image)
@@ -49,20 +32,20 @@ public class ImageLoadManager {
                 .into(mImageView);
     }
 
-    public void setCirclePubGlide(String PicURL, ImageView mImageView) {
-        glideRequest.load(PicURL)
+    public static void setCirclePubGlide(Context context, String PicURL, ImageView mImageView) {
+        Glide.with(context).load(PicURL)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.tt_default_album_grid_image)
                 .error(R.drawable.tt_default_image_error)
-                .dontAnimate()
+                .crossFade()
                 .into(mImageView);
     }
 
-    public void setDrawableGlide(int drawable, ImageView mImageView) {
-        glideRequest.load(drawable)
+    public static void setDrawableGlide(Context context, int drawable, ImageView mImageView) {
+        Glide.with(context).load(drawable)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(drawable)
-                .dontAnimate()
+                .crossFade()
                 .into(mImageView);
     }
 }

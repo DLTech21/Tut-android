@@ -353,7 +353,7 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
             avatar = photos.get(0);
 //            Bitmap bitmap = BitmapFactory.decodeFile(new File(avatar).getPath());
 //            iv_photo.setImageBitmap(bitmap);
-            ImageLoadManager.getInstance(this).setImageGlide("file://"+avatar, iv_photo);
+            ImageLoadManager.setImageGlide(this, "file://"+avatar, iv_photo);
 
             new Thread(new Runnable() {
                 @Override

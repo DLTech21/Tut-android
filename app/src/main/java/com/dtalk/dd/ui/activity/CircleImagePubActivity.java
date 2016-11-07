@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +27,7 @@ import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.widget.GridViewForScrollView;
 import com.dtalk.dd.utils.KeyboardUtils;
 import com.dtalk.dd.utils.SandboxUtils;
+import com.dtalk.dd.utils.StringUtils;
 import com.dtalk.tools.ScreenTools;
 import com.lidroid.xutils.ViewUtils;
 
@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import de.greenrobot.event.EventBus;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
 import top.zibin.luban.Luban;
@@ -136,16 +135,20 @@ public class CircleImagePubActivity extends TTBaseActivity implements
                 photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
             if (photos != null) {
-                for (String path : photos) {
-                    Photo4Gallery photo4Gallery = new Photo4Gallery();
-                    photo4Gallery.path = path;
-                    photo4Gallery.type = Photo4Gallery.NORMAL_YPE;
-                    pics.add(pics.size() - 1, photo4Gallery);
-                    picAdapter.notifyDataSetChanged();
-                    changeContentImages();
-                }
+                displayImage(photos);
             }
         }
+    }
+
+    private void displayImage(List<String> photos) {
+        for (String path : photos) {
+            Photo4Gallery photo4Gallery = new Photo4Gallery();
+            photo4Gallery.path = path;
+            photo4Gallery.type = Photo4Gallery.NORMAL_YPE;
+            pics.add(pics.size() - 1, photo4Gallery);
+        }
+        picAdapter.notifyDataSetChanged();
+        changeContentImages();
     }
 
 
@@ -171,16 +174,22 @@ public class CircleImagePubActivity extends TTBaseActivity implements
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        svProgressHUD.getProgressBar().setProgress(0);
-        svProgressHUD.showWithProgress("正在上传图片", SVProgressHUD.SVProgressHUDMaskType.Black);
         if (contentImages.size() > 0) {
             compressWithLs(contentImages);
         } else {
-            handleImagePickData(contentImages);
+            if (StringUtils.empty(editText.getText().toString())) {
+                Toast.makeText(getApplication(), "请输入文字",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            List<String> imgs = new ArrayList<>();
+            postImage(imgs);
         }
     }
 
     private void handleImagePickData(List<String> list) {
+        svProgressHUD.getProgressBar().setProgress(0);
+        svProgressHUD.showWithProgress("正在上传图片", SVProgressHUD.SVProgressHUDMaskType.Black);
         QNUploadManager.getInstance(this).uploadCircleFiles(list, svProgressHUD, this);
     }
 
