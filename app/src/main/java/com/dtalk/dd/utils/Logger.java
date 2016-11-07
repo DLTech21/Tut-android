@@ -194,40 +194,40 @@ public class Logger {
 	}
 
 	public static void i(String format, Object... args) {
-		if (debug) {
-			String message = instance.createMessage(instance.getInputString(format, args));
-			instance.info(message);
-		}
+//		if (debug) {
+//			String message = instance.createMessage(instance.getInputString(format, args));
+//			instance.info(message);
+//		}
 	}
 
 	/**
 	 * log.v
 	 */
 	public static void v(String format, Object... args) {
-		if (debug) {
-			String message = instance.createMessage(instance.getInputString(format, args));
-			instance.verbose(message);
-		}
+//		if (debug) {
+//			String message = instance.createMessage(instance.getInputString(format, args));
+//			instance.verbose(message);
+//		}
 	}
 
 	/**
 	 * log.d
 	 */
 	public static void d(String format, Object... args) {
-		if (debug) {
-			String message = instance.createMessage(instance.getInputString(format, args));
-			instance.debug(message);
-		}
+//		if (debug) {
+//			String message = instance.createMessage(instance.getInputString(format, args));
+//			instance.debug(message);
+//		}
 	}
 
 	/**
 	 * log.e
 	 */
 	public static void e(String format, Object... args) {
-		if (debug) {
-			String message = instance.createMessage(instance.getInputString(format, args));
-			instance.error(message);
-		}
+//		if (debug) {
+//			String message = instance.createMessage(instance.getInputString(format, args));
+//			instance.error(message);
+//		}
 	}
 
 	private String getInputString(String format, Object... args) {

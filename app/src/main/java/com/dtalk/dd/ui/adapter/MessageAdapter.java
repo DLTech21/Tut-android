@@ -310,7 +310,9 @@ public class MessageAdapter extends BaseAdapter {
             } else if (obj instanceof MessageEntity) {
                 MessageEntity info = (MessageEntity) obj;
                 boolean isMine = info.getFromId() == loginUser.getPeerId();
+
                 switch (info.getDisplayType()) {
+
                     case DBConstant.SHOW_FIEL_TYPE:
                         type = isMine ? RenderType.MESSAGE_TYPE_MINE_FILE
                                 : RenderType.MESSAGE_TYPE_OTHER_FILE;
@@ -867,7 +869,6 @@ public class MessageAdapter extends BaseAdapter {
      */
     private View gifMsgRender(final int position, View convertView, final ViewGroup viewGroup, final boolean isMine) {
         EmojiRenderView gifRenderView;
-        Logger.i("%i", (msgObjectList.get(position) instanceof  EmotionMessage));
         final EmotionMessage emoMessage = (EmotionMessage) msgObjectList.get(position);
         UserEntity userEntity = imService.getContactManager().findContact(emoMessage.getFromId());
         if (null == convertView) {
@@ -1043,7 +1044,7 @@ public class MessageAdapter extends BaseAdapter {
             final int typeIndex = getItemViewType(position);
             RenderType renderType = RenderType.values()[typeIndex];
             // 改用map的形式
-//            Logger.e("chat#%i", renderType);
+
             switch (renderType) {
                 case MESSAGE_TYPE_INVALID:
                     // 直接返回
