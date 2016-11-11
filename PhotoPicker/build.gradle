@@ -1,24 +1,28 @@
 apply plugin: 'com.android.library'
 
+ext {
+  SUPPORT_LIBRARY_VERSION = '25.0.0'
+  BUILD_TOOLS = "24.0.2"
+  TARGET_SDK = 25
+}
+
 android {
-  compileSdkVersion 24
-  buildToolsVersion "24.0.2"
+  compileSdkVersion TARGET_SDK
+  buildToolsVersion BUILD_TOOLS
   resourcePrefix "__picker_"
 
   defaultConfig {
     minSdkVersion 10
-    targetSdkVersion 24
+    targetSdkVersion TARGET_SDK
   }
 }
-ext {
-  supportLibVersion = "24.2.1"
-}
+
 dependencies {
-  compile "com.android.support:support-v4:$supportLibVersion"
-  compile "com.android.support:appcompat-v7:$supportLibVersion"
-  compile "com.android.support:design:$supportLibVersion"
-  compile "com.android.support:recyclerview-v7:$supportLibVersion"
-  compile "com.android.support:support-annotations:$supportLibVersion"
+  compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
+  compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+  compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+  compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+  compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
   compile "com.nineoldandroids:library:2.4.0"
   compile "com.github.bumptech.glide:glide:3.7.0"
 }
