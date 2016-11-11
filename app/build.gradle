@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
 ext {
-    SUPPORT_LIBRARY_VERSION = '25.0.0'
+    SUPPORT_LIBRARY_VERSION = '24.2.1'
     BUILD_TOOLS = "24.0.2"
-    TARGET_SDK = 25
+    TARGET_SDK = 24
+    MIN_SDK = 16
 }
 
 repositories {
@@ -28,7 +29,7 @@ android {
     defaultConfig {
         multiDexEnabled true
         applicationId "com.dtalk.dd"
-        minSdkVersion 14
+        minSdkVersion MIN_SDK
         targetSdkVersion TARGET_SDK
         versionCode 11
         versionName "2.0.6"
@@ -38,6 +39,9 @@ android {
                 GETUI_APP_SECRET : "8ur1p4ZX8H6b1GzNhLQ4Y9",
                 PACKAGE_NAME : "com.dtalk.dd"
         ]
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     buildTypes {
@@ -74,6 +78,7 @@ android {
 }
 
 dependencies {
+    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile project(':mgimlibs')
     compile project(':PhotoPicker')
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -81,15 +86,14 @@ dependencies {
     compile 'com.google.protobuf:protobuf-java:2.6.1'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'de.greenrobot:greendao:1.3.7'
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'commons-io:commons-io:2.4'
     compile 'com.alibaba:fastjson:1.2.6'
     compile files('libs/baidumapapi_base_v3_7_0.jar')
     compile files('libs/Yuntx_FullLib_v5.2.0r2.jar')
-    compile 'com.getui:sdk:2.8.1.0'
-    compile 'com.getui:ext:2.0.3'
+    compile 'com.getui:sdk:2.9.0.0'
     compile files('libs/Bughd_android_sdk_v1.3.7.jar')
     compile 'com.facebook.fresco:fresco:0.9.0'
     compile 'com.android.support:multidex:1.0.1'

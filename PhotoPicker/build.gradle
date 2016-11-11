@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
 
 ext {
-  SUPPORT_LIBRARY_VERSION = '25.0.0'
+  SUPPORT_LIBRARY_VERSION = '24.2.1'
   BUILD_TOOLS = "24.0.2"
-  TARGET_SDK = 25
+  TARGET_SDK = 24
+  MIN_SDK = 16
 }
 
 android {
@@ -12,7 +13,7 @@ android {
   resourcePrefix "__picker_"
 
   defaultConfig {
-    minSdkVersion 10
+    minSdkVersion MIN_SDK
     targetSdkVersion TARGET_SDK
   }
 }
