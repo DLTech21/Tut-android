@@ -37,4 +37,11 @@
 
     <string name="plugin_file_explorer_root_tag">设备</string>
     <string name="plugin_file_explorer_sdcard_tag">存储卡</string>
+
+    <string-array name="socialNetworks">
+        <item>Twitter</item>
+        <item>Google+</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+    </string-array>
 </resources>

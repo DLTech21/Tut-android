@@ -1,2 +1,2 @@
-include ':mgimlibs', ':daogenerator', ':vitamioRecorderLibrary', ':PhotoPicker'
+include ':mgimlibs', ':daogenerator', ':vitamioRecorderLibrary', ':PhotoPicker', ':md_dialog_commons', ':md_dialog_core'
 include ':app'

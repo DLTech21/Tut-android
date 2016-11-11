@@ -59,7 +59,7 @@
         android:icon="@drawable/super_icon"
         android:largeHeap="true"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar" >
+        android:theme="@style/AppComBaseTheme" >
         <activity
             android:name="com.dtalk.dd.ui.activity.MessageActivity"
             android:configChanges="orientation|keyboardHidden"

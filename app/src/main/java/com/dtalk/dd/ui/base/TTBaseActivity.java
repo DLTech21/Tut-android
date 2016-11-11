@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import com.dtalk.dd.utils.StringUtils;
  * @author Nana
  * @date 2014-4-10
  */
-public abstract class TTBaseActivity extends Activity {
+public abstract class TTBaseActivity extends AppCompatActivity {
     protected ImageView topLeftBtn;
     protected ImageView topRightBtn;
     protected TextView topTitleTxt;
@@ -51,9 +52,9 @@ public abstract class TTBaseActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppComBaseTheme);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         topContentView = (ViewGroup) LayoutInflater.from(this).inflate(
                 R.layout.tt_activity_base, null);
         topBar = (ViewGroup) topContentView.findViewById(R.id.topbar);

@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dtalk.dd.R;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.SysConstant;
@@ -41,6 +42,8 @@ import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+
+import static com.yixia.camera.demo.utils.ToastUtils.showToast;
 
 /**
  * Created by Donal on 16/7/29.
@@ -155,7 +158,15 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.right_btn:
-                CircleImagePubActivity.launch(this);
+                new MaterialDialog.Builder(this)
+                        .items(R.array.socialNetworks)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            }
+                        })
+                        .show();
+//                CircleImagePubActivity.launch(this);
                 break;
             default:
                 break;
