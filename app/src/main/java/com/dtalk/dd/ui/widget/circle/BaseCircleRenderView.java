@@ -45,6 +45,8 @@ public class BaseCircleRenderView extends RelativeLayout {
     protected ViewGroup parentView;
     protected  boolean isMine;
 
+    protected OnDeleteCircleListener onDeleteCircleListener;
+
     protected BaseCircleRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -95,6 +97,14 @@ public class BaseCircleRenderView extends RelativeLayout {
         else {
             getTvDelete().setVisibility(INVISIBLE);
         }
+        getTvDelete().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onDeleteCircleListener != null) {
+                    onDeleteCircleListener.onDeleteCircle(moment);
+                }
+            }
+        });
 
         Lu_Comment_TextView temp = new Lu_Comment_TextView(ctx);
         final List<Lu_Comment_TextView.Lu_PingLun_info_Entity> mList = new ArrayList<Lu_Comment_TextView.Lu_PingLun_info_Entity>();
@@ -161,8 +171,19 @@ public class BaseCircleRenderView extends RelativeLayout {
         return tvMore;
     }
 
+    public OnDeleteCircleListener getOnDeleteCircleListener() {
+        return onDeleteCircleListener;
+    }
+
+    public void setOnDeleteCircleListener(OnDeleteCircleListener onDeleteCircleListener) {
+        this.onDeleteCircleListener = onDeleteCircleListener;
+    }
 
     public void setImageGlide(Context mContext, String PicURL, ImageView mImageView) {
         ImageLoadManager.setCircleGlide(mContext, PicURL, mImageView);
+    }
+
+    public interface OnDeleteCircleListener {
+        public void onDeleteCircle(Moment moment);
     }
 }

@@ -419,7 +419,7 @@ public class MessageActivity extends TTBaseActivity
     }
 
     /**
-     * 处理发送附件消息
+     * 处理发送小视频消息
      * @param coverName
      * @param pathName
      */
@@ -1018,24 +1018,13 @@ public class MessageActivity extends TTBaseActivity
             }
             break;
             case R.id.take_photo_btn: {
-//                if (albumList.size() < 1) {
-//                    Toast.makeText(MessageActivity.this,
-//                            getResources().getString(R.string.not_found_album), Toast.LENGTH_LONG)
-//                            .show();
-//                    return;
-//                }
-                // 选择图片的时候要将session的整个回话 传过来
-//                Intent intent = new Intent(MessageActivity.this, PickPhotoActivity.class);
-//                intent.putExtra(IntentConstant.KEY_SESSION_KEY, currentSessionKey);
-//                startActivityForResult(intent, SysConstant.ALBUM_BACK_DATA);
                 PhotoPicker.builder()
                         .setPhotoCount(9)
                         .setGridColumnCount(4)
                         .start(this);
 
                 MessageActivity.this.overridePendingTransition(R.anim.tt_album_enter, R.anim.tt_stay);
-                //addOthersPanelView.setVisibility(View.GONE);
-                messageEdt.clearFocus();//切记清除焦点
+                messageEdt.clearFocus();
                 scrollToBottomListItem();
             }
             break;
@@ -1047,7 +1036,7 @@ public class MessageActivity extends TTBaseActivity
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(takePhotoSavePath)));
                 startActivityForResult(intent, SysConstant.CAMERA_WITH_DATA);
                 //addOthersPanelView.setVisibility(View.GONE);
-                messageEdt.clearFocus();//切记清除焦点
+                messageEdt.clearFocus();
                 scrollToBottomListItem();
             }
             break;

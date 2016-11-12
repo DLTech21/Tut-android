@@ -9,7 +9,6 @@ import android.view.Window;
 import com.dtalk.dd.NativeRuntime;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.imservice.event.ApplicantEvent;
-import com.dtalk.dd.imservice.service.GrayService;
 import com.dtalk.dd.ui.plugin.UpdateManager;
 import com.dtalk.dd.utils.FileUtils;
 import com.dtalk.dd.R;
@@ -231,20 +230,20 @@ public class MainActivity extends FragmentActivity{
 
 	private void checkVersion() {
 		UpdateManager.getUpdateManager(this, false).checkAppUpdate(this);
-		String executable = "libhelper.so";
-		String aliasfile = "helper";
-		NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor");
-		(new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					NativeRuntime.getInstance().startService(getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor", FileUtils.createRootPath());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		})).start();
+//		String executable = "libhelper.so";
+//		String aliasfile = "helper";
+//		NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor");
+//		(new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				try {
+//					NativeRuntime.getInstance().startService(getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor", FileUtils.createRootPath());
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		})).start();
 //		Intent innerIntent = new Intent(this, GrayService.class);
 //		startService(innerIntent);
 

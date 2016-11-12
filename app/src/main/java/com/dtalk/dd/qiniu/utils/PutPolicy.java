@@ -96,7 +96,7 @@ public class PutPolicy {
 	
 	public String token(Mac mac) throws AuthException, JSONException {
 		if (this.expires == 0) {
-			this.expires = 3600; // 3600s, default.
+			this.expires = 3600*24; // 3600s, default.
 		}
 		this.deadline = System.currentTimeMillis() / 1000 + this.expires;
 		byte[] data = this.marshal().getBytes();

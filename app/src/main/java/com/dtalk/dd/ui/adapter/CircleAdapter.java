@@ -20,6 +20,7 @@ import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.imservice.entity.ImageMessage;
 import com.dtalk.dd.ui.helper.AudioPlayerHandler;
 import com.dtalk.dd.ui.widget.SpeekerToast;
+import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
 import com.dtalk.dd.ui.widget.circle.CircleOperatePopup;
 import com.dtalk.dd.ui.widget.circle.CircleType;
 import com.dtalk.dd.ui.widget.circle.ImageCircleRenderView;
@@ -42,8 +43,10 @@ public class CircleAdapter extends BaseAdapter {
 
     private ArrayList<Moment> circleObjectList = new ArrayList<>();
     private Context ctx;
+    private BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener;
 
-    public CircleAdapter(Context ctx) {
+    public CircleAdapter(Context ctx, BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener) {
+        this.onDeleteCircleListener = onDeleteCircleListener;
         this.ctx = ctx;
     }
 
@@ -92,14 +95,11 @@ public class CircleAdapter extends BaseAdapter {
             Moment info = (Moment) obj;
             if (info.type.equals("txt")) {
                 type = CircleType.CIRCLE_TYPE_TEXT;
-            }
-            else if (info.type.equals("video")) {
+            } else if (info.type.equals("video")) {
                 type = CircleType.CIRCLE_TYPE_VIDEO;
-            }
-            else if (info.type.equals("longtxt") ) {
+            } else if (info.type.equals("longtxt")) {
                 type = CircleType.CIRCLE_TYPE_LONGTXT;
-            }
-            else if (info.type.equals("url")) {
+            } else if (info.type.equals("url")) {
                 type = CircleType.CIRCLE_TYPE_URL;
             }
             return type.ordinal();
@@ -167,8 +167,7 @@ public class CircleAdapter extends BaseAdapter {
             }
         });
         videoCircleRenderView.render(moment, ctx);
-
-
+        videoCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return videoCircleRenderView;
     }
 
@@ -198,7 +197,7 @@ public class CircleAdapter extends BaseAdapter {
             }
         });
         imageCircleRenderView.render(moment, ctx);
-
+        imageCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return imageCircleRenderView;
     }
 
@@ -228,7 +227,7 @@ public class CircleAdapter extends BaseAdapter {
             }
         });
         urlCircleRenderView.render(moment, ctx);
-
+        urlCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return urlCircleRenderView;
     }
 
@@ -258,10 +257,9 @@ public class CircleAdapter extends BaseAdapter {
             }
         });
         longtxtCircleRenderView.render(moment, ctx);
-
+        longtxtCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return longtxtCircleRenderView;
     }
-
 
 
     @Override

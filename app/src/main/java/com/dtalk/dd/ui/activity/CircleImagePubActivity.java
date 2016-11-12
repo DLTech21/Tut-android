@@ -175,6 +175,8 @@ public class CircleImagePubActivity extends TTBaseActivity implements
             return;
         }
         if (contentImages.size() > 0) {
+            svProgressHUD.getProgressBar().setProgress(0);
+            svProgressHUD.showWithProgress("正在上传图片", SVProgressHUD.SVProgressHUDMaskType.Black);
             compressWithLs(contentImages);
         } else {
             if (StringUtils.empty(editText.getText().toString())) {
@@ -188,8 +190,6 @@ public class CircleImagePubActivity extends TTBaseActivity implements
     }
 
     private void handleImagePickData(List<String> list) {
-        svProgressHUD.getProgressBar().setProgress(0);
-        svProgressHUD.showWithProgress("正在上传图片", SVProgressHUD.SVProgressHUDMaskType.Black);
         QNUploadManager.getInstance(this).uploadCircleFiles(list, svProgressHUD, this);
     }
 

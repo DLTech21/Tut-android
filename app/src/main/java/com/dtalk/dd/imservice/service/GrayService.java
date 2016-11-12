@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.igexin.sdk.PushManager;
 
 /**
  * Created by Donal on 16/8/8.
@@ -25,7 +24,7 @@ public class GrayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT < 18) {
-            PushManager.getInstance().initialize(this.getApplicationContext());
+//            PushManager.getInstance().initialize(this.getApplicationContext());
             startForeground(GRAY_SERVICE_ID, new Notification());//API < 18 ，此方法能有效隐藏Notification上的图标
         } else {
             Intent innerIntent = new Intent(this, GrayInnerService.class);
@@ -51,7 +50,7 @@ public class GrayService extends Service {
         public int onStartCommand(Intent intent, int flags, int startId) {
             startForeground(GRAY_SERVICE_ID, new Notification());
             stopForeground(true);
-            PushManager.getInstance().initialize(this.getApplicationContext());
+//            PushManager.getInstance().initialize(this.getApplicationContext());
             stopSelf();
             return super.onStartCommand(intent, flags, startId);
         }

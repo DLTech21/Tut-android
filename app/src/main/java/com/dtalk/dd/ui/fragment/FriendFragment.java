@@ -118,8 +118,12 @@ public class FriendFragment extends MainFragment implements SortSideBar.OnTouchi
         headerView = getActivity().getLayoutInflater().inflate(R.layout.tt_header_contact, null);
         ViewUtils.inject(this, headerView);
         internalListView.addHeaderView(headerView);
-        newFriendNotifyTV.setVisibility(DBInterface.instance().loadAllUnResponseApplicants().size() > 0 ? View.VISIBLE : View.INVISIBLE);
-        newFriendNotifyTV.setText(DBInterface.instance().loadAllUnResponseApplicants().size() + "");
+        try {
+            newFriendNotifyTV.setVisibility(DBInterface.instance().loadAllUnResponseApplicants().size() > 0 ? View.VISIBLE : View.INVISIBLE);
+            newFriendNotifyTV.setText(DBInterface.instance().loadAllUnResponseApplicants().size() + "");
+        } catch (Exception e) {
+
+        }
         rlNewFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

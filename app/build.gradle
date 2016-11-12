@@ -39,9 +39,6 @@ android {
                 GETUI_APP_SECRET : "8ur1p4ZX8H6b1GzNhLQ4Y9",
                 PACKAGE_NAME : "com.dtalk.dd"
         ]
-        ndk {
-            abiFilters "armeabi", "armeabi-v7a"
-        }
     }
 
     buildTypes {
@@ -81,8 +78,8 @@ dependencies {
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile project(':mgimlibs')
     compile project(':PhotoPicker')
-    compile project(':md_dialog_core')
-    compile project(':md_dialog_commons')
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:gridlayout-v7:$SUPPORT_LIBRARY_VERSION"
     compile 'com.google.protobuf:protobuf-java:2.6.1'
@@ -95,7 +92,6 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.6'
     compile files('libs/baidumapapi_base_v3_7_0.jar')
     compile files('libs/Yuntx_FullLib_v5.2.0r2.jar')
-    compile 'com.getui:sdk:2.9.0.0'
     compile files('libs/Bughd_android_sdk_v1.3.7.jar')
     compile 'com.facebook.fresco:fresco:0.9.0'
     compile 'com.android.support:multidex:1.0.1'
@@ -108,6 +104,6 @@ dependencies {
     compile 'com.lzy.net:okrx:+'
     compile 'com.lzy.net:okserver:+'
     compile 'top.zibin:Luban:1.0.9'
-    compile 'com.qiniu:qiniu-android-sdk:7.2.+'
+    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
 }
 
