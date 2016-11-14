@@ -33,11 +33,13 @@ android {
         targetSdkVersion TARGET_SDK
         versionCode 11
         versionName "2.0.6"
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a'
+        }
         manifestPlaceholders = [
-                GETUI_APP_ID : "JF5g0qW7Xd9VpX9Zd3SXi9",
-                GETUI_APP_KEY : "bStLfBKQ1Y6IK54ebUvMMA",
-                GETUI_APP_SECRET : "8ur1p4ZX8H6b1GzNhLQ4Y9",
-                PACKAGE_NAME : "com.dtalk.dd"
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "3132923901d8703dfd9b781b",
+                JPUSH_CHANNEL : "developer-default",
         ]
     }
 
@@ -105,5 +107,6 @@ dependencies {
     compile 'com.lzy.net:okserver:+'
     compile 'top.zibin:Luban:1.0.9'
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
+    compile 'cn.jiguang:jpush:2.1.8'
 }
 

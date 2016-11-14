@@ -34,6 +34,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
+import cn.jpush.android.api.JPushInterface;
 import im.fir.sdk.FIR;
 
 
@@ -75,7 +76,8 @@ public class IMApplication extends Application {
         VCamera.setDebugMode(true);
         // 初始化拍摄SDK，必须
         VCamera.initialize(this);
-
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         // 解压assert里面的文件
         String isUpdateCid = SandboxUtils.getInstance().get(this, "theme_parse");
         if (StringUtils.empty(isUpdateCid)) {

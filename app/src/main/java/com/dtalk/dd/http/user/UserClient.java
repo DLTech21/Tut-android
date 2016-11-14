@@ -31,25 +31,31 @@ public class UserClient extends BaseClient{
                     @Override
                     public void onBefore(BaseRequest request) {
                         super.onBefore(request);
-                        callback.onPreConnection();
+                        if (callback != null)
+                            callback.onPreConnection();
                     }
 
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        callback.onCloseConnection();
+                        if (callback != null)
+                            callback.onCloseConnection();
                         try {
                             BaseResponse res = JSON.parseObject((s), BaseResponse.class);
-                            callback.onSuccess(res);
+                            if (callback != null)
+                                callback.onSuccess(res);
                         } catch (Exception e) {
-                            callback.onException(e);
+                            if (callback != null)
+                                callback.onException(e);
                         }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        callback.onCloseConnection();
-                        callback.onFailure(e.getLocalizedMessage());
+                        if (callback != null) {
+                            callback.onCloseConnection();
+                            callback.onFailure(e.getLocalizedMessage());
+                        }
                     }
                 });
     }
