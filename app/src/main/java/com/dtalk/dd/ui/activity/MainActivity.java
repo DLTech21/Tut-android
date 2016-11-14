@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
+import com.dtalk.dd.DB.sp.LoginSp;
 import com.dtalk.dd.NativeRuntime;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.user.UserClient;
@@ -22,6 +23,7 @@ import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.ui.widget.NaviTabButton;
 import com.dtalk.dd.utils.SandboxUtils;
+import com.dtalk.dd.utils.StringUtils;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
@@ -250,7 +252,17 @@ public class MainActivity extends FragmentActivity{
 //		startService(innerIntent);
 		String rid = JPushInterface.getRegistrationID(getApplicationContext());
 		if (!rid.isEmpty()) {
-			UserClient.updateUserPush(rid, null);
+				LoginSp loginSp = LoginSp.instance();
+				if (loginSp == null) {
+					return;
+				}
+				if (loginSp.getLoginIdentity() == null)
+					return;
+				int loginId = loginSp.getLoginIdentity().getLoginId();
+				String isUpdateCid = SandboxUtils.getInstance().get(IMApplication.getInstance(), loginId + "-regId");
+				if (StringUtils.empty(isUpdateCid)) {
+					UserClient.updateUserPush(rid, null);
+				}
 		}
 	}
 

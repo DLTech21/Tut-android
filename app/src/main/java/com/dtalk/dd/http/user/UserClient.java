@@ -2,11 +2,13 @@ package com.dtalk.dd.http.user;
 
 
 import com.alibaba.fastjson.JSON;
+import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.protobuf.IMBaseDefine;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.SandboxUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
@@ -41,6 +43,8 @@ public class UserClient extends BaseClient{
                             callback.onCloseConnection();
                         try {
                             BaseResponse res = JSON.parseObject((s), BaseResponse.class);
+                            if (res.getStatus() == 1)
+                                SandboxUtils.getInstance().set(IMApplication.getInstance(), IMLoginManager.instance().getLoginId() + "-regId", "1");
                             if (callback != null)
                                 callback.onSuccess(res);
                         } catch (Exception e) {
