@@ -171,6 +171,7 @@ public class CircleAdapter extends BaseAdapter {
         });
         videoCircleRenderView.render(moment, ctx, position);
         videoCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
+        videoCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return videoCircleRenderView;
     }
 
@@ -201,6 +202,7 @@ public class CircleAdapter extends BaseAdapter {
         });
         imageCircleRenderView.render(moment, ctx, position);
         imageCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
+        imageCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return imageCircleRenderView;
     }
 
@@ -231,6 +233,7 @@ public class CircleAdapter extends BaseAdapter {
         });
         urlCircleRenderView.render(moment, ctx, position);
         urlCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
+        urlCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return urlCircleRenderView;
     }
 
@@ -261,6 +264,7 @@ public class CircleAdapter extends BaseAdapter {
         });
         longtxtCircleRenderView.render(moment, ctx, position);
         longtxtCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
+        longtxtCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return longtxtCircleRenderView;
     }
 

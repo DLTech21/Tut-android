@@ -83,8 +83,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         BaseCircleRenderView.OnDeleteCircleListener,
         TextWatcher,
         BaseCircleRenderView.OnMoreCircleListener {
-    CircleAdapter adapter;
-
+    private CircleAdapter adapter;
     @ViewInject(R.id.ptrFrameLayoutShare)
     private PtrFrameLayout ptrFrameLayoutShare;
     private View footer;
@@ -109,8 +108,8 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     @ViewInject(R.id.emo_layout)
     private LinearLayout emoLayout;
     private InputMethodManager inputManager = null;
-    int rootBottom = Integer.MIN_VALUE, keyboardHeight = 0;
-    switchInputMethodReceiver receiver;
+    private int rootBottom = Integer.MIN_VALUE, keyboardHeight = 0;
+    private switchInputMethodReceiver receiver;
     private String currentInputMethod;
 //    @Override
 //    protected void onSaveInstanceState(Bundle savedInstanceState) {
@@ -119,6 +118,16 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 //
 //        super.onSaveInstanceState(savedInstanceState);
 //    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (tt_layout_bottom.getVisibility() == View.VISIBLE) {
+            tt_layout_bottom.setVisibility(View.INVISIBLE);
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override
     protected void onDestroy() {
@@ -303,13 +312,6 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 postVideo((String) uploadedFiles.values().toArray()[0], videoCover, path);
             }
         });
-    }
-
-    /**
-     * @param msg
-     */
-    public void pushList(Moment msg) {
-        adapter.addItem(msg);
     }
 
     public void pushList(List<Moment> entityList) {
@@ -515,9 +517,9 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     @Override
     public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity) {
         if (mLu_pingLun_info_entity != null) {
-
+            messageEdt.setHint("回复" + mLu_pingLun_info_entity.getUser_A_Name() +":");
         } else {
-
+            messageEdt.setHint("");
         }
         tt_layout_bottom.setVisibility(View.VISIBLE);
         KeyboardUtils.showSoftInput(this, messageEdt);
