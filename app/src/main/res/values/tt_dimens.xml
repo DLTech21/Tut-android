@@ -17,6 +17,7 @@
     <dimen name="message_item_popup_width_single_short">60dp</dimen>
     <dimen name="message_item_popup_width_single_long">90dp</dimen>
     <dimen name="message_item_popup_height">50dp</dimen>
+    <dimen name="circle_item_popup_height">40dp</dimen>
     <dimen name="top_bar_btn_right_margin">12dp</dimen>
 
     <!-- font size -->

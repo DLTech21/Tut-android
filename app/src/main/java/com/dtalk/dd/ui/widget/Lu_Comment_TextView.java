@@ -57,6 +57,13 @@ public class Lu_Comment_TextView extends TextView {
         setTextColor(mText.getDefaultColor());
         setHighlightColor(Color.TRANSPARENT);
         setMovementMethod(LinkMovementMethod.getInstance());
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mListener.onLongClickListener(mText);
+                return true;
+            }
+        });
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,13 +73,6 @@ public class Lu_Comment_TextView extends TextView {
                     return;
                 }
                 mListener.onClickOtherListener(mText);
-            }
-        });
-        setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mListener.onLongClickListener(mText);
-                return false;
             }
         });
         if (mText.getUser_B_ID() != null && !mText.getUser_B_ID().equals("") && mText.getUser_B_Name() != null && !mText.getUser_B_Name().equals("")) {

@@ -21,6 +21,7 @@ import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
 import com.dtalk.dd.ui.widget.Lu_PingLunLayout;
 import com.dtalk.dd.utils.DateUtil;
 import com.dtalk.dd.utils.IMUIHelper;
+import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -42,8 +43,10 @@ public class BaseCircleRenderView extends RelativeLayout {
 
     /**渲染的消息实体*/
     protected Moment moment;
+    protected int position;
     protected ViewGroup parentView;
     protected  boolean isMine;
+    protected OnMoreCircleListener onMoreCircleListener;
 
     protected OnDeleteCircleListener onDeleteCircleListener;
 
@@ -65,9 +68,9 @@ public class BaseCircleRenderView extends RelativeLayout {
     }
 
     /**控件赋值*/
-    public void render(final Moment moment,final Context ctx){
+    public void render(final Moment moment,final Context ctx, final int position){
         this.moment = moment;
-
+        this.position = position;
         String avatar = moment.avatar;
 
         portrait.setDefaultImageRes(R.drawable.tt_default_user_portrait_corner);
@@ -121,27 +124,28 @@ public class BaseCircleRenderView extends RelativeLayout {
         layComment.setEntities(mList, new Lu_PingLunLayout.Lu_PingLunLayoutListener() {
             @Override
             public void onNameClickListener(String onClickID, String onClickName, String onClickLogo, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int FuncPosition, int itemPosition) {
-                System.out.println("onClickID = [" + onClickID + "], onClickName = [" + onClickName + "], onClickLogo = [" + onClickLogo + "], mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], FuncPosition = [" + FuncPosition + "], itemPosition = [" + itemPosition + "]");
+                IMUIHelper.openUserProfileActivity(getContext(), Integer.valueOf(onClickID));
             }
 
             @Override
             public void onTextClickListener(String onClickText, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int FuncPosition, int itemPosition) {
-                System.out.println("onClickText = [" + onClickText + "], mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], FuncPosition = [" + FuncPosition + "], itemPosition = [" + itemPosition + "]");
+                Logger.d("onTextClickListener = [" + onClickText + "], mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], FuncPosition = [" + FuncPosition + "], itemPosition = [" + itemPosition + "]");
             }
 
             @Override
             public void onClickOtherListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
-                System.out.println("mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                Logger.d("onClickOtherListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
             }
 
             @Override
             public void onLongClickListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
-                System.out.println("mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                Logger.d("onLongClickListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
             }
 
             @Override
             public void onClickListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
-                System.out.println("mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                Logger.d("onClickListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                onMoreCircleListener.onCommentClick(moment, position, itemPosition, mLu_pingLun_info_entity);
             }
         });
     }
@@ -183,7 +187,16 @@ public class BaseCircleRenderView extends RelativeLayout {
         ImageLoadManager.setCircleGlide(mContext, PicURL, mImageView);
     }
 
+    public void setOnMoreCircleListener(OnMoreCircleListener onMoreCircleListener) {
+        this.onMoreCircleListener = onMoreCircleListener;
+    }
+
     public interface OnDeleteCircleListener {
         public void onDeleteCircle(Moment moment);
+    }
+
+    public interface OnMoreCircleListener {
+        public void onFavorClick(Moment moment, int position);
+        public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity);
     }
 }

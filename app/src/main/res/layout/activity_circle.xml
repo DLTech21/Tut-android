@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ebebeb"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <in.srain.cube.views.ptr.PtrFrameLayout
-        android:layout_below="@+id/title"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <in.srain.cube.views.ptr.PtrFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ptrFrameLayoutShare"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title"
         android:layout_weight="1"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="1000"
         cube_ptr:ptr_keep_header_when_refresh="true"
         cube_ptr:ptr_pull_to_fresh="false"
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.1"
-        cube_ptr:ptr_resistance="1.6" >
+        cube_ptr:ptr_resistance="1.6">
 
         <ListView
             android:id="@+id/lvShare"
@@ -35,4 +34,146 @@
             android:transcriptMode="disabled" />
     </in.srain.cube.views.ptr.PtrFrameLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/tt_layout_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        >
+
+        <RelativeLayout
+            android:id="@+id/pannel_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tt_pannel_bk"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:paddingBottom="7dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="7dp">
+
+            <com.dtalk.dd.ui.widget.CustomEditView
+                android:id="@+id/message_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:layout_toLeftOf="@+id/show_emo_btn"
+                android:background="@drawable/tt_message_text_bg"
+                android:maxLines="4"
+                android:minHeight="30dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="0dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical"
+                android:textColor="@color/default_light_black_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/show_emo_btn"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/tt_show_emo_btn" />
+
+            <TextView
+                android:id="@+id/send_message_btn"
+                android:layout_width="53dp"
+                android:layout_height="31dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/tt_send_btn_bg"
+                android:gravity="center"
+                android:text="@string/send_message"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/emo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pannel_container"
+            android:background="@color/emo_bk_color"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_weight="0"
+                android:background="@color/default_line_color" />
+
+            <com.dtalk.dd.ui.widget.EmoGridView
+                android:id="@+id/emo_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:visibility="gone" />
+
+            <com.dtalk.dd.ui.widget.YayaEmoGridView
+                android:id="@+id/yaya_emo_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:visibility="gone" />
+
+            <RadioGroup
+                android:id="@+id/emo_tab_group"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:background="@color/group_manager_user_title"
+                android:checkedButton="@+id/tab1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- 第一个标签，注意button属性设置成null，以此去掉自带的radio button -->
+                <!-- 注意：id="@id/tab1"，为什么不是+id呢？这个和加载先后有关系,Google一下吧 -->
+                <RadioButton
+                    android:id="@id/tab1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/tab_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:tag="tab1"
+                    android:text="@string/yaya_emo"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/tab2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/tab_bg_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/default_emo"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

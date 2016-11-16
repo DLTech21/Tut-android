@@ -494,7 +494,7 @@ public class MessageAdapter extends BaseAdapter {
         });
 
         final View messageLayout = shortVideoRenderView.getMessageLayout();
-        messageImage.setOnLongClickListener(new View.OnLongClickListener() {
+        shortVideoRenderView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 // 创建一个pop对象，然后 分支判断状态，然后显示需要的内容
@@ -608,7 +608,7 @@ public class MessageAdapter extends BaseAdapter {
         });
 
         final View messageLayout = imageRenderView.getMessageLayout();
-        messageImage.setOnLongClickListener(new View.OnLongClickListener() {
+        imageRenderView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 // 创建一个pop对象，然后 分支判断状态，然后显示需要的内容
@@ -887,7 +887,7 @@ public class MessageAdapter extends BaseAdapter {
             }
         });
 
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+        gifRenderView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 MessageOperatePopup popup = getPopMenu(viewGroup, new OperateItemClickListener(emoMessage, position));

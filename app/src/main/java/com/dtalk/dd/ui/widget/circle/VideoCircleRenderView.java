@@ -45,8 +45,8 @@ public class VideoCircleRenderView extends BaseCircleRenderView {
     }
 
     @Override
-    public void render(Moment moment, Context ctx) {
-        super.render(moment, ctx);
+    public void render(Moment moment, Context ctx, int position) {
+        super.render(moment, ctx, position);
         getContent().setText(moment.title);
         if (StringUtils.notEmpty(moment.title)) {
             getContent().setVisibility(VISIBLE);

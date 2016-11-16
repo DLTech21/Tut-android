@@ -10,12 +10,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dtalk.dd.R;
 import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.ui.helper.AudioPlayerHandler;
+import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.ScreenUtils;
 
 /**
  * Created by Donal on 16/8/31.
@@ -28,17 +31,16 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
 
     private int mWidth;
     private int mHeight;
-
-    private int mParentTop;
-    private TextView copyBtn, resendBtn, speakerBtn;
-    private boolean bcopyShow, bresendShow, bspeakerShow;
+    private TextView favorBtn, commentBtn ;
+    private int position = -1;
 
     private Context context = null;
 
-    public static CircleOperatePopup instance(Context ctx,View parent){
+    public static CircleOperatePopup instance(Context ctx){
         if(null == circleOperatePopup ){
             synchronized (CircleOperatePopup.class){
-                circleOperatePopup = new CircleOperatePopup(ctx,parent);
+                Logger.i("dsfsd");
+                circleOperatePopup = new CircleOperatePopup(ctx);
             }
         }
         return circleOperatePopup;
@@ -52,36 +54,28 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
 
 
     @SuppressWarnings("deprecation")
-    private CircleOperatePopup(Context ctx, View parent) {
+    private CircleOperatePopup(Context ctx) {
         View view = LayoutInflater.from(ctx).inflate(R.layout.circle_popup_list,
                 null);
         this.context = ctx;
 
         // popView = (LinearLayout) view.findViewById(R.id.popup_list);
 
-        copyBtn = (TextView) view.findViewById(R.id.copy_btn);
-        copyBtn.setOnClickListener(this);
-        copyBtn.setOnTouchListener(this);
-        copyBtn.setPadding(0, 13, 0, 8);
+        favorBtn = (TextView) view.findViewById(R.id.favor_btn);
+        favorBtn.setOnClickListener(this);
+        favorBtn.setOnTouchListener(this);
+        favorBtn.setPadding(0, 13, 0, 8);
 
-        resendBtn = (TextView) view.findViewById(R.id.resend_btn);
-        resendBtn.setOnClickListener(this);
-        resendBtn.setOnTouchListener(this);
-        resendBtn.setPadding(0, 13, 0, 8);
+        commentBtn = (TextView) view.findViewById(R.id.comment_btn);
+        commentBtn.setOnClickListener(this);
+        commentBtn.setOnTouchListener(this);
+        commentBtn.setPadding(0, 13, 0, 8);
 
-        speakerBtn = (TextView) view.findViewById(R.id.speaker_btn);
-        speakerBtn.setOnClickListener(this);
-        speakerBtn.setOnTouchListener(this);
-        speakerBtn.setPadding(0, 13, 0, 8);
 
-        mWidth = (int) context.getResources().getDimension(
-                R.dimen.message_item_popup_width_single_short);
+        mWidth = ScreenUtils.getScreenWidth(context)/2;
         mHeight = (int) context.getResources().getDimension(
-                R.dimen.message_item_popup_height);
+                R.dimen.circle_item_popup_height);
 
-        int[] location = new int[2];
-        parent.getLocationOnScreen(location);
-        mParentTop = location[1];
         mPopup = new PopupWindow(view, mWidth, mHeight);
         // mPopup.setFocusable(true);
         // 设置允许在外点击消失
@@ -94,140 +88,58 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
         mListener = l;
     }
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
-    public void show(View item, boolean bfavor) {
-        if (mPopup == null || mPopup.isShowing()) {
-
+    public void show(View item, boolean favor, int cposition) {
+        Logger.d(mPopup.toString()+"");
+        Logger.d(mPopup.isShowing()+"");
+        if (mPopup == null || mPopup.isShowing() || position == cposition) {
+            position = -1;
             return;
         }
-
-        boolean showTop = true;
-
         int[] location = new int[2];
         item.getLocationOnScreen(location);
-        // 默认在item上面弹出
-        if (location[1] - mParentTop/* - mHeight */<= 0) {
-            // showTop = false;
-        }
-        else {
-            // 如果不是在最顶部，显示的距离要上移10
-            location[1] = location[1] - 10;
-        }
-
-//        Resources resource = context.getResources();
-//        if (bcopyShow && bresendShow) {
-//            // int nWidth = (int) resource
-//            // .getDimension(R.dimen.message_item_popup_width_double_short);
-//            mWidth = (int) resource
-//                    .getDimension(R.dimen.message_item_popup_width_double_short);
-//            mPopup.setWidth(mWidth);
-//            Drawable bgLeft = resource
-//                    .getDrawable(R.drawable.tt_bg_popup_left_nomal);
-//            copyBtn.setBackgroundDrawable(bgLeft);
-//            copyBtn.setPadding(0, 13, 0, 8);
-//            Drawable bgRight = resource
-//                    .getDrawable(R.drawable.tt_bg_popup_right_nomal);
-//            resendBtn.setBackgroundDrawable(bgRight);
-//            resendBtn.setPadding(0, 13, 0, 8);
-//        } else if (bcopyShow || bresendShow) {
-//            if (bspeakerShow) {
-//                // int nWidth = (int) resource
-//                // .getDimension(R.dimen.message_item_popup_width_double_long);
-//                mWidth = (int) resource
-//                        .getDimension(R.dimen.message_item_popup_width_double_long);
-//                mPopup.setWidth(mWidth);
-//                Drawable bgLeft = resource
-//                        .getDrawable(R.drawable.tt_bg_popup_left_nomal);
-//                speakerBtn.setBackgroundDrawable(bgLeft);
-//                Drawable bgRight = resource
-//                        .getDrawable(R.drawable.tt_bg_popup_right_nomal);
-//                speakerBtn.setPadding(0, 13, 0, 8);
-//                resendBtn.setBackgroundDrawable(bgRight);
-//                resendBtn.setPadding(0, 13, 0, 8);
-//            } else {
-//                // int nWidth = (int) resource
-//                // .getDimension(R.dimen.message_item_popup_width_single_short);
-//                mWidth = (int) resource
-//                        .getDimension(R.dimen.message_item_popup_width_single_short);
-//                mPopup.setWidth(mWidth);
-//                Drawable bgNormal = resource
-//                        .getDrawable(R.drawable.tt_bg_popup_normal);
-//                copyBtn.setBackgroundDrawable(bgNormal);
-//                resendBtn.setBackgroundDrawable(bgNormal);
-//                copyBtn.setPadding(0, 13, 0, 8);
-//                resendBtn.setPadding(0, 13, 0, 8);
-//            }
-//        } else if (bspeakerShow) {
-//            // int nWidth = (int) resource
-//            // .getDimension(R.dimen.message_item_popup_width_single_long);
-//            mWidth = (int) resource
-//                    .getDimension(R.dimen.message_item_popup_width_single_long);
-//            mPopup.setWidth(mWidth);
-//            Drawable bgNormal = resource
-//                    .getDrawable(R.drawable.tt_bg_popup_normal);
-//            speakerBtn.setBackgroundDrawable(bgNormal);
-//            speakerBtn.setPadding(0, 13, 0, 8);
-//        } else {
-//            return;
-//        }
-        if (showTop) {
-            if (location[1] - mParentTop/* - mHeight */> 0) {
-                mPopup.showAtLocation(item, Gravity.NO_GRAVITY, location[0]
-                        + (item.getWidth() / 2 - mWidth / 2), location[1]
-                        - mHeight);
-            } else {
-                mPopup.showAtLocation(item, Gravity.NO_GRAVITY, location[0]
-                        + (item.getWidth() / 2 - mWidth / 2), 0 + mHeight / 2);
-            }
-        } else {
-            // TODO: 在下面弹出的时候需要翻转背景
-            mPopup.showAtLocation(item, Gravity.NO_GRAVITY,
-                    location[0] + (item.getWidth() / 2 - mWidth / 2),
-                    location[1] + item.getHeight());
-        }
+        mPopup.showAtLocation(item, Gravity.NO_GRAVITY,
+                    location[0] - item.getWidth()/2  - mWidth,
+                    location[1] - 10 );
+        position = cposition;
+        Logger.d(mPopup.isShowing()+"");
     }
 
     public void dismiss() {
         if (mPopup == null || !mPopup.isShowing()) {
             return;
         }
-
+        position = -1;
         mPopup.dismiss();
     }
 
     public interface OnItemClickListener {
-        void onCopyClick();
+        void onFavorClick();
 
-        void onResendClick();
+        void onCommentClick();
 
-        void onSpeakerClick();
     }
 
     @Override
     public void onClick(View v) {
         final int id = v.getId();
 
-        if (R.id.copy_btn == id) {
+        if (R.id.favor_btn == id) {
             dismiss();
             if (mListener != null) {
-                mListener.onCopyClick();
+                mListener.onFavorClick();
             }
-        } else if (R.id.resend_btn == id) {
+        } else if (R.id.comment_btn == id) {
             dismiss();
             if (mListener != null) {
-                mListener.onResendClick();
-            }
-        } else if (R.id.speaker_btn == id) {
-            dismiss();
-            if (mListener != null) {
-                mListener.onSpeakerClick();
+                mListener.onCommentClick();
             }
         }
     }
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
+    public void setmListener(OnItemClickListener mListener) {
+        this.mListener = mListener;
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // TODO Auto-generated method stub
@@ -235,123 +147,123 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (R.id.copy_btn == v.getId()) {
                 Drawable drawable = null;
-                if (bcopyShow && bresendShow) {
-                    drawable = resource
-                            .getDrawable(R.drawable.tt_bg_popup_left_nomal);
-                } else if (bcopyShow || bresendShow) {
-                    drawable = resource
-                            .getDrawable(R.drawable.tt_bg_popup_normal);
-                }
-                if (drawable != null) {
-                    copyBtn.setBackgroundDrawable(drawable);
-                    copyBtn.setPadding(0, 13, 0, 8);
-                }
+//                if (bcopyShow && bresendShow) {
+//                    drawable = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_left_nomal);
+//                } else if (bcopyShow || bresendShow) {
+//                    drawable = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_normal);
+//                }
+//                if (drawable != null) {
+//                    copyBtn.setBackgroundDrawable(drawable);
+//                    copyBtn.setPadding(0, 13, 0, 8);
+//                }
             } else if (R.id.resend_btn == v.getId()) {
                 Drawable drawable = null;
-                if (bcopyShow && bresendShow) {
-                    drawable = resource
-                            .getDrawable(R.drawable.tt_bg_popup_right_nomal);
-                } else if (bcopyShow || bresendShow) {
-                    if (bspeakerShow) {
-                        drawable = resource
-                                .getDrawable(R.drawable.tt_bg_popup_right_nomal);
-                    } else {
-                        drawable = resource
-                                .getDrawable(R.drawable.tt_bg_popup_normal);
-                    }
-                }
-                if (drawable != null) {
-                    resendBtn.setBackgroundDrawable(drawable);
-                    resendBtn.setPadding(0, 13, 0, 8);
-                }
+//                if (bcopyShow && bresendShow) {
+//                    drawable = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_right_nomal);
+//                } else if (bcopyShow || bresendShow) {
+//                    if (bspeakerShow) {
+//                        drawable = resource
+//                                .getDrawable(R.drawable.tt_bg_popup_right_nomal);
+//                    } else {
+//                        drawable = resource
+//                                .getDrawable(R.drawable.tt_bg_popup_normal);
+//                    }
+//                }
+//                if (drawable != null) {
+//                    resendBtn.setBackgroundDrawable(drawable);
+//                    resendBtn.setPadding(0, 13, 0, 8);
+//                }
             } else if (R.id.speaker_btn == v.getId()) {
                 Drawable drawable = null;
-                if (bresendShow) {
-                    drawable = resource
-                            .getDrawable(R.drawable.tt_bg_popup_left_nomal);
-                } else if (bspeakerShow) {
-                    drawable = resource
-                            .getDrawable(R.drawable.tt_bg_popup_normal);
-                }
-                if (drawable != null) {
-                    speakerBtn.setBackgroundDrawable(drawable);
-                    speakerBtn.setPadding(0, 13, 0, 8);
-                }
+//                if (bresendShow) {
+//                    drawable = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_left_nomal);
+//                } else if (bspeakerShow) {
+//                    drawable = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_normal);
+//                }
+//                if (drawable != null) {
+//                    speakerBtn.setBackgroundDrawable(drawable);
+//                    speakerBtn.setPadding(0, 13, 0, 8);
+//                }
             }
         } else {
             if (R.id.copy_btn == v.getId()) {
                 Drawable drawableResend = null;
                 Drawable drawableCopy = null;
-                if (bcopyShow && bresendShow) {
-                    drawableCopy = resource
-                            .getDrawable(R.drawable.tt_bg_popup_left_pressed);
-                    drawableResend = resource
-                            .getDrawable(R.drawable.tt_bg_popup_right_nomal);
-                } else if (bcopyShow || bresendShow) {
-                    drawableCopy = resource
-                            .getDrawable(R.drawable.tt_bg_popup_pressed);
-                }
-                if (drawableCopy != null) {
-                    copyBtn.setBackgroundDrawable(drawableCopy);
-                    copyBtn.setPadding(0, 13, 0, 8);
-                }
-                if (drawableResend != null) {
-                    resendBtn.setBackgroundDrawable(drawableResend);
-                    resendBtn.setPadding(0, 13, 0, 8);
-                }
+//                if (bcopyShow && bresendShow) {
+//                    drawableCopy = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_left_pressed);
+//                    drawableResend = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_right_nomal);
+//                } else if (bcopyShow || bresendShow) {
+//                    drawableCopy = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_pressed);
+//                }
+//                if (drawableCopy != null) {
+//                    copyBtn.setBackgroundDrawable(drawableCopy);
+//                    copyBtn.setPadding(0, 13, 0, 8);
+//                }
+//                if (drawableResend != null) {
+//                    resendBtn.setBackgroundDrawable(drawableResend);
+//                    resendBtn.setPadding(0, 13, 0, 8);
+//                }
             } else if (R.id.resend_btn == v.getId()) {
                 Drawable drawableCopy = null;
                 Drawable drawableResend = null;
                 Drawable drawableSpeaker = null;
-                if (bcopyShow && bresendShow) {
-                    drawableCopy = resource
-                            .getDrawable(R.drawable.tt_bg_popup_left_nomal);
-                    drawableResend = resource
-                            .getDrawable(R.drawable.tt_bg_popup_right_pressed);
-                } else if (bcopyShow || bresendShow) {
-                    if (bspeakerShow) {
-                        drawableSpeaker = resource
-                                .getDrawable(R.drawable.tt_bg_popup_left_nomal);
-                        drawableResend = resource
-                                .getDrawable(R.drawable.tt_bg_popup_right_pressed);
-                    } else {
-                        drawableResend = resource
-                                .getDrawable(R.drawable.tt_bg_popup_pressed);
-                    }
-                }
-                if (drawableResend != null) {
-                    resendBtn.setBackgroundDrawable(drawableResend);
-                    resendBtn.setPadding(0, 13, 0, 8);
-                }
-                if (drawableCopy != null) {
-                    copyBtn.setBackgroundDrawable(drawableCopy);
-                    copyBtn.setPadding(0, 13, 0, 8);
-                }
-                if (drawableSpeaker != null) {
-                    speakerBtn.setBackgroundDrawable(drawableSpeaker);
-                    speakerBtn.setPadding(0, 13, 0, 8);
-                }
+//                if (bcopyShow && bresendShow) {
+//                    drawableCopy = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_left_nomal);
+//                    drawableResend = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_right_pressed);
+//                } else if (bcopyShow || bresendShow) {
+//                    if (bspeakerShow) {
+//                        drawableSpeaker = resource
+//                                .getDrawable(R.drawable.tt_bg_popup_left_nomal);
+//                        drawableResend = resource
+//                                .getDrawable(R.drawable.tt_bg_popup_right_pressed);
+//                    } else {
+//                        drawableResend = resource
+//                                .getDrawable(R.drawable.tt_bg_popup_pressed);
+//                    }
+//                }
+//                if (drawableResend != null) {
+//                    resendBtn.setBackgroundDrawable(drawableResend);
+//                    resendBtn.setPadding(0, 13, 0, 8);
+//                }
+//                if (drawableCopy != null) {
+//                    copyBtn.setBackgroundDrawable(drawableCopy);
+//                    copyBtn.setPadding(0, 13, 0, 8);
+//                }
+//                if (drawableSpeaker != null) {
+//                    speakerBtn.setBackgroundDrawable(drawableSpeaker);
+//                    speakerBtn.setPadding(0, 13, 0, 8);
+//                }
             } else if (R.id.speaker_btn == v.getId()) {
                 // Drawable drawableCopy = null;
                 Drawable drawableResend = null;
                 Drawable drawableSpeaker = null;
-                if (bresendShow && bspeakerShow) {
-                    drawableSpeaker = resource
-                            .getDrawable(R.drawable.tt_bg_popup_left_pressed);
-                    drawableResend = resource
-                            .getDrawable(R.drawable.tt_bg_popup_right_nomal);
-                } else if (bspeakerShow) {
-                    drawableSpeaker = resource
-                            .getDrawable(R.drawable.tt_bg_popup_pressed);
-                }
-                if (drawableResend != null) {
-                    resendBtn.setBackgroundDrawable(drawableResend);
-                    resendBtn.setPadding(0, 13, 0, 8);
-                }
-                if (drawableSpeaker != null) {
-                    speakerBtn.setBackgroundDrawable(drawableSpeaker);
-                    speakerBtn.setPadding(0, 13, 0, 8);
-                }
+//                if (bresendShow && bspeakerShow) {
+//                    drawableSpeaker = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_left_pressed);
+//                    drawableResend = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_right_nomal);
+//                } else if (bspeakerShow) {
+//                    drawableSpeaker = resource
+//                            .getDrawable(R.drawable.tt_bg_popup_pressed);
+//                }
+//                if (drawableResend != null) {
+//                    resendBtn.setBackgroundDrawable(drawableResend);
+//                    resendBtn.setPadding(0, 13, 0, 8);
+//                }
+//                if (drawableSpeaker != null) {
+//                    speakerBtn.setBackgroundDrawable(drawableSpeaker);
+//                    speakerBtn.setPadding(0, 13, 0, 8);
+//                }
             }
         }
         return false;

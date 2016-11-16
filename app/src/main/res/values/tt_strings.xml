@@ -42,4 +42,7 @@
         <item>照片</item>
         <item>小视频</item>
     </string-array>
+
+    <string name="favor">赞</string>
+    <string name="comment">评论</string>
 </resources>

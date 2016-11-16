@@ -1,26 +1,39 @@
 package com.dtalk.dd.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.dtalk.dd.DB.sp.SystemConfigSp;
 import com.dtalk.dd.R;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.SysConstant;
@@ -35,7 +48,10 @@ import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.adapter.CircleAdapter;
 import com.dtalk.dd.ui.base.TTBaseActivity;
+import com.dtalk.dd.ui.widget.CustomEditView;
+import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
 import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
+import com.dtalk.dd.utils.KeyboardUtils;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.SandboxUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -62,7 +78,11 @@ import static com.yixia.camera.demo.utils.ToastUtils.showToast;
 /**
  * Created by Donal on 16/7/29.
  */
-public class CircleActivity extends TTBaseActivity implements View.OnClickListener, AbsListView.OnScrollListener, BaseCircleRenderView.OnDeleteCircleListener {
+public class CircleActivity extends TTBaseActivity implements View.OnClickListener,
+        AbsListView.OnScrollListener,
+        BaseCircleRenderView.OnDeleteCircleListener,
+        TextWatcher,
+        BaseCircleRenderView.OnMoreCircleListener {
     CircleAdapter adapter;
 
     @ViewInject(R.id.ptrFrameLayoutShare)
@@ -76,6 +96,22 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     String lastId;
     private int lvDataState;
     private SVProgressHUD svProgressHUD;
+    @ViewInject(R.id.tt_layout_bottom)
+    RelativeLayout tt_layout_bottom;
+    @ViewInject(R.id.pannel_container)
+    RelativeLayout pannelContainer;
+    @ViewInject(R.id.message_text)
+    CustomEditView messageEdt;
+    @ViewInject(R.id.show_emo_btn)
+    ImageView addEmoBtn;
+    @ViewInject(R.id.send_message_btn)
+    TextView sendBtn;
+    @ViewInject(R.id.emo_layout)
+    private LinearLayout emoLayout;
+    private InputMethodManager inputManager = null;
+    int rootBottom = Integer.MIN_VALUE, keyboardHeight = 0;
+    switchInputMethodReceiver receiver;
+    private String currentInputMethod;
 //    @Override
 //    protected void onSaveInstanceState(Bundle savedInstanceState) {
 //        savedInstanceState.putInt(STATE_SCORE, listView.getFirstVisiblePosition());
@@ -101,6 +137,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         svProgressHUD = new SVProgressHUD(this);
+        initSoftInputMethod();
         initView();
         MomentList temp = (MomentList) SandboxUtils.getInstance().readObject(IMApplication.getInstance(), "circle");
         if (temp != null) {
@@ -130,6 +167,10 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         topLeftBtn.setOnClickListener(this);
         letTitleTxt.setOnClickListener(this);
         topRightBtn.setOnClickListener(this);
+        sendBtn.setOnClickListener(this);
+        messageEdt.setOnFocusChangeListener(msgEditOnFocusChangeListener);
+        messageEdt.setOnClickListener(this);
+        messageEdt.addTextChangedListener(this);
         PtrClassicDefaultHeader ptrHeader = new PtrClassicDefaultHeader(this);
         ptrFrameLayoutShare.setDurationToCloseHeader(500);
         ptrFrameLayoutShare.setHeaderView(ptrHeader);
@@ -155,7 +196,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         listView.setVerticalScrollBarEnabled(false);
         listView.setOnScrollListener(this);
 
-        adapter = new CircleAdapter(this, this);
+        adapter = new CircleAdapter(this, this, this);
         listView.setAdapter(adapter);
         listView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -165,6 +206,27 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             }
         });
         lastId = "0";
+
+        RelativeLayout.LayoutParams paramEmoLayout = (RelativeLayout.LayoutParams) emoLayout.getLayoutParams();
+        if (keyboardHeight > 0) {
+            paramEmoLayout.height = keyboardHeight;
+            emoLayout.setLayoutParams(paramEmoLayout);
+        }
+        baseRoot.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+
+    private void initSoftInputMethod() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        receiver = new CircleActivity.switchInputMethodReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.INPUT_METHOD_CHANGED");
+        registerReceiver(receiver, filter);
+
+        SystemConfigSp.instance().init(this);
+        currentInputMethod = Settings.Secure.getString(CircleActivity.this.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+        keyboardHeight = SystemConfigSp.instance().getIntConfig(currentInputMethod);
     }
 
     @Override
@@ -313,6 +375,44 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         }
     };
 
+    private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            Rect r = new Rect();
+            baseRoot.getGlobalVisibleRect(r);
+            if (rootBottom == Integer.MIN_VALUE) {
+                rootBottom = r.bottom;
+                return;
+            }
+            // adjustResize，软键盘弹出后高度会变小
+            if (r.bottom < rootBottom) {
+                //按照键盘高度设置表情框和发送图片按钮框的高度
+                keyboardHeight = rootBottom - r.bottom;
+                SystemConfigSp.instance().init(CircleActivity.this);
+                SystemConfigSp.instance().setIntConfig(currentInputMethod, keyboardHeight);
+                RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) emoLayout.getLayoutParams();
+                params1.height = keyboardHeight;
+            }
+        }
+    };
+
+
+    private View.OnFocusChangeListener msgEditOnFocusChangeListener = new android.view.View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                if (keyboardHeight == 0) {
+                    emoLayout.setVisibility(View.GONE);
+                } else {
+                    CircleActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                    if (emoLayout.getVisibility() == View.GONE) {
+                        emoLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+    };
+
     @Override
     public void onScrollStateChanged(AbsListView view, int i) {
         boolean scrollEnd = false;
@@ -390,5 +490,62 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         adapter.getCircleObjectList().remove(moment);
         adapter.notifyDataSetChanged();
         MomentClient.deleteMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), moment.moment_id, null);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    @Override
+    public void onFavorClick(Moment moment, int position) {
+
+    }
+
+    @Override
+    public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity) {
+        if (mLu_pingLun_info_entity != null) {
+
+        } else {
+
+        }
+        tt_layout_bottom.setVisibility(View.VISIBLE);
+        KeyboardUtils.showSoftInput(this, messageEdt);
+    }
+
+    private class switchInputMethodReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("android.intent.action.INPUT_METHOD_CHANGED")) {
+                currentInputMethod = Settings.Secure.getString(CircleActivity.this.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+                SystemConfigSp.instance().setStrConfig(SystemConfigSp.SysCfgDimension.DEFAULTINPUTMETHOD, currentInputMethod);
+                int height = SystemConfigSp.instance().getIntConfig(currentInputMethod);
+                if (keyboardHeight != height) {
+                    keyboardHeight = height;
+                    emoLayout.setVisibility(View.GONE);
+                    CircleActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    messageEdt.requestFocus();
+                    if (keyboardHeight != 0 && emoLayout.getLayoutParams().height != keyboardHeight) {
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) emoLayout.getLayoutParams();
+                        params.height = keyboardHeight;
+                    }
+                } else {
+                    emoLayout.setVisibility(View.VISIBLE);
+                    CircleActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                    messageEdt.requestFocus();
+                }
+            }
+        }
     }
 }

@@ -44,10 +44,13 @@ public class CircleAdapter extends BaseAdapter {
     private ArrayList<Moment> circleObjectList = new ArrayList<>();
     private Context ctx;
     private BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener;
-
-    public CircleAdapter(Context ctx, BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener) {
+    private BaseCircleRenderView.OnMoreCircleListener onMoreCircleListener;
+    public CircleAdapter(Context ctx, BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener, BaseCircleRenderView.OnMoreCircleListener onMoreCircleListener) {
         this.onDeleteCircleListener = onDeleteCircleListener;
+        this.onMoreCircleListener = onMoreCircleListener;
         this.ctx = ctx;
+        CircleOperatePopup popupView = CircleOperatePopup.instance(ctx);
+        currentPop = popupView;
     }
 
 
@@ -162,11 +165,11 @@ public class CircleAdapter extends BaseAdapter {
         videoCircleRenderView.getTvMore().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CircleOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(moment, position));
-                popup.show(videoCircleRenderView.getTvMore(), true);
+                currentPop.setmListener(new OperateItemClickListener(moment, position));
+                currentPop.show(videoCircleRenderView.getTvMore(), true, position);
             }
         });
-        videoCircleRenderView.render(moment, ctx);
+        videoCircleRenderView.render(moment, ctx, position);
         videoCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return videoCircleRenderView;
     }
@@ -192,11 +195,11 @@ public class CircleAdapter extends BaseAdapter {
         imageCircleRenderView.getTvMore().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CircleOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(moment, position));
-                popup.show(imageCircleRenderView.getTvMore(), true);
+                currentPop.setmListener(new OperateItemClickListener(moment, position));
+                currentPop.show(imageCircleRenderView.getTvMore(), true, position);
             }
         });
-        imageCircleRenderView.render(moment, ctx);
+        imageCircleRenderView.render(moment, ctx, position);
         imageCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return imageCircleRenderView;
     }
@@ -222,11 +225,11 @@ public class CircleAdapter extends BaseAdapter {
         urlCircleRenderView.getTvMore().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CircleOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(moment, position));
-                popup.show(urlCircleRenderView.getTvMore(), true);
+                currentPop.setmListener(new OperateItemClickListener(moment, position));
+                currentPop.show(urlCircleRenderView.getTvMore(), true, position);
             }
         });
-        urlCircleRenderView.render(moment, ctx);
+        urlCircleRenderView.render(moment, ctx, position);
         urlCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return urlCircleRenderView;
     }
@@ -252,11 +255,11 @@ public class CircleAdapter extends BaseAdapter {
         longtxtCircleRenderView.getTvMore().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CircleOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(moment, position));
-                popup.show(longtxtCircleRenderView.getTvMore(), true);
+                currentPop.setmListener(new OperateItemClickListener(moment, position));
+                currentPop.show(longtxtCircleRenderView.getTvMore(), true, position);
             }
         });
-        longtxtCircleRenderView.render(moment, ctx);
+        longtxtCircleRenderView.render(moment, ctx, position);
         longtxtCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         return longtxtCircleRenderView;
     }
@@ -296,8 +299,9 @@ public class CircleAdapter extends BaseAdapter {
         }
     }
 
+
     private CircleOperatePopup getPopMenu(ViewGroup parent, CircleOperatePopup.OnItemClickListener listener) {
-        CircleOperatePopup popupView = CircleOperatePopup.instance(ctx, parent);
+        CircleOperatePopup popupView = CircleOperatePopup.instance(ctx);
         currentPop = popupView;
         popupView.setOnItemClickListener(listener);
         return popupView;
@@ -308,7 +312,6 @@ public class CircleAdapter extends BaseAdapter {
             CircleOperatePopup.OnItemClickListener {
 
         private Moment mMsgInfo;
-        private int mType;
         private int mPosition;
 
         public OperateItemClickListener(Moment msgInfo, int position) {
@@ -316,18 +319,16 @@ public class CircleAdapter extends BaseAdapter {
             mPosition = position;
         }
 
-        @SuppressWarnings("deprecation")
-        @SuppressLint("NewApi")
         @Override
-        public void onCopyClick() {
+        public void onFavorClick() {
+            onMoreCircleListener.onFavorClick(mMsgInfo, mPosition);
         }
 
         @Override
-        public void onResendClick() {
-        }
-
-        @Override
-        public void onSpeakerClick() {
+        public void onCommentClick() {
+            onMoreCircleListener.onCommentClick(mMsgInfo, mPosition, 0, null);
         }
     }
+
+
 }

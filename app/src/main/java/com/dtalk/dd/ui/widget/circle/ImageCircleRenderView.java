@@ -46,8 +46,8 @@ public class ImageCircleRenderView extends BaseCircleRenderView {
     }
 
     @Override
-    public void render(Moment moment, final Context ctx) {
-        super.render(moment, ctx);
+    public void render(Moment moment, final Context ctx, int position) {
+        super.render(moment, ctx, position);
         getContent().setText(moment.content);
         if (StringUtils.notEmpty(moment.content)) {
             getContent().setVisibility(VISIBLE);
