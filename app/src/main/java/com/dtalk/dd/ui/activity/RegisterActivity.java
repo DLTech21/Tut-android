@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.dtalk.dd.R;
 import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.config.SysConstant;
@@ -34,16 +35,20 @@ import com.dtalk.dd.http.register.RegisterClient;
 import com.dtalk.dd.imservice.event.RegisterEvent;
 import com.dtalk.dd.qiniu.utils.Mac;
 import com.dtalk.dd.qiniu.utils.PutPolicy;
+import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.plugin.ImageLoadManager;
 import com.dtalk.dd.utils.CommonUtil;
+import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.MD5Util;
 import com.dtalk.dd.utils.ThemeUtils;
 import com.dtalk.dd.utils.ViewUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import me.iwf.photopicker.PhotoPicker;
@@ -70,16 +75,18 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
     private String mobile;
     private String code;
     private String url;
-
+    private SVProgressHUD svProgressHUD;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        svProgressHUD.dismiss();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        svProgressHUD = new SVProgressHUD(this);
         LayoutInflater.from(this).inflate(R.layout.tt_activity_register, topContentView);
         intputManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         sex = DBConstant.SEX_MAILE+"";
@@ -350,49 +357,25 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
     public void handleTakePhotoData(List<String> photos) {
         if (photos != null || photos.size() > 0) {
             avatar = photos.get(0);
-//            Bitmap bitmap = BitmapFactory.decodeFile(new File(avatar).getPath());
-//            iv_photo.setImageBitmap(bitmap);
             ImageLoadManager.setImageGlide(this, "file://"+avatar, iv_photo);
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String qiniuKey = "avatar/" + MD5Util.getMD5String(avatar) + ".png";
-                    url = UrlConstant.QINIU_PREFIX + qiniuKey;
-                    uploadAvatar(avatar, qiniuKey);
-                }
-            }).start();
+            String qiniuKey = "avatar/" + MD5Util.getMD5String(avatar) + ".png";
+            url = UrlConstant.QINIU_PREFIX + qiniuKey;
+            uploadAvatar(avatar, qiniuKey);
         }
 
     }
 
     private void uploadAvatar(String path, String qiniuKey) {
-        PutPolicy putPolicy = new PutPolicy(UrlConstant.QINIU_BUCKET);
-        Mac mac = new Mac(UrlConstant.QINIU_ACCESSKEY, UrlConstant.QINIU_SECRETKEY);
-        String auploadToken = "";
-        try {
-            auploadToken = putPolicy.token(mac);
-        } catch (Exception e) {
-        }
-        File file = new File(path);
-//        PutExtra extra = new PutExtra();
-//        extra.params = new HashMap<String, String>();
-//        IO.putFile(auploadToken, qiniuKey, file, extra, new JSONObjectRet() {
-//            @Override
-//            public void onProcess(long current, long total) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(org.json.JSONObject resp) {
-//                Toast.makeText(RegisterActivity.this, "头像上传成功", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Exception ex) {
-//                url = DBConstant.SEX_MALE_AVATAR;
-//                Toast.makeText(RegisterActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        List<String> list = new ArrayList<>();
+        list.add(path);
+        svProgressHUD.getProgressBar().setProgress(0);
+        svProgressHUD.showWithProgress("正在上传头像", SVProgressHUD.SVProgressHUDMaskType.Black);
+        QNUploadManager.getInstance(this).uploadCircleFiles(list, svProgressHUD, new QNUploadManager.OnQNUploadCallback() {
+            @Override
+            public void uploadCompleted(Map<String, String> uploadedFiles) {
+                svProgressHUD.dismiss();
+                url = (String) uploadedFiles.values().toArray()[0];
+            }
+        });
     }
 }

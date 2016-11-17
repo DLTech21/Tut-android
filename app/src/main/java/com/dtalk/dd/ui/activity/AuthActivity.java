@@ -96,6 +96,7 @@ public class AuthActivity extends TTBaseActivity implements OnClickListener {
             @Override
             public void onSuccess(Object data) {
                 time.start();
+                et_code.requestFocus();
             }
 
             @Override
@@ -125,13 +126,13 @@ public class AuthActivity extends TTBaseActivity implements OnClickListener {
             WarningDialog("手机号码和验证码不能为空");
             return;
         }
-        
+
         if (!StringUtils.isMobileNO(mobile)) {
             WarningDialog("手机号码格式不正确");
             return;
         }
         RegisterClient.confirmSMSCode(mobile, code, new BaseClient.ClientCallback() {
-            
+
             @Override
             public void onSuccess(Object data) {
                 BaseResponse baseResponse = (BaseResponse)data;
@@ -145,22 +146,22 @@ public class AuthActivity extends TTBaseActivity implements OnClickListener {
                     WarningDialog(baseResponse.getMsg());
                 }
             }
-            
+
             @Override
             public void onPreConnection() {
                 ViewUtils.createProgressDialog(getRunningActivity(), "验证中...", ThemeUtils.getThemeColor()).show();
             }
-            
+
             @Override
             public void onFailure(String message) {
                 WarningDialog(message);
             }
-            
+
             @Override
             public void onException(Exception e) {
                 WarningDialog(e.toString());
             }
-            
+
             @Override
             public void onCloseConnection() {
                 ViewUtils.dismissProgressDialog();
