@@ -75,13 +75,11 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         LayoutInflater.from(this).inflate(R.layout.tt_activity_register, topContentView);
         intputManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         sex = DBConstant.SEX_MAILE+"";
@@ -111,6 +109,7 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
         et_usertel.addTextChangedListener(new TextChange());
         et_password.addTextChangedListener(new TextChange());
         btn_register = (Button) findViewById(R.id.btn_register);
+        btn_register.setOnClickListener(this);
         tv_xieyi = (TextView) findViewById(R.id.tv_xieyi);
         iv_hide = (ImageView) findViewById(R.id.iv_hide);
 
