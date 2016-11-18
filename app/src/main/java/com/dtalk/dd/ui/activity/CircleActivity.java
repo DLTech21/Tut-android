@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,6 +40,7 @@ import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.SysConstant;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.moment.Comment;
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.http.moment.MomentClient;
 import com.dtalk.dd.http.moment.MomentList;
@@ -111,6 +113,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     private int rootBottom = Integer.MIN_VALUE, keyboardHeight = 0;
     private switchInputMethodReceiver receiver;
     private String currentInputMethod;
+    private String replyCommentUid;
 //    @Override
 //    protected void onSaveInstanceState(Bundle savedInstanceState) {
 //        savedInstanceState.putInt(STATE_SCORE, listView.getFirstVisiblePosition());
@@ -264,9 +267,54 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                         })
                         .show();
                 break;
+            case R.id.send_message_btn:
+                sendComment();
+                break;
             default:
                 break;
         }
+    }
+
+    private void sendComment() {
+        String content = messageEdt.getText().toString();
+        if (content.trim().equals("")) {
+            Toast.makeText(CircleActivity.this,
+                    getResources().getString(R.string.message_null), Toast.LENGTH_LONG).show();
+            return;
+        }
+        final Moment moment = (Moment) messageEdt.getTag();
+        final String moment_id = moment.moment_id;
+        MomentClient.commentMoment(moment_id, replyCommentUid, content, new BaseClient.ClientCallback(){
+            public void onPreConnection() {
+                svProgressHUD.show();
+            }
+
+            @Override
+            public void onCloseConnection() {
+                svProgressHUD.dismiss();
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                Comment comm = (Comment) data;
+                moment.comment.add(comm);
+                adapter.notifyDataSetChanged();
+                messageEdt.setText("");
+                if (tt_layout_bottom.getVisibility() == View.VISIBLE) {
+                    tt_layout_bottom.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
     }
 
     private void takeShortVideo() {
@@ -500,8 +548,12 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (s.length() > 0) {
+            sendBtn.setEnabled(true);
+        } else {
+            sendBtn.setEnabled(false);
+        }
     }
 
     @Override
@@ -518,9 +570,12 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity) {
         if (mLu_pingLun_info_entity != null) {
             messageEdt.setHint("回复" + mLu_pingLun_info_entity.getUser_A_Name() +":");
+            replyCommentUid = mLu_pingLun_info_entity.getUser_A_ID();
         } else {
             messageEdt.setHint("");
+            replyCommentUid = moment.uid;
         }
+        messageEdt.setTag(moment);
         tt_layout_bottom.setVisibility(View.VISIBLE);
         KeyboardUtils.showSoftInput(this, messageEdt);
     }

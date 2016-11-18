@@ -1,10 +1,16 @@
 package com.dtalk.dd.http.moment;
 
 import com.alibaba.fastjson.JSON;
+import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.user.UserInfo;
+import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.SandboxUtils;
 import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
@@ -158,6 +164,89 @@ public class MomentClient extends BaseClient {
                         } catch (Exception e) {
                             if (callback != null)
                                 callback.onException(e);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        if (callback != null) {
+                            callback.onCloseConnection();
+                            callback.onFailure(e.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
+    public static void commentMoment(String id, String replyname, String comment, final ClientCallback callback) {
+        HttpParams params = new HttpParams();
+        params.put("uid", String.valueOf(IMLoginManager.instance().getLoginId()));
+        params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
+        params.put("id", id);
+        params.put("reply_uid", replyname);
+        params.put("comment", comment);
+        OkGo.post(getAbsoluteUrl("/Api/Moment/addComment"))
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        if (callback != null)
+                            callback.onPreConnection();
+                    }
+
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (callback != null)
+                            callback.onCloseConnection();
+                        try {
+                            Comment data = Comment.parse(s);
+                            callback.onSuccess(data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            callback.onException(e);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        if (callback != null) {
+                            callback.onCloseConnection();
+                            callback.onFailure(e.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
+    public static void likeMoment(String username, String token, String id, boolean like, final ClientCallback callback) {
+        HttpParams params = new HttpParams();
+        params.put("uid", String.valueOf(IMLoginManager.instance().getLoginId()));
+        params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
+        params.put("id", id);
+        params.put("like", like?"1":"0");
+        OkGo.post(getAbsoluteUrl("/Api/Moment/like"))
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        if (callback != null)
+                            callback.onPreConnection();
+                    }
+
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (callback != null)
+                            callback.onCloseConnection();
+                        try
+                        {
+                            UserInfo res = JSON.parseObject(s, UserInfo.class);
+                            callback.onSuccess(res);
+                        } catch (Exception e)
+                        {
+                            e.printStackTrace();
+                            callback.onException(e);
                         }
                     }
 
