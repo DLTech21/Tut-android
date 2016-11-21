@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,8 +53,11 @@ import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.adapter.CircleAdapter;
 import com.dtalk.dd.ui.base.TTBaseActivity;
+import com.dtalk.dd.ui.helper.Emoparser;
 import com.dtalk.dd.ui.widget.CustomEditView;
+import com.dtalk.dd.ui.widget.EmoGridView;
 import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
+import com.dtalk.dd.ui.widget.YayaEmoGridView;
 import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
 import com.dtalk.dd.utils.KeyboardUtils;
 import com.dtalk.dd.utils.Logger;
@@ -110,6 +115,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     TextView sendBtn;
     @ViewInject(R.id.emo_layout)
     private LinearLayout emoLayout;
+    private EmoGridView emoGridView = null;
     private InputMethodManager inputManager = null;
     private int rootBottom = Integer.MIN_VALUE, keyboardHeight = 0;
     private switchInputMethodReceiver receiver;
@@ -220,12 +226,16 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             }
         });
         lastId = "0";
-
+        addEmoBtn.setOnClickListener(this);
         RelativeLayout.LayoutParams paramEmoLayout = (RelativeLayout.LayoutParams) emoLayout.getLayoutParams();
         if (keyboardHeight > 0) {
             paramEmoLayout.height = keyboardHeight;
             emoLayout.setLayoutParams(paramEmoLayout);
         }
+        Emoparser.getInstance(CircleActivity.this);
+        emoGridView = (EmoGridView) findViewById(R.id.emo_gridview);
+        emoGridView.setOnEmoGridViewItemClick(onEmoGridViewItemClick);
+        emoGridView.setAdapter();
         baseRoot.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     }
 
@@ -272,6 +282,25 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             case R.id.send_message_btn:
                 sendComment();
                 break;
+            case R.id.show_emo_btn: {
+                /**yingmu 调整成键盘输出*/
+                messageEdt.setVisibility(View.VISIBLE);
+                /**end*/
+                if (keyboardHeight != 0) {
+                    this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                }
+                if (emoLayout.getVisibility() == View.VISIBLE) {
+                    emoGridView.setVisibility(View.VISIBLE);
+                    if (!messageEdt.hasFocus()) {
+                        messageEdt.requestFocus();
+                    }
+                    inputManager.toggleSoftInputFromWindow(messageEdt.getWindowToken(), 1, 0);
+                    if (keyboardHeight == 0) {
+                        emoLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+            break;
             default:
                 break;
         }
@@ -416,6 +445,42 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             }
         });
     }
+
+    private EmoGridView.OnEmoGridViewItemClick onEmoGridViewItemClick = new EmoGridView.OnEmoGridViewItemClick() {
+        @Override
+        public void onItemClick(int facesPos, int viewIndex) {
+            int deleteId = (++viewIndex) * (SysConstant.pageSize - 1);
+            if (deleteId > Emoparser.getInstance(CircleActivity.this).getResIdList().length) {
+                deleteId = Emoparser.getInstance(CircleActivity.this).getResIdList().length;
+            }
+            if (deleteId == facesPos) {
+                String msgContent = messageEdt.getText().toString();
+                if (msgContent.isEmpty())
+                    return;
+                if (msgContent.contains("["))
+                    msgContent = msgContent.substring(0, msgContent.lastIndexOf("["));
+                messageEdt.setText(msgContent);
+            } else {
+                int resId = Emoparser.getInstance(CircleActivity.this).getResIdList()[facesPos];
+                String pharse = Emoparser.getInstance(CircleActivity.this).getIdPhraseMap()
+                        .get(resId);
+                int startIndex = messageEdt.getSelectionStart();
+                Editable edit = messageEdt.getEditableText();
+                if (startIndex < 0 || startIndex >= edit.length()) {
+                    if (null != pharse) {
+                        edit.append(pharse);
+                    }
+                } else {
+                    if (null != pharse) {
+                        edit.insert(startIndex, pharse);
+                    }
+                }
+            }
+            Editable edtable = messageEdt.getText();
+            int position = edtable.length();
+            Selection.setSelection(edtable, position);
+        }
+    };
 
     private View.OnTouchListener lvPTROnTouchListener = new View.OnTouchListener() {
 

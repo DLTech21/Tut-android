@@ -122,57 +122,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
-            <com.dtalk.dd.ui.widget.YayaEmoGridView
-                android:id="@+id/yaya_emo_gridview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:visibility="gone" />
 
-            <RadioGroup
-                android:id="@+id/emo_tab_group"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom"
-                android:background="@color/group_manager_user_title"
-                android:checkedButton="@+id/tab1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <!-- 第一个标签，注意button属性设置成null，以此去掉自带的radio button -->
-                <!-- 注意：id="@id/tab1"，为什么不是+id呢？这个和加载先后有关系,Google一下吧 -->
-                <RadioButton
-                    android:id="@id/tab1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1.0"
-                    android:background="@drawable/tab_bg_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:tag="tab1"
-                    android:text="@string/yaya_emo"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/tab2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1.0"
-                    android:background="@drawable/tab_bg_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/default_emo"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
 
         </LinearLayout>
 

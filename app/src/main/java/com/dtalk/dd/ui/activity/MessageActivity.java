@@ -449,14 +449,6 @@ public class MessageActivity extends TTBaseActivity
         imService.getMessageManager().sendImages(listMsg);
     }
 
-//    public void onEventMainThread(SelectEvent event) {
-//        List<ImageItem> itemList = event.getList();
-//        if (itemList != null || itemList.size() > 0) {
-//            compressWithLs(itemList);
-//        }
-//
-//    }
-
     private void compressWithLs(final List<String> list) {
         final List<String> compressedFiles = new ArrayList<>();
         for (String item : list) {
