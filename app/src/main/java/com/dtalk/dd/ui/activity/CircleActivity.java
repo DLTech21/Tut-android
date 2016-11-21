@@ -44,6 +44,7 @@ import com.dtalk.dd.http.moment.Comment;
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.http.moment.MomentClient;
 import com.dtalk.dd.http.moment.MomentList;
+import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
@@ -134,6 +135,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 
     @Override
     protected void onDestroy() {
+        unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
         MomentList temp = new MomentList();
         temp.list = new ArrayList<>();
@@ -284,7 +286,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         }
         final Moment moment = (Moment) messageEdt.getTag();
         final String moment_id = moment.moment_id;
-        MomentClient.commentMoment(moment_id, replyCommentUid, content, new BaseClient.ClientCallback(){
+        MomentClient.commentMoment(moment_id, replyCommentUid, content, new BaseClient.ClientCallback() {
             public void onPreConnection() {
                 svProgressHUD.show();
             }
@@ -563,13 +565,45 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 
     @Override
     public void onFavorClick(Moment moment, int position) {
+        favor(moment);
+    }
 
+    private void favor(final Moment moment) {
+        MomentClient.likeMoment(moment.moment_id, !moment.isFavor, new BaseClient.ClientCallback() {
+            @Override
+            public void onPreConnection() {
+                svProgressHUD.show();
+            }
+
+            @Override
+            public void onCloseConnection() {
+                svProgressHUD.dismiss();
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                UserInfo comm = (UserInfo) data;
+                moment.like_users.add(comm);
+                moment.isFavor = !moment.isFavor;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
     }
 
     @Override
     public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity) {
         if (mLu_pingLun_info_entity != null) {
-            messageEdt.setHint("回复" + mLu_pingLun_info_entity.getUser_A_Name() +":");
+            messageEdt.setHint("回复" + mLu_pingLun_info_entity.getUser_A_Name() + ":");
             replyCommentUid = mLu_pingLun_info_entity.getUser_A_ID();
         } else {
             messageEdt.setHint("");

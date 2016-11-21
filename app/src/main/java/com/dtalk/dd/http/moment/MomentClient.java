@@ -8,7 +8,9 @@ import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.SandboxUtils;
+import com.dtalk.dd.utils.StringUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.lzy.okgo.OkGo;
@@ -49,6 +51,21 @@ public class MomentClient extends BaseClient {
                         callback.onCloseConnection();
                         try {
                             MomentList data = JSON.parseObject(s, MomentList.class);
+                            if (data.status == 1) {
+                                for (int i = 0; i < data.list.size(); i++) {
+                                    Moment m = data.list.get(i);
+                                    boolean isFavor = false;
+                                    for (UserInfo user : m.like_users) {
+                                        if (StringUtils.notEmpty(user)) {
+                                            if (user.getUid().equals(String.valueOf(IMLoginManager.instance().getLoginId()))) {
+                                                isFavor = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    m.isFavor = isFavor;
+                                }
+                            }
                             callback.onSuccess(data);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -219,12 +236,12 @@ public class MomentClient extends BaseClient {
                 });
     }
 
-    public static void likeMoment(String username, String token, String id, boolean like, final ClientCallback callback) {
+    public static void likeMoment(String id, boolean like, final ClientCallback callback) {
         HttpParams params = new HttpParams();
         params.put("uid", String.valueOf(IMLoginManager.instance().getLoginId()));
         params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
         params.put("id", id);
-        params.put("like", like?"1":"0");
+        params.put("like", like ? "1" : "0");
         OkGo.post(getAbsoluteUrl("/Api/Moment/like"))
                 .params(params)
                 .execute(new StringCallback() {
@@ -239,12 +256,10 @@ public class MomentClient extends BaseClient {
                     public void onSuccess(String s, Call call, Response response) {
                         if (callback != null)
                             callback.onCloseConnection();
-                        try
-                        {
+                        try {
                             UserInfo res = JSON.parseObject(s, UserInfo.class);
                             callback.onSuccess(res);
-                        } catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             callback.onException(e);
                         }

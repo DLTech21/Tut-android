@@ -17,7 +17,9 @@ import com.dtalk.dd.R;
 import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.config.MessageConstant;
 import com.dtalk.dd.http.moment.Moment;
+import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.imservice.entity.ImageMessage;
+import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.ui.helper.AudioPlayerHandler;
 import com.dtalk.dd.ui.widget.SpeekerToast;
 import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
@@ -29,6 +31,7 @@ import com.dtalk.dd.ui.widget.circle.UrlCircleRenderView;
 import com.dtalk.dd.ui.widget.circle.VideoCircleRenderView;
 import com.dtalk.dd.ui.widget.message.MessageOperatePopup;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.StringUtils;
 import com.dtalk.dd.utils.VideoDisplayLoader;
 import com.yixia.camera.demo.ui.record.VideoPlayerActivity;
 
@@ -166,7 +169,7 @@ public class CircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 currentPop.setmListener(new OperateItemClickListener(moment, position));
-                currentPop.show(videoCircleRenderView.getTvMore(), true, position);
+                currentPop.show(videoCircleRenderView.getTvMore(), moment.isFavor, position);
             }
         });
         videoCircleRenderView.render(moment, ctx, position);
@@ -197,7 +200,7 @@ public class CircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 currentPop.setmListener(new OperateItemClickListener(moment, position));
-                currentPop.show(imageCircleRenderView.getTvMore(), true, position);
+                currentPop.show(imageCircleRenderView.getTvMore(), moment.isFavor, position);
             }
         });
         imageCircleRenderView.render(moment, ctx, position);
@@ -228,7 +231,7 @@ public class CircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 currentPop.setmListener(new OperateItemClickListener(moment, position));
-                currentPop.show(urlCircleRenderView.getTvMore(), true, position);
+                currentPop.show(urlCircleRenderView.getTvMore(), moment.isFavor, position);
             }
         });
         urlCircleRenderView.render(moment, ctx, position);
@@ -259,7 +262,7 @@ public class CircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 currentPop.setmListener(new OperateItemClickListener(moment, position));
-                currentPop.show(longtxtCircleRenderView.getTvMore(), true, position);
+                currentPop.show(longtxtCircleRenderView.getTvMore(), moment.isFavor, position);
             }
         });
         longtxtCircleRenderView.render(moment, ctx, position);

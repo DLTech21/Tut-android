@@ -23,4 +23,5 @@ public class Moment implements Serializable{
     public String cover;
     public String url;
     public List<String> image = new ArrayList<String>();
+    public boolean isFavor;
 }

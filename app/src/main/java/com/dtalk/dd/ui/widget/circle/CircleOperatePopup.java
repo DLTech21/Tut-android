@@ -31,14 +31,14 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
 
     private int mWidth;
     private int mHeight;
-    private TextView favorBtn, commentBtn ;
+    private TextView favorBtn, commentBtn;
     private int position = -1;
 
     private Context context = null;
 
-    public static CircleOperatePopup instance(Context ctx){
-        if(null == circleOperatePopup ){
-            synchronized (CircleOperatePopup.class){
+    public static CircleOperatePopup instance(Context ctx) {
+        if (null == circleOperatePopup) {
+            synchronized (CircleOperatePopup.class) {
                 Logger.i("dsfsd");
                 circleOperatePopup = new CircleOperatePopup(ctx);
             }
@@ -72,7 +72,7 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
         commentBtn.setPadding(0, 13, 0, 8);
 
 
-        mWidth = ScreenUtils.getScreenWidth(context)/2;
+        mWidth = ScreenUtils.getScreenWidth(context) / 2;
         mHeight = (int) context.getResources().getDimension(
                 R.dimen.circle_item_popup_height);
 
@@ -89,8 +89,9 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
     }
 
     public void show(View item, boolean favor, int cposition) {
-        Logger.d(mPopup.toString()+"");
-        Logger.d(mPopup.isShowing()+"");
+        Logger.d(mPopup.toString() + "");
+        Logger.d(mPopup.isShowing() + "");
+        favorBtn.setText(favor ? "取消" : "赞");
         if (mPopup == null || mPopup.isShowing() || position == cposition) {
             position = -1;
             return;
@@ -98,10 +99,10 @@ public class CircleOperatePopup implements View.OnClickListener, View.OnTouchLis
         int[] location = new int[2];
         item.getLocationOnScreen(location);
         mPopup.showAtLocation(item, Gravity.NO_GRAVITY,
-                    location[0] - item.getWidth()/2  - mWidth,
-                    location[1] - 10 );
+                location[0] - item.getWidth() / 2 - mWidth,
+                location[1] - 10);
         position = cposition;
-        Logger.d(mPopup.isShowing()+"");
+        Logger.d(mPopup.isShowing() + "");
     }
 
     public void dismiss() {
