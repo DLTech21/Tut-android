@@ -276,4 +276,44 @@ public class MomentClient extends BaseClient {
                 });
     }
 
+    public static void delcommentMoment(String id, final ClientCallback callback) {
+        HttpParams params = new HttpParams();
+        params.put("uid", String.valueOf(IMLoginManager.instance().getLoginId()));
+        params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
+        params.put("id", id);
+        OkGo.post(getAbsoluteUrl("/Api/Moment/delComment"))
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        if (callback != null)
+                            callback.onPreConnection();
+                    }
+
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (callback != null)
+                            callback.onCloseConnection();
+                        try {
+                            BaseResponse res = JSON.parseObject(s, BaseResponse.class);
+                            if (callback != null)
+                                callback.onSuccess(res);
+                        } catch (Exception e) {
+                            if (callback != null)
+                                callback.onException(e);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        if (callback != null) {
+                            callback.onCloseConnection();
+                            callback.onFailure(e.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
 }

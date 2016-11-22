@@ -600,6 +600,12 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 .show();
     }
 
+    private void deleteComment(Moment moment, Lu_Comment_TextView.Lu_PingLun_info_Entity lu_pingLun_info_entity, final int itemposition) {
+        moment.comment.remove(itemposition);
+        adapter.notifyDataSetChanged();
+        MomentClient.delcommentMoment(lu_pingLun_info_entity.getID(), null);
+    }
+
     private void deleteCircle(Moment moment) {
         adapter.getCircleObjectList().remove(moment);
         adapter.notifyDataSetChanged();
@@ -648,8 +654,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 moment.isFavor = !moment.isFavor;
                 if (moment.isFavor) {
                     moment.like_maps.put(comm.getUid(), comm);
-                }
-                else {
+                } else {
                     moment.like_maps.remove(comm.getUid());
                 }
                 adapter.notifyDataSetChanged();
@@ -668,10 +673,26 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity) {
+    public void onCommentClick(final Moment moment, int position, final int itemposition, final Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity) {
         if (mLu_pingLun_info_entity != null) {
-            messageEdt.setHint("回复" + mLu_pingLun_info_entity.getUser_A_Name() + ":");
-            replyCommentUid = mLu_pingLun_info_entity.getUser_A_ID();
+            if (mLu_pingLun_info_entity.getUser_A_ID().equals(String.valueOf(IMLoginManager.instance().getLoginId()))) {
+                new MaterialDialog.Builder(this)
+                        .title("提示")
+                        .content("删除该条评论?")
+                        .positiveText("确定")
+                        .negativeText("返回")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                deleteComment(moment, mLu_pingLun_info_entity, itemposition);
+                            }
+                        })
+                        .show();
+                return;
+            } else {
+                messageEdt.setHint("回复" + mLu_pingLun_info_entity.getUser_A_Name() + ":");
+                replyCommentUid = mLu_pingLun_info_entity.getUser_A_ID();
+            }
         } else {
             messageEdt.setHint("");
             replyCommentUid = moment.uid;
