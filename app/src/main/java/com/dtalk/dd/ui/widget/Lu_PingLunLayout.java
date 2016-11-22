@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by Lu JianChao on 2016/5/31.
  * https://github.com/hnsugar
+ *
  * @author Lu JianChao
  */
 public class Lu_PingLunLayout extends LinearLayout {

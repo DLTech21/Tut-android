@@ -21,6 +21,7 @@ import com.lzy.okgo.request.BaseRequest;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -31,7 +32,7 @@ import okhttp3.Response;
  */
 public class MomentClient extends BaseClient {
 
-    public static void fetchMoment(String username, String token, final String last, String limit, final BaseClient.ClientCallback callback) {
+    public static void fetchMoment(final String username, String token, final String last, String limit, final BaseClient.ClientCallback callback) {
         HttpParams params = new HttpParams();
         params.put("uid", username);
         params.put("token", token);
@@ -55,13 +56,12 @@ public class MomentClient extends BaseClient {
                                 for (int i = 0; i < data.list.size(); i++) {
                                     Moment m = data.list.get(i);
                                     boolean isFavor = false;
+                                    m.like_maps = new HashMap<String, UserInfo>();
                                     for (UserInfo user : m.like_users) {
-                                        if (StringUtils.notEmpty(user)) {
-                                            if (user.getUid().equals(String.valueOf(IMLoginManager.instance().getLoginId()))) {
-                                                isFavor = true;
-                                                break;
-                                            }
-                                        }
+                                        m.like_maps.put(user.getUid(), user);
+                                    }
+                                    if (m.like_maps.get(String.valueOf(IMLoginManager.instance().getLoginId())) != null) {
+                                        isFavor = true;
                                     }
                                     m.isFavor = isFavor;
                                 }

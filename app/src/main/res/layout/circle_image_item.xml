@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.dtalk.dd.ui.widget.circle.ImageCircleRenderView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.dtalk.dd.ui.widget.circle.ImageCircleRenderView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/default_bk"
-    >
+    android:background="@color/default_bk">
 
     <com.dtalk.dd.ui.widget.IMBaseImageView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
         android:id="@+id/user_portrait"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/tt_default_user_portrait_corner" />
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
         android:layout_toRightOf="@id/user_portrait"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/name"
@@ -31,53 +29,51 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:text="小明"
-            android:textSize="14dp"
             android:textColor="#7f93bd"
-             />
+            android:textSize="14dp" />
+
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:text="没有钱啊"
             android:textColor="@color/black"
-            />
+            android:textSize="14dp" />
+
         <com.dtalk.dd.ui.widget.MultiImageViewLayout
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
             android:id="@+id/multiimage"
-            android:layout_height="wrap_content">
-        </com.dtalk.dd.ui.widget.MultiImageViewLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"></com.dtalk.dd.ui.widget.MultiImageViewLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center_vertical"
             android:layout_marginTop="5dp"
-            >
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textSize="14dp"
+                android:text="3分钟前"
                 android:textColor="@color/gray"
-                android:text="3分钟前" />
+                android:textSize="14dp" />
 
             <TextView
-                android:textSize="14dp"
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/date"
+                android:text="删除"
                 android:textColor="#7f93bd"
-                android:text="删除" />
+                android:textSize="14dp" />
 
 
             <TextView
@@ -91,18 +87,33 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/micro_comment" />
         </RelativeLayout>
-        <com.dtalk.dd.ui.widget.Lu_PingLunLayout
-            android:layout_marginTop="5dp"
+
+        <com.dtalk.dd.ui.widget.praisewidget.widget.PraiseWidget xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/praise_widget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eeeeef"
+            android:lineSpacingExtra="2px"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="5"
+            app:font_color="#ff576b95"
+            android:layout_marginBottom="-5dp"
             android:layout_marginRight="5dp"
+            app:font_size="14dp" />
+
+        <com.dtalk.dd.ui.widget.Lu_PingLunLayout
             android:id="@+id/commentLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.dtalk.dd.ui.widget.Lu_PingLunLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#eeeeef"></com.dtalk.dd.ui.widget.Lu_PingLunLayout>
     </LinearLayout>
+
     <View
-        android:layout_below="@+id/content_layout"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/content_layout"
+        android:layout_marginTop="10dp"
         android:background="#E8E8E8" />
 </com.dtalk.dd.ui.widget.circle.ImageCircleRenderView>

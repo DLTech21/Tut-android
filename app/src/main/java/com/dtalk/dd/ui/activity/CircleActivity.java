@@ -283,9 +283,6 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 sendComment();
                 break;
             case R.id.show_emo_btn: {
-                /**yingmu 调整成键盘输出*/
-                messageEdt.setVisibility(View.VISIBLE);
-                /**end*/
                 if (keyboardHeight != 0) {
                     this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
                 }
@@ -648,8 +645,13 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             @Override
             public void onSuccess(Object data) {
                 UserInfo comm = (UserInfo) data;
-                moment.like_users.add(comm);
                 moment.isFavor = !moment.isFavor;
+                if (moment.isFavor) {
+                    moment.like_maps.put(comm.getUid(), comm);
+                }
+                else {
+                    moment.like_maps.remove(comm.getUid());
+                }
                 adapter.notifyDataSetChanged();
             }
 

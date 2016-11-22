@@ -3,6 +3,7 @@ package com.dtalk.dd.http.moment;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.dtalk.dd.http.user.UserInfo;
 
@@ -12,6 +13,7 @@ public class Moment implements Serializable{
     public String uid;
     public String content;
     public List<UserInfo> like_users;//只需要用userbean的nickname username avatar
+    public Map<String, UserInfo> like_maps;//只需要用userbean的nickname username avatar
     public String created;
     public String nickname;
     public String avatar;

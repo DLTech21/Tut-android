@@ -45,4 +45,6 @@
 
     <string name="favor">赞</string>
     <string name="comment">评论</string>
+
+    <string name="praise_zan" formatted="false">等%d人</string>
 </resources>

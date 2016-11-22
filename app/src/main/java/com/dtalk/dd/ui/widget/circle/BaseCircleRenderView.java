@@ -14,11 +14,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.moment.Comment;
 import com.dtalk.dd.http.moment.Moment;
+import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.ui.plugin.ImageLoadManager;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
 import com.dtalk.dd.ui.widget.Lu_PingLunLayout;
+import com.dtalk.dd.ui.widget.praisewidget.bean.PraiseBean;
+import com.dtalk.dd.ui.widget.praisewidget.widget.PraiseWidget;
 import com.dtalk.dd.utils.DateUtil;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.utils.Logger;
@@ -32,7 +35,9 @@ import java.util.List;
  * Created by Donal on 16/7/29.
  */
 public class BaseCircleRenderView extends RelativeLayout {
-    /** 头像*/
+    /**
+     * 头像
+     */
     protected IMBaseImageView portrait;
     protected TextView name;
     protected TextView content;
@@ -40,12 +45,15 @@ public class BaseCircleRenderView extends RelativeLayout {
     protected TextView tvDelete;
     protected TextView tvMore;
     protected Lu_PingLunLayout layComment;
+    protected PraiseWidget layPraise;
 
-    /**渲染的消息实体*/
+    /**
+     * 渲染的消息实体
+     */
     protected Moment moment;
     protected int position;
     protected ViewGroup parentView;
-    protected  boolean isMine;
+    protected boolean isMine;
     protected OnMoreCircleListener onMoreCircleListener;
 
     protected OnDeleteCircleListener onDeleteCircleListener;
@@ -65,10 +73,13 @@ public class BaseCircleRenderView extends RelativeLayout {
         tvDelete = (TextView) findViewById(R.id.delete);
         tvMore = (TextView) findViewById(R.id.btn_more);
         layComment = (Lu_PingLunLayout) findViewById(R.id.commentLayout);
+        layPraise = (PraiseWidget) findViewById(R.id.praise_widget);
     }
 
-    /**控件赋值*/
-    public void render(final Moment moment,final Context ctx, final int position){
+    /**
+     * 控件赋值
+     */
+    public void render(final Moment moment, final Context ctx, final int position) {
         this.moment = moment;
         this.position = position;
         String avatar = moment.avatar;
@@ -90,14 +101,13 @@ public class BaseCircleRenderView extends RelativeLayout {
         });
         /**头像事件 end*/
 
-        long timeStamp  = Long.valueOf(moment.created);
+        long timeStamp = Long.valueOf(moment.created);
         Date msgTimeDate = new Date(timeStamp * 1000);
         tvTime.setText(DateUtil.getTimeDiffDesc(msgTimeDate));
 
         if (String.valueOf(IMLoginManager.instance().getLoginId()).equals(moment.uid)) {
             getTvDelete().setVisibility(VISIBLE);
-        }
-        else {
+        } else {
             getTvDelete().setVisibility(INVISIBLE);
         }
         getTvDelete().setOnClickListener(new OnClickListener() {
@@ -115,8 +125,7 @@ public class BaseCircleRenderView extends RelativeLayout {
             if (!comment.uid.equals(comment.reply_uid)) {
                 Lu_Comment_TextView.Lu_PingLun_info_Entity mEntity = temp.getLu_pingLun_info_entity(comment.comment_id, comment.uid, comment.nickname, comment.avatar, comment.reply_uid, comment.reply_nickname, comment.avatar, comment.content);
                 mList.add(mEntity);
-            }
-            else {
+            } else {
                 Lu_Comment_TextView.Lu_PingLun_info_Entity mEntity = temp.getLu_pingLun_info_entity(comment.comment_id, comment.uid, comment.nickname, comment.avatar, null, null, null, comment.content);
                 mList.add(mEntity);
             }
@@ -148,9 +157,31 @@ public class BaseCircleRenderView extends RelativeLayout {
                 onMoreCircleListener.onCommentClick(moment, position, itemPosition, mLu_pingLun_info_entity);
             }
         });
+
+        List<PraiseBean> praiseBeanList = new ArrayList<>();
+        for (UserInfo userInfo : moment.like_maps.values()) {
+            PraiseBean bean = new PraiseBean();
+            bean.userNick = userInfo.getNickname();
+            bean.userId = userInfo.getUid();
+            praiseBeanList.add(bean);
+        }
+        layPraise.setPraiseWidgetListener(new PraiseWidget.PraiseWidgetListener() {
+            @Override
+            public void onNameClickListener(String onClickID, String onClickName) {
+                IMUIHelper.openUserProfileActivity(getContext(), Integer.valueOf(onClickID));
+            }
+        });
+        if (praiseBeanList.size() > 0) {
+            layPraise.setVisibility(VISIBLE);
+            layPraise.setDataByArray(praiseBeanList);
+        } else {
+            layPraise.setVisibility(GONE);
+        }
     }
 
-    /**-------------------------set/get--------------------------*/
+    /**
+     * -------------------------set/get--------------------------
+     */
     public ImageView getPortrait() {
         return portrait;
     }
@@ -197,6 +228,7 @@ public class BaseCircleRenderView extends RelativeLayout {
 
     public interface OnMoreCircleListener {
         public void onFavorClick(Moment moment, int position);
+
         public void onCommentClick(Moment moment, int position, int itemposition, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity);
     }
 }
