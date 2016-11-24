@@ -640,12 +640,10 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         MomentClient.likeMoment(moment.moment_id, !moment.isFavor, new BaseClient.ClientCallback() {
             @Override
             public void onPreConnection() {
-                svProgressHUD.show();
             }
 
             @Override
             public void onCloseConnection() {
-                svProgressHUD.dismiss();
             }
 
             @Override

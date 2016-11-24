@@ -31,8 +31,8 @@ android {
         applicationId "com.dtalk.dd"
         minSdkVersion MIN_SDK
         targetSdkVersion TARGET_SDK
-        versionCode 12
-        versionName "2.0.7"
+        versionCode 13
+        versionName "2.0.8"
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a'
         }
@@ -108,5 +108,6 @@ dependencies {
     compile 'top.zibin:Luban:1.0.9'
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
     compile 'cn.jiguang:jpush:2.1.8'
+    compile 'com.github.razerdp:BasePopup:v1.4.0'
 }
 
