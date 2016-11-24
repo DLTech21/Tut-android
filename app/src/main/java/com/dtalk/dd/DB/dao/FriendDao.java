@@ -36,7 +36,10 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
         public final static Property Created = new Property(11, int.class, "created", false, "CREATED");
         public final static Property Updated = new Property(12, int.class, "updated", false, "UPDATED");
         public final static Property IsFriend = new Property(13, int.class, "isFriend", false, "ISFRIEND");
-    };
+        public final static Property Area = new Property(14, String.class, "area", false, "AREA");
+    }
+
+    ;
 
 
     public FriendDao(DaoConfig config) {
@@ -47,9 +50,11 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
         super(config, daoSession);
     }
 
-    /** Creates the underlying database table. */
+    /**
+     * Creates the underlying database table.
+     */
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
-        String constraint = ifNotExists? "IF NOT EXISTS ": "";
+        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         db.execSQL("CREATE TABLE " + constraint + "'FriendUserInfo' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'PEER_ID' INTEGER NOT NULL UNIQUE ," + // 1: peerId
@@ -64,19 +69,24 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
                 "'STATUS' INTEGER NOT NULL ," + // 10: status
                 "'CREATED' INTEGER NOT NULL ," + // 11: created
                 "'UPDATED' INTEGER NOT NULL ," + // 12: updated
-                "'ISFRIEND' INTEGER NOT NULL);"); //13: isfriend
+                "'ISFRIEND' INTEGER NOT NULL ," + //13: isfriend
+                "'AREA' TEXT NOT NULL);"); //14: area
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_FriendUserInfo_PEER_ID ON FriendUserInfo" +
                 " (PEER_ID);");
     }
 
-    /** Drops the underlying database table. */
+    /**
+     * Drops the underlying database table.
+     */
     public static void dropTable(SQLiteDatabase db, boolean ifExists) {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "'FriendUserInfo'";
         db.execSQL(sql);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected void bindValues(SQLiteStatement stmt, UserEntity entity) {
         stmt.clearBindings();
@@ -98,15 +108,20 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
         stmt.bindLong(12, entity.getCreated());
         stmt.bindLong(13, entity.getUpdated());
         stmt.bindLong(14, entity.getIsFriend());
+        stmt.bindString(15, entity.getArea());
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long readKey(Cursor cursor, int offset) {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public UserEntity readEntity(Cursor cursor, int offset) {
         UserEntity entity = new UserEntity( //
@@ -123,12 +138,15 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
                 cursor.getInt(offset + 10), // status
                 cursor.getInt(offset + 11), // created
                 cursor.getInt(offset + 12), // updated
-                cursor.getInt(offset + 13)
+                cursor.getInt(offset + 13),
+                cursor.getString(offset + 14)
         );
         return entity;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public void readEntity(Cursor cursor, UserEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
@@ -145,26 +163,33 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
         entity.setCreated(cursor.getInt(offset + 11));
         entity.setUpdated(cursor.getInt(offset + 12));
         entity.setIsFriend(cursor.getInt(offset + 13));
+        entity.setArea(cursor.getString(offset + 14));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected Long updateKeyAfterInsert(UserEntity entity, long rowId) {
         entity.setId(rowId);
         return rowId;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long getKey(UserEntity entity) {
-        if(entity != null) {
+        if (entity != null) {
             return entity.getId();
         } else {
             return null;
         }
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected boolean isEntityUpdateable() {
         return true;

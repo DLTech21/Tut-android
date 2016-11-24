@@ -10,28 +10,38 @@ import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.imservice.entity.SearchElement;
 import com.dtalk.dd.utils.pinyin.PinYin.PinYinElement;
 // KEEP INCLUDES END
+
 /**
  * Entity mapped to table UserInfo.
  */
-public class UserEntity extends PeerEntity{
+public class UserEntity extends PeerEntity {
 
     private int gender;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String pinyinName;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String realName;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String phone;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String email;
     private int departmentId;
     private int status;
 
     private int isFriend;
+    private String area;
 
     // KEEP FIELDS - put your custom fields here
-     private PinYinElement pinyinElement = new PinYinElement();
-     private SearchElement searchElement = new SearchElement();
+    private PinYinElement pinyinElement = new PinYinElement();
+    private SearchElement searchElement = new SearchElement();
     // KEEP FIELDS END
 
     public UserEntity() {
@@ -41,7 +51,7 @@ public class UserEntity extends PeerEntity{
         this.id = id;
     }
 
-    public UserEntity(Long id, int peerId, int gender, String mainName, String pinyinName, String realName, String avatar, String phone, String email, int departmentId, int status, int created, int updated, int isFriend) {
+    public UserEntity(Long id, int peerId, int gender, String mainName, String pinyinName, String realName, String avatar, String phone, String email, int departmentId, int status, int created, int updated, int isFriend, String area) {
         this.id = id;
         this.peerId = peerId;
         this.gender = gender;
@@ -56,6 +66,7 @@ public class UserEntity extends PeerEntity{
         this.created = created;
         this.updated = updated;
         this.isFriend = isFriend;
+        this.area = area;
     }
 
     public Long getId() {
@@ -82,62 +93,86 @@ public class UserEntity extends PeerEntity{
         this.gender = gender;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getMainName() {
         return mainName;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setMainName(String mainName) {
         this.mainName = mainName;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getPinyinName() {
         return pinyinName;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setPinyinName(String pinyinName) {
         this.pinyinName = pinyinName;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getRealName() {
         return realName;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setRealName(String realName) {
         this.realName = realName;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getAvatar() {
         return avatar;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getPhone() {
         return phone;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getEmail() {
         return email;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
@@ -183,6 +218,14 @@ public class UserEntity extends PeerEntity{
 
     public void setIsFriend(int isFriend) {
         this.isFriend = isFriend;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     @Override
@@ -244,6 +287,7 @@ public class UserEntity extends PeerEntity{
         result = 31 * result + departmentId;
         result = 31 * result + status;
         result = 31 * result + isFriend;
+        result = 31 * result + (area != null ? area.hashCode() : 0);
         return result;
     }
 

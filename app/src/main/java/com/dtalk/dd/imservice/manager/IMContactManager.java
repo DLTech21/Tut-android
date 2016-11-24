@@ -214,6 +214,7 @@ public class IMContactManager extends IMManager {
                         userEntity.setUpdated(timeNow);
                         userEntity.setPeerId(Integer.valueOf(otherUserInfo.getUid()));
                         userEntity.setIsFriend(Integer.valueOf(otherUserInfo.getFriend()));
+                        userEntity.setArea(otherUserInfo.getArea());
                         PinYin.getPinYin(userEntity.getMainName(), userEntity.getPinyinElement());
                         if (StringUtils.notEmpty(otherUserInfo.getRemarks())) {
                             userEntity.setRealName(otherUserInfo.getRemarks().getRemarkname());
@@ -258,6 +259,7 @@ public class IMContactManager extends IMManager {
                         userEntity.setUpdated(timeNow);
                         userEntity.setPeerId(Integer.valueOf(otherUserInfoNoRemark.getUid()));
                         userEntity.setIsFriend(Integer.valueOf(otherUserInfoNoRemark.getFriend()));
+                        userEntity.setArea(otherUserInfoNoRemark.getArea());
                         PinYin.getPinYin(userEntity.getMainName(), userEntity.getPinyinElement());
                         userEntity.setRealName(otherUserInfoNoRemark.getNickname());
                         if (userEntity.getIsFriend() == 1) {

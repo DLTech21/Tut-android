@@ -24,6 +24,7 @@ import com.dtalk.dd.ui.activity.DetailPortraitActivity;
 import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.StringUtils;
 import com.dtalk.dd.utils.ThemeUtils;
 import com.dtalk.dd.utils.ViewUtils;
 
@@ -157,15 +158,20 @@ public class UserInfoFragment extends MainFragment {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DetailPortraitActivity.class);
-                intent.putExtra(IntentConstant.KEY_AVATAR_URL, currentUser.getAvatar());
-                intent.putExtra(IntentConstant.KEY_IS_IMAGE_CONTACT_AVATAR, true);
-
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), DetailPortraitActivity.class);
+//                intent.putExtra(IntentConstant.KEY_AVATAR_URL, currentUser.getAvatar());
+//                intent.putExtra(IntentConstant.KEY_IS_IMAGE_CONTACT_AVATAR, true);
+//
+//                startActivity(intent);
             }
         });
 
         TextView tvRegion = (TextView) curView.findViewById(R.id.tv_region);
+        if (StringUtils.notEmpty(currentUser.getArea())) {
+            tvRegion.setText(currentUser.getArea());
+        } else {
+            tvRegion.setText("未知城市");
+        }
 
         // 设置界面信息
         Button chatBtn = (Button) curView.findViewById(R.id.chat_btn);
@@ -195,53 +201,6 @@ public class UserInfoFragment extends MainFragment {
     private void initDetailProfile() {
         Logger.d("detail#initDetailProfile");
         hideProgressBar();
-//        DepartmentEntity deptEntity = imService.getContactManager().findDepartment(currentUser.getDepartmentId());
-//		setTextViewContent(R.id.department,deptEntity.getDepartName());
-//		setTextViewContent(R.id.telno, currentUser.getPhone());
-//		setTextViewContent(R.id.email, currentUser.getEmail());
-//
-//		View phoneView = curView.findViewById(R.id.phoneArea);
-//        View emailView = curView.findViewById(R.id.emailArea);
-//		IMUIHelper.setViewTouchHightlighted(phoneView);
-//        IMUIHelper.setViewTouchHightlighted(emailView);
-//
-//        emailView.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                if (currentUserId == IMLoginManager.instance().getLoginId())
-//                    return;
-//                IMUIHelper.showCustomDialog(getActivity(), View.GONE, String.format(getString(R.string.confirm_send_email), currentUser.getEmail()), new IMUIHelper.dialogCallback() {
-//					@Override
-//					public void callback() {
-//						Intent data = new Intent(Intent.ACTION_SENDTO);
-//						data.setData(Uri.parse("mailto:" + currentUser.getEmail()));
-//						data.putExtra(Intent.EXTRA_SUBJECT, "");
-//						data.putExtra(Intent.EXTRA_TEXT, "");
-//						startActivity(data);
-//					}
-//				});
-//            }
-//        });
-//
-//		phoneView.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				if (currentUserId == IMLoginManager.instance().getLoginId())
-//					return;
-//                IMUIHelper.showCustomDialog(getActivity(),View.GONE,String.format(getString(R.string.confirm_dial),currentUser.getPhone()),new IMUIHelper.dialogCallback() {
-//                    @Override
-//                    public void callback() {
-//                        new Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                IMUIHelper.callPhone(getActivity(), currentUser.getPhone());
-//                            }
-//                        },0);
-//                    }
-//                });
-//			}
-//		});
-
         setSex(currentUser.getGender());
     }
 

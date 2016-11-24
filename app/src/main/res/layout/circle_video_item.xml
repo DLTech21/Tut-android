@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:background="#eeeeef"
             android:lineSpacingExtra="2px"
             android:lineSpacingMultiplier="1.2"
@@ -129,9 +129,9 @@
             android:id="@+id/commentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            android:background="#eeeeef"></com.dtalk.dd.ui.widget.Lu_PingLunLayout>
+            android:background="#eeeeef"/>
     </LinearLayout>
 
     <View
