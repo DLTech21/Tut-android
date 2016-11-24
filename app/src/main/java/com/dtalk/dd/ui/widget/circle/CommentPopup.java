@@ -100,7 +100,7 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
     public void showPopupWindow(View v, boolean isFavor) {
         mLikeText.setText(isFavor ? "取消" : "赞");
         setRelativeToAnchorView(true);
-        setRelativePivot(RelativePivot.RIGHT | RelativePivot.BOTTOM);
+        setRelativePivot(RelativePivot.RIGHT | RelativePivot.CENTER_Y);
         setOffsetX(v.getWidth() / 2);
         super.showPopupWindow(v);
     }
