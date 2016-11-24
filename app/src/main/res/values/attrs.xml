@@ -16,4 +16,49 @@
         <attr name="font_size" format="dimension"/>
         <attr name="zan_icon" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="FriendCirclePtrListView">
+        <!--abslistview start-->
+        <!--=====================================-->
+        <attr name="listSelector"
+            format="color|reference"/>
+        <attr name="transcriptMode">
+            <enum name="disabled"
+                value="0"/>
+            <enum name="normal"
+                value="1"/>
+            <enum name="alwaysScroll"
+                value="2"/>
+        </attr>
+        <attr name="cacheColorHint"
+            format="color"/>
+        <attr name="fastScrollEnabled"
+            format="boolean"/>
+        <attr name="fastScrollStyle"
+            format="reference"/>
+        <attr name="smoothScrollbar"
+            format="boolean"/>
+        <attr name="choiceMode">
+            <enum name="none"
+                value="0"/>
+            <enum name="singleChoice"
+                value="1"/>
+            <enum name="multipleChoice"
+                value="2"/>
+            <enum name="multipleChoiceModal"
+                value="3"/>
+        </attr>
+        <!--=====================================-->
+        <!--abslistview end-->
+        <!--=====================================-->
+        <!--listview start-->
+        <attr name="listview_divider"
+            format="reference|color"/>
+        <attr name="dividerHeight"
+            format="dimension"/>
+        <attr name="overScrollHeader"
+            format="reference|color"/>
+        <attr name="overScrollFooter"
+            format="reference|color"/>
+    </declare-styleable>
 </resources>

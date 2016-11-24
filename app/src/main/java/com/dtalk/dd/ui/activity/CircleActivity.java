@@ -59,6 +59,10 @@ import com.dtalk.dd.ui.widget.EmoGridView;
 import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
 import com.dtalk.dd.ui.widget.YayaEmoGridView;
 import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
+import com.dtalk.dd.ui.widget.ptrwidget.FriendCirclePtrListView;
+import com.dtalk.dd.ui.widget.ptrwidget.OnLoadMoreRefreshListener;
+import com.dtalk.dd.ui.widget.ptrwidget.OnPullDownRefreshListener;
+import com.dtalk.dd.ui.widget.ptrwidget.PullMode;
 import com.dtalk.dd.utils.KeyboardUtils;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.SandboxUtils;
@@ -87,19 +91,12 @@ import static com.yixia.camera.demo.utils.ToastUtils.showToast;
  * Created by Donal on 16/7/29.
  */
 public class CircleActivity extends TTBaseActivity implements View.OnClickListener,
-        AbsListView.OnScrollListener,
         BaseCircleRenderView.OnDeleteCircleListener,
         TextWatcher,
         BaseCircleRenderView.OnMoreCircleListener {
     private CircleAdapter adapter;
-    @ViewInject(R.id.ptrFrameLayoutShare)
-    private PtrFrameLayout ptrFrameLayoutShare;
-    private View footer;
-    @ViewInject(R.id.ptr_classic_footer_rotate_view_footer_title)
-    private TextView ptr_classic_footer_rotate_view_footer_title;
-    @ViewInject(R.id.ptr_classic_footer_rotate_view_progressbar)
-    private ProgressBar ptr_classic_footer_rotate_view_progressbar;
-    private ListView listView;
+    private View friendCircleHeader;
+    private FriendCirclePtrListView listView;
     String lastId;
     private int lvDataState;
     private SVProgressHUD svProgressHUD;
@@ -146,7 +143,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         MomentList temp = new MomentList();
         temp.list = new ArrayList<>();
         temp.list.addAll(adapter.getCircleObjectList());
-        temp.status = listView.getFirstVisiblePosition();
+        temp.status = 1;
         SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), temp, "circle");
         super.onDestroy();
         svProgressHUD.dismiss();
@@ -159,23 +156,23 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         svProgressHUD = new SVProgressHUD(this);
         initSoftInputMethod();
         initView();
-        MomentList temp = (MomentList) SandboxUtils.getInstance().readObject(IMApplication.getInstance(), "circle");
-        if (temp != null) {
-            adapter.addItemList(temp.list);
-            listView.setSelectionFromTop(temp.status, 0);
-            if (!temp.list.isEmpty()) {
-                lastId = temp.list.get(temp.list.size() - 1).moment_id;
-                lvDataState = SysConstant.LISTVIEW_DATA_MORE;
-            } else {
-                lvDataState = SysConstant.LISTVIEW_DATA_FULL;
-                if (lvDataState == SysConstant.LISTVIEW_DATA_FULL) {
-                    ptr_classic_footer_rotate_view_footer_title.setText(R.string.cube_ptr_finish);
-                    ptr_classic_footer_rotate_view_progressbar.setVisibility(View.GONE);
-                }
-            }
-        } else {
+//        MomentList temp = (MomentList) SandboxUtils.getInstance().readObject(IMApplication.getInstance(), "circle");
+//        if (temp != null) {
+//            adapter.addItemList(temp.list);
+//            listView.setSelectionFromTop(temp.status, 0);
+//            if (!temp.list.isEmpty()) {
+//                lastId = temp.list.get(temp.list.size() - 1).moment_id;
+//                lvDataState = SysConstant.LISTVIEW_DATA_MORE;
+//            } else {
+//                lvDataState = SysConstant.LISTVIEW_DATA_FULL;
+//                if (lvDataState == SysConstant.LISTVIEW_DATA_FULL) {
+//                    ptr_classic_footer_rotate_view_footer_title.setText(R.string.cube_ptr_finish);
+//                    ptr_classic_footer_rotate_view_progressbar.setVisibility(View.GONE);
+//                }
+//            }
+//        } else {
             fetchMoments("0");
-        }
+//        }
     }
 
     private void initView() {
@@ -191,40 +188,27 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         messageEdt.setOnFocusChangeListener(msgEditOnFocusChangeListener);
         messageEdt.setOnClickListener(this);
         messageEdt.addTextChangedListener(this);
-        PtrClassicDefaultHeader ptrHeader = new PtrClassicDefaultHeader(this);
-        ptrFrameLayoutShare.setDurationToCloseHeader(500);
-        ptrFrameLayoutShare.setHeaderView(ptrHeader);
-        ptrFrameLayoutShare.addPtrUIHandler(ptrHeader);
-        ptrFrameLayoutShare.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(ptrFrameLayoutShare, content, header);
-            }
 
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                lastId = "0";
-                fetchMoments(lastId);
-            }
-        });
-
-        listView = (ListView) findViewById(R.id.lvShare);
-//        listView.addHeaderView(header);
-        footer = LayoutInflater.from(this).inflate(R.layout.cube_ptr_classic_default_footer, null);
-        ViewUtils.inject(this, footer);
-        listView.addFooterView(footer, null, false);
+        listView = (FriendCirclePtrListView) findViewById(R.id.lvShare);
+        friendCircleHeader = LayoutInflater.from(this).inflate(R.layout.item_header, null, false);
         listView.setVerticalScrollBarEnabled(false);
-        listView.setOnScrollListener(this);
-
         adapter = new CircleAdapter(this, this, this);
+        listView.setRotateIcon((ImageView) findViewById(R.id.rotate_icon));
+        listView.addHeaderView(friendCircleHeader);
         listView.setAdapter(adapter);
-        listView.setOnTouchListener(new View.OnTouchListener() {
-
+        listView.setOnPullDownRefreshListener(new OnPullDownRefreshListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
+            public void onRefreshing(PtrFrameLayout frame) {
+                onPullDownRefresh();
             }
         });
+        listView.setOnLoadMoreRefreshListener(new OnLoadMoreRefreshListener() {
+            @Override
+            public void onRefreshing(PtrFrameLayout frame) {
+                onLoadMore();
+            }
+        });
+        listView.manualRefresh();
         lastId = "0";
         addEmoBtn.setOnClickListener(this);
         RelativeLayout.LayoutParams paramEmoLayout = (RelativeLayout.LayoutParams) emoLayout.getLayoutParams();
@@ -251,6 +235,15 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         SystemConfigSp.instance().init(this);
         currentInputMethod = Settings.Secure.getString(CircleActivity.this.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
         keyboardHeight = SystemConfigSp.instance().getIntConfig(currentInputMethod);
+    }
+
+    public void onPullDownRefresh() {
+        lastId = "0";
+        fetchMoments(lastId);
+    }
+
+    public void onLoadMore() {
+        fetchMoments(lastId);
     }
 
     @Override
@@ -407,12 +400,10 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 if (!list.list.isEmpty()) {
                     lastId = list.list.get(list.list.size() - 1).moment_id;
                     lvDataState = SysConstant.LISTVIEW_DATA_MORE;
+                    listView.setHasMore(true);
                 } else {
                     lvDataState = SysConstant.LISTVIEW_DATA_FULL;
-                    if (lvDataState == SysConstant.LISTVIEW_DATA_FULL) {
-                        ptr_classic_footer_rotate_view_footer_title.setText(R.string.cube_ptr_finish);
-                        ptr_classic_footer_rotate_view_progressbar.setVisibility(View.GONE);
-                    }
+                    listView.setHasMore(false);
                 }
             }
 
@@ -431,13 +422,11 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 
             @Override
             public void onCloseConnection() {
-                if (ptrFrameLayoutShare != null) {
-                    ptrFrameLayoutShare.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ptrFrameLayoutShare.refreshComplete();
-                        }
-                    }, 1000);
+                if (listView != null) {
+                    listView.refreshComplete();
+                    if (listView.getCurMode() == PullMode.FROM_BOTTOM) {
+                        listView.loadmoreCompelete();
+                    }
                 }
             }
         });
@@ -526,28 +515,6 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             }
         }
     };
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int i) {
-        boolean scrollEnd = false;
-        try {
-            if (view.getPositionForView(footer) == view.getLastVisiblePosition())
-                scrollEnd = true;
-        } catch (Exception e) {
-            scrollEnd = false;
-        }
-        if (scrollEnd && lvDataState == SysConstant.LISTVIEW_DATA_MORE) {
-            lvDataState = SysConstant.LISTVIEW_DATA_LOADING;
-            ptr_classic_footer_rotate_view_footer_title.setText(R.string.cube_ptr_refreshing);
-            ptr_classic_footer_rotate_view_progressbar.setVisibility(View.VISIBLE);
-            fetchMoments(lastId);
-        }
-    }
-
-    @Override
-    public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-
-    }
 
     private void postVideo(String videoUrl, String videoCover, String localPath) {
         MomentClient.postVideoMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), videoUrl, videoCover, localPath, new BaseClient.ClientCallback() {

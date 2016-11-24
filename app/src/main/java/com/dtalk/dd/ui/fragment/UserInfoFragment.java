@@ -17,6 +17,7 @@ import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
 import com.dtalk.dd.http.friend.FriendClient;
+import com.dtalk.dd.http.moment.MomentList;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.imservice.event.UserInfoEvent;
 import com.dtalk.dd.imservice.service.IMService;
@@ -24,6 +25,7 @@ import com.dtalk.dd.ui.activity.DetailPortraitActivity;
 import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.StringUtils;
 import com.dtalk.dd.utils.ThemeUtils;
 import com.dtalk.dd.utils.ViewUtils;
@@ -194,8 +196,9 @@ public class UserInfoFragment extends MainFragment {
                     }
                 }
             });
-
         }
+
+
     }
 
     private void initDetailProfile() {
@@ -264,6 +267,23 @@ public class UserInfoFragment extends MainFragment {
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void fetchMomentsByCache(String fxid) {
+        MomentList list = (MomentList) SandboxUtils.getInstance().readObject(getActivity(), "momonets-"+fxid);
+        if (list != null) {
+//            for (Moment m : list.list) {
+//                picUrls.addAll(m.image);
+//            }
+//            if (!picUrls.isEmpty()) {
+//                picRL.setVisibility(View.VISIBLE);
+//                buildMultiPic(picUrls, content_pic_multi);
+//            }
+        }
+        getMoment("0", fxid);
+    }
+
+    private void getMoment(final String last, String fid) {
     }
 
 }

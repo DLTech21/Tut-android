@@ -5,21 +5,14 @@
     android:background="#ebebeb"
     android:orientation="vertical">
 
-    <in.srain.cube.views.ptr.PtrFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+    <FrameLayout
         android:id="@+id/ptrFrameLayoutShare"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title"
-        android:layout_weight="1"
-        cube_ptr:ptr_duration_to_close="200"
-        cube_ptr:ptr_duration_to_close_header="1000"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="false"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.1"
-        cube_ptr:ptr_resistance="1.6">
+        android:background="@color/white"
+        android:layout_marginTop="-48dp">
 
-        <ListView
+        <com.dtalk.dd.ui.widget.ptrwidget.FriendCirclePtrListView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/lvShare"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,19 +21,24 @@
             android:divider="@null"
             android:dividerHeight="0dp"
             android:fadingEdge="none"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false"
-            android:listSelector="#00000000"
-            android:transcriptMode="disabled" />
-    </in.srain.cube.views.ptr.PtrFrameLayout>
+            app:listview_divider="@null"
+            android:listSelector="#00000000" />
+
+        <ImageView
+            android:id="@+id/rotate_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/rotate_icon" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/tt_layout_bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        >
+        android:visibility="invisible">
 
         <RelativeLayout
             android:id="@+id/pannel_container"
@@ -91,11 +89,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/btn_register_bg"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/send_message"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
-                android:enabled="false"
                 android:visibility="visible" />
         </RelativeLayout>
 
@@ -123,7 +121,6 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:visibility="invisible" />
-
 
 
         </LinearLayout>

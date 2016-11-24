@@ -11,6 +11,7 @@ import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lidroid.xutils.util.LogUtils;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.lzy.okgo.OkGo;
@@ -316,4 +317,61 @@ public class MomentClient extends BaseClient {
                 });
     }
 
+    public static void fetchOnesMoment(final String momentUsername, final String last, String limit, final ClientCallback callback) {
+        HttpParams params = new HttpParams();
+        params.put("uid", String.valueOf(IMLoginManager.instance().getLoginId()));
+        params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
+        params.put("moment_uid", momentUsername);
+        params.put("last", last);
+        params.put("limit", limit);
+        OkGo.post(getAbsoluteUrl("/Api/Moment/getOne"))
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        if (callback != null)
+                            callback.onPreConnection();
+                    }
+
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (callback != null)
+                            callback.onCloseConnection();
+                        try {
+                            MomentList data = JSON.parseObject(s, MomentList.class);
+                            if (data.status == 1) {
+                                for (int i = 0; i < data.list.size(); i++) {
+                                    Moment m = data.list.get(i);
+                                    boolean isFavor = false;
+                                    m.like_maps = new HashMap<String, UserInfo>();
+                                    for (UserInfo user : m.like_users) {
+                                        m.like_maps.put(user.getUid(), user);
+                                    }
+                                    if (m.like_maps.get(String.valueOf(IMLoginManager.instance().getLoginId())) != null) {
+                                        isFavor = true;
+                                    }
+                                    m.isFavor = isFavor;
+                                }
+                            }
+                            if (last.equals("0")) {
+                                SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), data, "moments-"+momentUsername);
+                            }
+                            callback.onSuccess(data);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            callback.onException(e);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        if (callback != null) {
+                            callback.onCloseConnection();
+                            callback.onFailure(e.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
 }
