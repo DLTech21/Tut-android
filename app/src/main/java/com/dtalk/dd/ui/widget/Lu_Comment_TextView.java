@@ -2,8 +2,10 @@ package com.dtalk.dd.ui.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -55,7 +57,7 @@ public class Lu_Comment_TextView extends TextView {
     public void setText_PingLun(final Lu_PingLun_info_Entity mText, final Lu_PingLunListener mListener) {
         mLu_pingLun_info_entity = mText;
         setTextColor(mText.getDefaultColor());
-        setHighlightColor(Color.TRANSPARENT);
+        setHighlightColor(Color.RED);
         setMovementMethod(LinkMovementMethod.getInstance());
         setOnLongClickListener(new OnLongClickListener() {
             @Override
@@ -76,7 +78,7 @@ public class Lu_Comment_TextView extends TextView {
             }
         });
         if (mText.getUser_B_ID() != null && !mText.getUser_B_ID().equals("") && mText.getUser_B_Name() != null && !mText.getUser_B_Name().equals("")) {
-            SpannableString spanText1 = new SpannableString(mText.getUser_A_Name() + "回复" + mText.getUser_B_Name() + "：" + mText.getText());
+            SpannableString spanText1 = new SpannableString(mText.getUser_A_Name() + "回复" + mText.getUser_B_Name() + "：");
             spanText1.setSpan(new ForegroundColorSpan(mText.getNameColor()), 0, mText.getUser_A_Name().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spanText1.setSpan(new Lu_PingLunNameonClick(mText, 1, mListener), 0, mText.getUser_A_Name().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spanText1.setSpan(new ForegroundColorSpan(mText.getNameColor()), (mText.getUser_A_Name() + "回复").length(), (mText.getUser_A_Name() + "回复" + mText.getUser_B_Name() + "：").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -84,12 +86,19 @@ public class Lu_Comment_TextView extends TextView {
             spanText1.setSpan(new Lu_PingLunNameonClick(mText, 3, mListener), (mText.getUser_A_Name() + "回复" + mText.getUser_B_Name() + "：").length(), spanText1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             setText(spanText1);
         } else {
-            SpannableString spanText1 = new SpannableString(mText.getUser_A_Name() + "：" + mText.getText());
+            SpannableString spanText1 = new SpannableString(mText.getUser_A_Name() + "：");
             spanText1.setSpan(new ForegroundColorSpan(mText.getNameColor()), 0, spanText1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spanText1.setSpan(new Lu_PingLunNameonClick(mText, 1, mListener), 0, mText.getUser_A_Name().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spanText1.setSpan(new Lu_PingLunNameonClick(mText, 3, mListener), (mText.getUser_A_Name() + "：").length(), spanText1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             setText(spanText1);
         }
+        setContent(mText.getText());
+    }
+
+    private void setContent(String content) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(content);
+//        EmojiconHandler.addEmojis(getContext(), builder, mEmojiconSize, mEmojiconTextSize, mTextStart, mTextLength, false);
+        append(builder);
     }
 
     public static CharSequence getSpanTextFormColor(String string, int start, int end, int color) {

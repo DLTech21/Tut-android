@@ -20,7 +20,6 @@
         android:padding="3dp"
         android:background="@drawable/avatar_bg"
         android:scaleType="centerCrop"
-        android:src="@drawable/test_avatar"
         android:layout_alignBottom="@id/friend_wall_pic"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
@@ -43,7 +42,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/test_avatar"/>
+            />
 
         <TextView
             android:id="@+id/message_detail"

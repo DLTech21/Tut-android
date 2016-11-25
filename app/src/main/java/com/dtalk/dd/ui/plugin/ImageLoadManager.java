@@ -32,6 +32,24 @@ public class ImageLoadManager {
                 .into(mImageView);
     }
 
+    public static void setCircleAvatarGlide(Context context, String PicURL, ImageView mImageView) {
+        Glide.with(context).load(PicURL)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .placeholder(R.drawable.tt_default_user_portrait_corner)
+                .error(R.drawable.tt_default_user_portrait_corner)
+                .into(mImageView);
+    }
+
+    public static void setCircleCoverGlide(Context context, String PicURL, ImageView mImageView) {
+        Glide.with(context).load(PicURL)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .placeholder(R.drawable.test_wallpic)
+                .error(R.drawable.test_wallpic)
+                .into(mImageView);
+    }
+
     public static void setCirclePubGlide(Context context, String PicURL, ImageView mImageView) {
         Glide.with(context).load(PicURL)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

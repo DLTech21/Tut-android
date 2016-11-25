@@ -1,0 +1,34 @@
+//plugins {
+//    id "com.jfrog.bintray" version "1.7.1"
+//}
+apply plugin: 'com.android.library'
+
+ext {
+    SUPPORT_LIBRARY_VERSION = '24.2.1'
+    BUILD_TOOLS = "24.0.2"
+    TARGET_SDK = 24
+    MIN_SDK = 16
+}
+
+android {
+    compileSdkVersion TARGET_SDK
+    buildToolsVersion BUILD_TOOLS
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion TARGET_SDK
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+}
+
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+// apply from: 'bintray.gradle'

@@ -361,6 +361,8 @@ public class LoginActivity extends TTBaseActivity {
                         UserInfo user = (UserInfo) data;
                         if (user.getStatus() == 1) {
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "token", user.getToken());
+                            SandboxUtils.getInstance().set(IMApplication.getInstance(), "avatar", user.getAvatar());
+                            SandboxUtils.getInstance().set(IMApplication.getInstance(), "cover", user.getMoment_cover());
                             SMSSDK.submitUserInfo(username, user.getNickname(), user.getAvatar(), "86", username);
                             imService.getLoginManager().login(username, password);
                         } else

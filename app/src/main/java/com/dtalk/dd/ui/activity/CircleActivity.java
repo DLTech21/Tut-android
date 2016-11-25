@@ -54,6 +54,7 @@ import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.adapter.CircleAdapter;
 import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.helper.Emoparser;
+import com.dtalk.dd.ui.plugin.ImageLoadManager;
 import com.dtalk.dd.ui.widget.CustomEditView;
 import com.dtalk.dd.ui.widget.EmoGridView;
 import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
@@ -63,6 +64,7 @@ import com.dtalk.dd.ui.widget.ptrwidget.FriendCirclePtrListView;
 import com.dtalk.dd.ui.widget.ptrwidget.OnLoadMoreRefreshListener;
 import com.dtalk.dd.ui.widget.ptrwidget.OnPullDownRefreshListener;
 import com.dtalk.dd.ui.widget.ptrwidget.PullMode;
+import com.dtalk.dd.utils.ImageLoaderUtil;
 import com.dtalk.dd.utils.KeyboardUtils;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.SandboxUtils;
@@ -118,6 +120,8 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     private switchInputMethodReceiver receiver;
     private String currentInputMethod;
     private String replyCommentUid;
+    private ImageView avatarImage;
+    private ImageView coverImage;
 //    @Override
 //    protected void onSaveInstanceState(Bundle savedInstanceState) {
 //        savedInstanceState.putInt(STATE_SCORE, listView.getFirstVisiblePosition());
@@ -171,7 +175,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 //                }
 //            }
 //        } else {
-            fetchMoments("0");
+        fetchMoments("0");
 //        }
     }
 
@@ -191,6 +195,8 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 
         listView = (FriendCirclePtrListView) findViewById(R.id.lvShare);
         friendCircleHeader = LayoutInflater.from(this).inflate(R.layout.item_header, null, false);
+        avatarImage = (ImageView) friendCircleHeader.findViewById(R.id.friend_avatar);
+        coverImage = (ImageView) friendCircleHeader.findViewById(R.id.friend_wall_pic);
         listView.setVerticalScrollBarEnabled(false);
         adapter = new CircleAdapter(this, this, this);
         listView.setRotateIcon((ImageView) findViewById(R.id.rotate_icon));
@@ -221,6 +227,8 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         emoGridView.setOnEmoGridViewItemClick(onEmoGridViewItemClick);
         emoGridView.setAdapter();
         baseRoot.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+        ImageLoadManager.setCircleAvatarGlide(this, SandboxUtils.getInstance().get(this, "avatar"), avatarImage);
+        ImageLoadManager.setCircleCoverGlide(this, SandboxUtils.getInstance().get(this, "cover"), coverImage);
     }
 
     private void initSoftInputMethod() {

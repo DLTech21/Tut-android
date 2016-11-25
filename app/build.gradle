@@ -80,6 +80,7 @@ dependencies {
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile project(':mgimlibs')
     compile project(':PhotoPicker')
+    compile project(':emoj_library')
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
