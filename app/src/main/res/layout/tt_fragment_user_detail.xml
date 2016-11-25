@@ -12,15 +12,14 @@
         <RelativeLayout
             android:id="@+id/user_container"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/user_detail_base"
-            android:padding="0dp">
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:background="#ffffff">
 
             <com.dtalk.dd.ui.widget.IMBaseImageView
                 android:id="@+id/user_portrait"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="centerCrop" />
@@ -29,10 +28,11 @@
                 android:id="@+id/nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="12dp"
                 android:layout_toRightOf="@+id/user_portrait"
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/userName"
@@ -40,20 +40,22 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickName"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="0dp"
                 android:layout_toRightOf="@+id/user_portrait"
                 android:textColor="@color/default_light_grey_color"
-                android:textSize="14sp" />
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/userName"
+                android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@+id/user_portrait"
                 android:gravity="center"
                 android:textColor="#ff71A8"
-                android:textStyle="italic"
+                android:textSize="13dp"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -61,11 +63,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="15dp"
             android:background="#ffffff"
             android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-
-            >
+            android:paddingRight="12dp">
 
             <TextView
                 android:id="@+id/tv_region_temp"
@@ -98,9 +99,8 @@
         <RelativeLayout
             android:id="@+id/picRL"
             android:layout_width="match_parent"
-            android:layout_height="68dp"
+            android:layout_height="wrap_content"
             android:background="#ffffff"
-            android:onClick="onClick"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:visibility="gone">
@@ -120,6 +120,7 @@
                 android:id="@+id/multiimage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/tv_pic_temp" />
@@ -127,7 +128,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/multiimage"
                 android:background="#DBDBDB" />
         </RelativeLayout>
 

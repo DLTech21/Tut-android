@@ -140,6 +140,7 @@ public class IMFriendManager extends IMManager {
                     userEntity.setRealName(userInfo.getRemarkname());
                     userEntity.setUpdated(timeNow);
                     userEntity.setPeerId(Integer.valueOf(userInfo.getUid()));
+                    userEntity.setArea(userInfo.getArea());
                     PinYin.getPinYin(userEntity.getMainName(), userEntity.getPinyinElement());
                     userMap.put(userEntity.getPeerId(), userEntity);
                     needDb.add(userEntity);

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,10 @@ import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
 import com.dtalk.dd.http.friend.FriendClient;
+import com.dtalk.dd.http.moment.Moment;
+import com.dtalk.dd.http.moment.MomentClient;
 import com.dtalk.dd.http.moment.MomentList;
+import com.dtalk.dd.ui.widget.MultiImageViewLayout;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.imservice.event.UserInfoEvent;
 import com.dtalk.dd.imservice.service.IMService;
@@ -31,12 +35,15 @@ import com.dtalk.dd.utils.ThemeUtils;
 import com.dtalk.dd.utils.ViewUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
 public class UserInfoFragment extends MainFragment {
-
+    private List<String> picUrls;
     private View curView = null;
+    MultiImageViewLayout multiImageViewLayout;
+    RelativeLayout picLayout;
     private IMService imService;
     private UserEntity currentUser;
     private int currentUserId;
@@ -64,6 +71,7 @@ public class UserInfoFragment extends MainFragment {
 //            //just single type
 //            userIds.add(currentUserId);
             imService.getContactManager().reqGetDetailUser(currentUserId + "");
+            getMoment("0", currentUserId+"");
         }
 
         @Override
@@ -87,6 +95,7 @@ public class UserInfoFragment extends MainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        picUrls = new ArrayList<>();
         currentUserId = getActivity().getIntent().getIntExtra(IntentConstant.KEY_PEERID, 0);
         imServiceConnector.connect(getActivity());
         if (null != curView) {
@@ -94,6 +103,8 @@ public class UserInfoFragment extends MainFragment {
             return curView;
         }
         curView = inflater.inflate(R.layout.tt_fragment_user_detail, topContentView);
+        picLayout = (RelativeLayout) curView.findViewById(R.id.picRL);
+        multiImageViewLayout = (MultiImageViewLayout) curView.findViewById(R.id.multiimage);
         super.init(curView);
         showProgressBar();
         initRes();
@@ -284,6 +295,47 @@ public class UserInfoFragment extends MainFragment {
     }
 
     private void getMoment(final String last, String fid) {
+        MomentClient.fetchOnesMoment(fid, last, "10", new BaseClient.ClientCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+                MomentList list = (MomentList) data;
+                for (Moment m : list.list) {
+                    picUrls.addAll(m.image);
+                }
+                Logger.e(picUrls.size()+"");
+                if (picUrls.size() > 3) {
+                    picLayout.setVisibility(View.VISIBLE);
+                    List mStrings = new ArrayList();
+                    for (int i=0;i<3;i++) {
+                        mStrings.add(picUrls.get(i));
+                    }
+                    multiImageViewLayout.setList(mStrings);
+                }
+                else {
+                    multiImageViewLayout.setList(picUrls);
+                }
+            }
+
+            @Override
+            public void onPreConnection() {
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+
+            @Override
+            public void onCloseConnection() {
+            }
+        });
     }
 
 }
