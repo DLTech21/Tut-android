@@ -17,10 +17,13 @@ package io.github.rockerhieu.emojicon;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.SparseIntArray;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.github.rockerhieu.emojicon.util.EmotionHelper;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)
@@ -1637,6 +1640,8 @@ public final class EmojiconHandler {
         }
 
         int skip;
+        int starts = 0;
+        int end = 0;
         for (int i = index; i < textLengthToProcess; i += skip) {
             skip = 0;
             int icon = 0;
@@ -1720,6 +1725,21 @@ public final class EmojiconHandler {
 
             if (icon > 0) {
                 text.setSpan(new EmojiconSpan(context, icon, emojiSize, emojiAlignment, textSize), i, i + skip, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            else {
+                if ((c+"").equals("[")) {
+                    starts = i;
+                }
+                else if ((c+"").equals("]")) {
+                    end = i;
+                    String emo = text.toString().substring(starts, end+1);
+                    if (EmotionHelper.EmotionRule.get(emo) == null) {
+                        text.setSpan(new SpannableString(emo), starts, end+1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    }
+                    else {
+                        text.setSpan(new EmojiconSpan(context, EmotionHelper.EmotionRule.get(emo), emojiSize, emojiAlignment, textSize), starts, end+1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    }
+                }
             }
         }
     }

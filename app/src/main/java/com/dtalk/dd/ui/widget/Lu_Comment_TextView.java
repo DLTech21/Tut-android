@@ -1,6 +1,7 @@
 package com.dtalk.dd.ui.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.Spannable;
@@ -9,10 +10,15 @@ import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
+import com.dtalk.dd.R;
+
+import io.github.rockerhieu.emojicon.EmojiconHandler;
 
 /**
  * https://github.com/hnsugar
@@ -21,13 +27,31 @@ import android.widget.TextView;
 public class Lu_Comment_TextView extends TextView {
     private Lu_PingLun_info_Entity mLu_pingLun_info_entity;
     private boolean isClickName = false;
+    private int mEmojiconSize;
+    private int mEmojiconAlignment;
+    private int mEmojiconTextSize;
+    private int mTextStart = 0;
+    private int mTextLength = -1;
 
     public Lu_Comment_TextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mEmojiconTextSize = (int) getTextSize();
+        if (attrs == null) {
+            mEmojiconSize = (int) getTextSize();
+        } else {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Emojicon);
+            mEmojiconSize = (int) a.getDimension(R.styleable.Emojicon_emojiconSize, getTextSize());
+            mEmojiconAlignment = a.getInt(R.styleable.Emojicon_emojiconAlignment, DynamicDrawableSpan.ALIGN_BASELINE);
+            mTextStart = a.getInteger(R.styleable.Emojicon_emojiconTextStart, 0);
+            mTextLength = a.getInteger(R.styleable.Emojicon_emojiconTextLength, -1);
+            a.recycle();
+        }
     }
 
     public Lu_Comment_TextView(Context context) {
         super(context);
+        mEmojiconTextSize = (int) getTextSize();
+        mEmojiconSize = (int) getTextSize();
     }
 
     public Lu_PingLun_info_Entity getLu_pingLun_info_entity(String ID, String mUser_A_ID, String mUser_A_Name, String mUser_A_Logo, String mUser_B_ID, String mUser_B_Name, String mUser_B_Logo, String mText, int mNameColor, int mDefaultColor) {
@@ -55,6 +79,7 @@ public class Lu_Comment_TextView extends TextView {
     }
 
     public void setText_PingLun(final Lu_PingLun_info_Entity mText, final Lu_PingLunListener mListener) {
+
         mLu_pingLun_info_entity = mText;
         setTextColor(mText.getDefaultColor());
         setHighlightColor(Color.RED);
@@ -97,7 +122,7 @@ public class Lu_Comment_TextView extends TextView {
 
     private void setContent(String content) {
         SpannableStringBuilder builder = new SpannableStringBuilder(content);
-//        EmojiconHandler.addEmojis(getContext(), builder, mEmojiconSize, mEmojiconTextSize, mTextStart, mTextLength, false);
+        EmojiconHandler.addEmojis(getContext(), builder, mEmojiconSize, mEmojiconAlignment, mEmojiconTextSize, mTextStart, mTextLength, false);
         append(builder);
     }
 
