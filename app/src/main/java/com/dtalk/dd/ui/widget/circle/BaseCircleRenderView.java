@@ -1,6 +1,8 @@
 package com.dtalk.dd.ui.widget.circle;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.text.style.DynamicDrawableSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +57,23 @@ public class BaseCircleRenderView extends RelativeLayout {
     protected ViewGroup parentView;
     protected boolean isMine;
     protected OnMoreCircleListener onMoreCircleListener;
-
     protected OnDeleteCircleListener onDeleteCircleListener;
+
+    private int mEmojiconSize;
+    private int mEmojiconAlignment;
+    private int mEmojiconTextSize;
+    private int mTextStart = 0;
+    private int mTextLength = -1;
 
     protected BaseCircleRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Emojicon);
+            mEmojiconAlignment = a.getInt(R.styleable.Emojicon_emojiconAlignment, DynamicDrawableSpan.ALIGN_BASELINE);
+            mTextStart = a.getInteger(R.styleable.Emojicon_emojiconTextStart, 0);
+            mTextLength = a.getInteger(R.styleable.Emojicon_emojiconTextLength, -1);
+            a.recycle();
+        }
     }
 
     // 渲染之后做的事情 子类会调用到这个地方嘛?
@@ -69,6 +83,7 @@ public class BaseCircleRenderView extends RelativeLayout {
         portrait = (IMBaseImageView) findViewById(R.id.user_portrait);
         name = (TextView) findViewById(R.id.name);
         content = (TextView) findViewById(R.id.tv_content);
+        mEmojiconSize = (int) content.getTextSize();
         tvTime = (TextView) findViewById(R.id.date);
         tvDelete = (TextView) findViewById(R.id.delete);
         tvMore = (TextView) findViewById(R.id.btn_more);
@@ -179,9 +194,30 @@ public class BaseCircleRenderView extends RelativeLayout {
         }
     }
 
+    public int getmEmojiconSize() {
+        return mEmojiconSize;
+    }
+
+    public int getmEmojiconAlignment() {
+        return mEmojiconAlignment;
+    }
+
+    public int getmEmojiconTextSize() {
+        return mEmojiconTextSize;
+    }
+
+    public int getmTextStart() {
+        return mTextStart;
+    }
+
+    public int getmTextLength() {
+        return mTextLength;
+    }
+
     /**
      * -------------------------set/get--------------------------
      */
+
     public ImageView getPortrait() {
         return portrait;
     }

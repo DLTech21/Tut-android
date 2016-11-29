@@ -3,6 +3,7 @@ package com.dtalk.dd.ui.widget.circle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.dtalk.dd.utils.StringUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.rockerhieu.emojicon.EmojiconHandler;
 
 /**
  * Created by Donal on 16/7/29.
@@ -48,7 +51,9 @@ public class ImageCircleRenderView extends BaseCircleRenderView {
     @Override
     public void render(Moment moment, final Context ctx, int position) {
         super.render(moment, ctx, position);
-        getContent().setText(moment.content);
+        SpannableStringBuilder builder = new SpannableStringBuilder(moment.content);
+        EmojiconHandler.addEmojis(getContext(), builder, getmEmojiconSize(), getmEmojiconAlignment(), getmEmojiconTextSize(), getmTextStart(), getmTextLength(), false);
+        getContent().setText(builder);
         if (StringUtils.notEmpty(moment.content)) {
             getContent().setVisibility(VISIBLE);
         }

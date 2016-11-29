@@ -38,6 +38,7 @@ public class UserEntity extends PeerEntity {
 
     private int isFriend;
     private String area;
+    private String momentcover;
 
     // KEEP FIELDS - put your custom fields here
     private PinYinElement pinyinElement = new PinYinElement();
@@ -51,7 +52,7 @@ public class UserEntity extends PeerEntity {
         this.id = id;
     }
 
-    public UserEntity(Long id, int peerId, int gender, String mainName, String pinyinName, String realName, String avatar, String phone, String email, int departmentId, int status, int created, int updated, int isFriend, String area) {
+    public UserEntity(Long id, int peerId, int gender, String mainName, String pinyinName, String realName, String avatar, String phone, String email, int departmentId, int status, int created, int updated, int isFriend, String area, String momentcover) {
         this.id = id;
         this.peerId = peerId;
         this.gender = gender;
@@ -67,6 +68,7 @@ public class UserEntity extends PeerEntity {
         this.updated = updated;
         this.isFriend = isFriend;
         this.area = area;
+        this.momentcover = momentcover;
     }
 
     public Long getId() {
@@ -226,6 +228,14 @@ public class UserEntity extends PeerEntity {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getMomentcover() {
+        return momentcover;
+    }
+
+    public void setMomentcover(String momentcover) {
+        this.momentcover = momentcover;
     }
 
     @Override

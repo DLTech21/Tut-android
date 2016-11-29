@@ -39,6 +39,7 @@ public class UserDao extends AbstractDao<UserEntity, Long> {
         public final static Property Updated = new Property(12, int.class, "updated", false, "UPDATED");
         public final static Property IsFriend = new Property(13, int.class, "isFriend", false, "ISFRIEND");
         public final static Property Area = new Property(14, String.class, "area", false, "AREA");
+        public final static Property MomentCover = new Property(14, String.class, "momentcover", false, "MOMENTCOVER");
     }
 
     ;
@@ -72,7 +73,8 @@ public class UserDao extends AbstractDao<UserEntity, Long> {
                 "'CREATED' INTEGER NOT NULL ," + // 11: created
                 "'UPDATED' INTEGER NOT NULL ," + // 12: updated
                 "'ISFRIEND' INTEGER NOT NULL ," + //13: isfriend
-                "'AREA' TEXT NOT NULL);"); //14: area
+                "'AREA' TEXT NOT NULL ," +//14: area
+                "'MOMENTCOVER' TEXT NOT NULL);"); //15: MOMENTCOVER
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_UserInfo_PEER_ID ON UserInfo" +
                 " (PEER_ID);");
@@ -111,6 +113,7 @@ public class UserDao extends AbstractDao<UserEntity, Long> {
         stmt.bindLong(13, entity.getUpdated());
         stmt.bindLong(14, entity.getIsFriend());
         stmt.bindString(15, entity.getArea());
+        stmt.bindString(16, entity.getMomentcover());
     }
 
     /**
@@ -141,7 +144,8 @@ public class UserDao extends AbstractDao<UserEntity, Long> {
                 cursor.getInt(offset + 11), // created
                 cursor.getInt(offset + 12), // updated
                 cursor.getInt(offset + 13),//
-                cursor.getString(offset + 14)
+                cursor.getString(offset + 14),
+                cursor.getString(offset + 15)
         );
         return entity;
     }
@@ -166,6 +170,7 @@ public class UserDao extends AbstractDao<UserEntity, Long> {
         entity.setUpdated(cursor.getInt(offset + 12));
         entity.setIsFriend(cursor.getInt(offset + 13));
         entity.setArea(cursor.getString(offset + 14));
+        entity.setMomentcover(cursor.getString(offset + 15));
     }
 
     /**

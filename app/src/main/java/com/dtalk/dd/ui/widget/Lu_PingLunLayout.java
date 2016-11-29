@@ -88,6 +88,7 @@ public class Lu_PingLunLayout extends LinearLayout {
             if (view == null) {
                 throw new NullPointerException("listview item layout is null, please check getView()...");
             }
+            view.setPadding(5, 2, 5, 2);
             addView(view, layoutParams);
             if (i < getCount() - 1) {
                 TextView line = new TextView(mContext);

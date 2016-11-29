@@ -1,6 +1,7 @@
 package com.dtalk.dd.ui.widget.circle;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.utils.StringUtils;
+
+import io.github.rockerhieu.emojicon.EmojiconHandler;
 
 /**
  * Created by Donal on 16/7/29.
@@ -42,7 +45,9 @@ public class LongtxtCircleRenderView extends BaseCircleRenderView {
     @Override
     public void render(Moment moment, Context ctx, int position) {
         super.render(moment, ctx, position);
-        getContent().setText(moment.title);
+        SpannableStringBuilder builder = new SpannableStringBuilder(moment.title);
+        EmojiconHandler.addEmojis(getContext(), builder, getmEmojiconSize(), getmEmojiconAlignment(), getmEmojiconTextSize(), getmTextStart(), getmTextLength(), false);
+        getContent().setText(builder);
         if (StringUtils.notEmpty(moment.title)) {
             getContent().setVisibility(VISIBLE);
         }
