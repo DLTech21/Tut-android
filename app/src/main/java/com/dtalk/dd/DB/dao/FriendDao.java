@@ -37,7 +37,7 @@ public class FriendDao extends AbstractDao<UserEntity, Long> {
         public final static Property Updated = new Property(12, int.class, "updated", false, "UPDATED");
         public final static Property IsFriend = new Property(13, int.class, "isFriend", false, "ISFRIEND");
         public final static Property Area = new Property(14, String.class, "area", false, "AREA");
-        public final static Property MomentCover = new Property(14, String.class, "momentcover", false, "MOMENTCOVER");
+        public final static Property MomentCover = new Property(15, String.class, "momentcover", false, "MOMENTCOVER");
     }
 
     ;
