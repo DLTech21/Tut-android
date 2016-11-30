@@ -32,12 +32,14 @@ public class CircleAdapter extends BaseAdapter {
     private Context ctx;
     private BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener;
     private BaseCircleRenderView.OnMoreCircleListener onMoreCircleListener;
+    private boolean isSelf;
 
-    public CircleAdapter(Context ctx, BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener, BaseCircleRenderView.OnMoreCircleListener onMoreCircleListener) {
+    public CircleAdapter(Context ctx, BaseCircleRenderView.OnDeleteCircleListener onDeleteCircleListener, BaseCircleRenderView.OnMoreCircleListener onMoreCircleListener, boolean isSelf) {
         this.onDeleteCircleListener = onDeleteCircleListener;
         this.onMoreCircleListener = onMoreCircleListener;
         this.ctx = ctx;
         mCommentPopup = new CommentPopup((CircleActivity) this.ctx);
+        this.isSelf = isSelf;
     }
 
 
@@ -155,7 +157,7 @@ public class CircleAdapter extends BaseAdapter {
                 mCommentPopup.showPopupWindow(videoCircleRenderView.getTvMore(), moment.isFavor);
             }
         });
-        videoCircleRenderView.render(moment, ctx, position);
+        videoCircleRenderView.render(moment, ctx, position, isSelf);
         videoCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         videoCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return videoCircleRenderView;
@@ -186,7 +188,7 @@ public class CircleAdapter extends BaseAdapter {
                 mCommentPopup.showPopupWindow(imageCircleRenderView.getTvMore(), moment.isFavor);
             }
         });
-        imageCircleRenderView.render(moment, ctx, position);
+        imageCircleRenderView.render(moment, ctx, position, isSelf);
         imageCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         imageCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return imageCircleRenderView;
@@ -217,7 +219,7 @@ public class CircleAdapter extends BaseAdapter {
                 mCommentPopup.showPopupWindow(urlCircleRenderView.getTvMore(), moment.isFavor);
             }
         });
-        urlCircleRenderView.render(moment, ctx, position);
+        urlCircleRenderView.render(moment, ctx, position, isSelf);
         urlCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         urlCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return urlCircleRenderView;
@@ -248,7 +250,7 @@ public class CircleAdapter extends BaseAdapter {
                 mCommentPopup.showPopupWindow(longtxtCircleRenderView.getTvMore(), moment.isFavor);
             }
         });
-        longtxtCircleRenderView.render(moment, ctx, position);
+        longtxtCircleRenderView.render(moment, ctx, position, isSelf);
         longtxtCircleRenderView.setOnDeleteCircleListener(onDeleteCircleListener);
         longtxtCircleRenderView.setOnMoreCircleListener(onMoreCircleListener);
         return longtxtCircleRenderView;

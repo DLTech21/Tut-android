@@ -21,6 +21,7 @@ import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.http.moment.MomentClient;
 import com.dtalk.dd.http.moment.MomentList;
+import com.dtalk.dd.ui.activity.CircleActivity;
 import com.dtalk.dd.ui.widget.MultiImageViewLayout;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.imservice.event.UserInfoEvent;
@@ -71,7 +72,7 @@ public class UserInfoFragment extends MainFragment {
 //            //just single type
 //            userIds.add(currentUserId);
             imService.getContactManager().reqGetDetailUser(currentUserId + "");
-            getMoment("0", currentUserId+"");
+            getMoment("0", currentUserId + "");
         }
 
         @Override
@@ -105,6 +106,17 @@ public class UserInfoFragment extends MainFragment {
         curView = inflater.inflate(R.layout.tt_fragment_user_detail, topContentView);
         picLayout = (RelativeLayout) curView.findViewById(R.id.picRL);
         multiImageViewLayout = (MultiImageViewLayout) curView.findViewById(R.id.multiimage);
+        multiImageViewLayout.setOnItemClickListener(new MultiImageViewLayout.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int PressImagePosition, float PressX, float PressY) {
+                CircleActivity.openCircle(getActivity(), true, currentUserId + "", currentUser.getAvatar(), currentUser.getMomentcover());
+            }
+
+            @Override
+            public void onItemLongClick(View view, int PressImagePosition, float PressX, float PressY) {
+
+            }
+        });
         super.init(curView);
         showProgressBar();
         initRes();
@@ -281,7 +293,7 @@ public class UserInfoFragment extends MainFragment {
     }
 
     private void fetchMomentsByCache(String fxid) {
-        MomentList list = (MomentList) SandboxUtils.getInstance().readObject(getActivity(), "momonets-"+fxid);
+        MomentList list = (MomentList) SandboxUtils.getInstance().readObject(getActivity(), "momonets-" + fxid);
         if (list != null) {
 //            for (Moment m : list.list) {
 //                picUrls.addAll(m.image);
@@ -303,16 +315,15 @@ public class UserInfoFragment extends MainFragment {
                 for (Moment m : list.list) {
                     picUrls.addAll(m.image);
                 }
-                Logger.e(picUrls.size()+"");
+                Logger.e(picUrls.size() + "");
                 if (picUrls.size() > 3) {
                     picLayout.setVisibility(View.VISIBLE);
                     List mStrings = new ArrayList();
-                    for (int i=0;i<3;i++) {
+                    for (int i = 0; i < 3; i++) {
                         mStrings.add(picUrls.get(i));
                     }
                     multiImageViewLayout.setList(mStrings);
-                }
-                else {
+                } else {
                     multiImageViewLayout.setList(picUrls);
                 }
             }

@@ -49,8 +49,8 @@ public class ImageCircleRenderView extends BaseCircleRenderView {
     }
 
     @Override
-    public void render(Moment moment, final Context ctx, int position) {
-        super.render(moment, ctx, position);
+    public void render(Moment moment, final Context ctx, int position, boolean isSelf) {
+        super.render(moment, ctx, position, isSelf);
         SpannableStringBuilder builder = new SpannableStringBuilder(moment.content);
         EmojiconHandler.addEmojis(getContext(), builder, getmEmojiconSize(), getmEmojiconAlignment(), getmEmojiconTextSize(), getmTextStart(), getmTextLength(), false);
         getContent().setText(builder);

@@ -96,6 +96,8 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         BaseCircleRenderView.OnDeleteCircleListener,
         TextWatcher,
         BaseCircleRenderView.OnMoreCircleListener {
+    public static final String IS_SELF = "IS_SELF";
+    private boolean isSelf;
     private CircleAdapter adapter;
     private View friendCircleHeader;
     private FriendCirclePtrListView listView;
@@ -122,13 +124,28 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     private String replyCommentUid;
     private ImageView avatarImage;
     private ImageView coverImage;
-//    @Override
+    //    @Override
 //    protected void onSaveInstanceState(Bundle savedInstanceState) {
 //        savedInstanceState.putInt(STATE_SCORE, listView.getFirstVisiblePosition());
 //        savedInstanceState.putSerializable("listdata", (Serializable) adapter.getCircleObjectList());
 //
 //        super.onSaveInstanceState(savedInstanceState);
 //    }
+    private String fid;
+    private String avatar;
+    private String cover;
+
+    public static void openCircle(Context context, boolean isSelf, String fid, String avatar, String cover) {
+        context.startActivity(new Intent(context, CircleActivity.class)
+                .putExtra(IS_SELF, isSelf)
+                .putExtra("fid", fid)
+                .putExtra("avatar", avatar)
+                .putExtra("cover", cover));
+    }
+
+    public static void openCircle(Context context, boolean isSelf) {
+        context.startActivity(new Intent(context, CircleActivity.class).putExtra(IS_SELF, isSelf));
+    }
 
 
     @Override
@@ -157,6 +174,12 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        isSelf = getIntent().getBooleanExtra(IS_SELF, false);
+        if (isSelf) {
+            fid = getIntent().getStringExtra("fid");
+            avatar = getIntent().getStringExtra("avatar");
+            cover = getIntent().getStringExtra("cover");
+        }
         svProgressHUD = new SVProgressHUD(this);
         initSoftInputMethod();
         initView();
@@ -184,7 +207,9 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         ViewUtils.inject(this);
         setLeftButton(R.drawable.tt_top_back);
         setLeftText(getResources().getString(R.string.top_left_back));
-        setRightButton(R.drawable.circle_camera);
+        if (!isSelf) {
+            setRightButton(R.drawable.circle_camera);
+        }
         topLeftBtn.setOnClickListener(this);
         letTitleTxt.setOnClickListener(this);
         topRightBtn.setOnClickListener(this);
@@ -198,7 +223,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         avatarImage = (ImageView) friendCircleHeader.findViewById(R.id.friend_avatar);
         coverImage = (ImageView) friendCircleHeader.findViewById(R.id.friend_wall_pic);
         listView.setVerticalScrollBarEnabled(false);
-        adapter = new CircleAdapter(this, this, this);
+        adapter = new CircleAdapter(this, this, this, isSelf);
         listView.setRotateIcon((ImageView) findViewById(R.id.rotate_icon));
         listView.addHeaderView(friendCircleHeader);
         listView.setAdapter(adapter);
@@ -227,8 +252,13 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         emoGridView.setOnEmoGridViewItemClick(onEmoGridViewItemClick);
         emoGridView.setAdapter();
         baseRoot.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
-        ImageLoadManager.setCircleAvatarGlide(this, SandboxUtils.getInstance().get(this, "avatar"), avatarImage);
-        ImageLoadManager.setCircleCoverGlide(this, SandboxUtils.getInstance().get(this, "cover"), coverImage);
+        if (isSelf) {
+            ImageLoadManager.setCircleAvatarGlide(this, avatar, avatarImage);
+            ImageLoadManager.setCircleCoverGlide(this, cover, coverImage);
+        } else {
+            ImageLoadManager.setCircleAvatarGlide(this, SandboxUtils.getInstance().get(this, "avatar"), avatarImage);
+            ImageLoadManager.setCircleCoverGlide(this, SandboxUtils.getInstance().get(this, "cover"), coverImage);
+        }
     }
 
     private void initSoftInputMethod() {
@@ -396,48 +426,95 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     }
 
     private void fetchMoments(final String last) {
-        MomentClient.fetchMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), last, "10", new BaseClient.ClientCallback() {
+        if (isSelf) {
+            MomentClient.fetchOnesMoment(fid, last, "10", new BaseClient.ClientCallback() {
 
-            @Override
-            public void onSuccess(Object data) {
-                MomentList list = (MomentList) data;
-                if (last.equals("0")) {
-                    adapter.clearAllItem();
-                }
-                pushList(list.list);
-                if (!list.list.isEmpty()) {
-                    lastId = list.list.get(list.list.size() - 1).moment_id;
-                    lvDataState = SysConstant.LISTVIEW_DATA_MORE;
-                    listView.setHasMore(true);
-                } else {
-                    lvDataState = SysConstant.LISTVIEW_DATA_FULL;
-                    listView.setHasMore(false);
-                }
-            }
-
-            @Override
-            public void onPreConnection() {
-            }
-
-            @Override
-            public void onFailure(String message) {
-            }
-
-            @Override
-            public void onException(Exception e) {
-            }
-
-
-            @Override
-            public void onCloseConnection() {
-                if (listView != null) {
-                    listView.refreshComplete();
-                    if (listView.getCurMode() == PullMode.FROM_BOTTOM) {
-                        listView.loadmoreCompelete();
+                @Override
+                public void onSuccess(Object data) {
+                    MomentList list = (MomentList) data;
+                    if (last.equals("0")) {
+                        adapter.clearAllItem();
+                    }
+                    pushList(list.list);
+                    if (!list.list.isEmpty()) {
+                        lastId = list.list.get(list.list.size() - 1).moment_id;
+                        lvDataState = SysConstant.LISTVIEW_DATA_MORE;
+                        listView.setHasMore(true);
+                    } else {
+                        lvDataState = SysConstant.LISTVIEW_DATA_FULL;
+                        listView.setHasMore(false);
                     }
                 }
-            }
-        });
+
+                @Override
+                public void onPreConnection() {
+
+                }
+
+                @Override
+                public void onFailure(String message) {
+
+                }
+
+                @Override
+                public void onException(Exception e) {
+
+                }
+
+                @Override
+                public void onCloseConnection() {
+                    if (listView != null) {
+                        listView.refreshComplete();
+                        if (listView.getCurMode() == PullMode.FROM_BOTTOM) {
+                            listView.loadmoreCompelete();
+                        }
+                    }
+                }
+            });
+        } else {
+            MomentClient.fetchMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), last, "10", new BaseClient.ClientCallback() {
+
+                @Override
+                public void onSuccess(Object data) {
+                    MomentList list = (MomentList) data;
+                    if (last.equals("0")) {
+                        adapter.clearAllItem();
+                    }
+                    pushList(list.list);
+                    if (!list.list.isEmpty()) {
+                        lastId = list.list.get(list.list.size() - 1).moment_id;
+                        lvDataState = SysConstant.LISTVIEW_DATA_MORE;
+                        listView.setHasMore(true);
+                    } else {
+                        lvDataState = SysConstant.LISTVIEW_DATA_FULL;
+                        listView.setHasMore(false);
+                    }
+                }
+
+                @Override
+                public void onPreConnection() {
+                }
+
+                @Override
+                public void onFailure(String message) {
+                }
+
+                @Override
+                public void onException(Exception e) {
+                }
+
+
+                @Override
+                public void onCloseConnection() {
+                    if (listView != null) {
+                        listView.refreshComplete();
+                        if (listView.getCurMode() == PullMode.FROM_BOTTOM) {
+                            listView.loadmoreCompelete();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private EmoGridView.OnEmoGridViewItemClick onEmoGridViewItemClick = new EmoGridView.OnEmoGridViewItemClick() {

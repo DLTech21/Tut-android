@@ -94,7 +94,7 @@ public class BaseCircleRenderView extends RelativeLayout {
     /**
      * 控件赋值
      */
-    public void render(final Moment moment, final Context ctx, final int position) {
+    public void render(final Moment moment, final Context ctx, final int position, boolean isSelf) {
         this.moment = moment;
         this.position = position;
         String avatar = moment.avatar;
@@ -133,6 +133,13 @@ public class BaseCircleRenderView extends RelativeLayout {
                 }
             }
         });
+
+        if (isSelf) {
+            layPraise.setVisibility(GONE);
+            getTvMore().setVisibility(GONE);
+            layComment.setVisibility(GONE);
+            return;
+        }
 
         Lu_Comment_TextView temp = new Lu_Comment_TextView(ctx);
         final List<Lu_Comment_TextView.Lu_PingLun_info_Entity> mList = new ArrayList<Lu_Comment_TextView.Lu_PingLun_info_Entity>();

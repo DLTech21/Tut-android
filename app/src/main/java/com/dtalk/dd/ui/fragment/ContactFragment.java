@@ -124,7 +124,7 @@ public class ContactFragment extends MainFragment  {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CircleActivity.class));
+            CircleActivity.openCircle(getActivity(), false);
             }
         });
     }
