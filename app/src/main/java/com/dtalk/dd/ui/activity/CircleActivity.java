@@ -147,7 +147,6 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         context.startActivity(new Intent(context, CircleActivity.class).putExtra(IS_SELF, isSelf));
     }
 
-
     @Override
     public void onBackPressed() {
         if (tt_layout_bottom.getVisibility() == View.VISIBLE) {
@@ -161,11 +160,11 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     protected void onDestroy() {
         unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
-        MomentList temp = new MomentList();
-        temp.list = new ArrayList<>();
-        temp.list.addAll(adapter.getCircleObjectList());
-        temp.status = 1;
-        SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), temp, "circle");
+//        MomentList temp = new MomentList();
+//        temp.list = new ArrayList<>();
+//        temp.list.addAll(adapter.getCircleObjectList());
+//        temp.status = 1;
+//        SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), temp, "circle");
         super.onDestroy();
         svProgressHUD.dismiss();
     }
