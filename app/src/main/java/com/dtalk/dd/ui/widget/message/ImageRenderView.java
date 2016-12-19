@@ -22,7 +22,6 @@ import com.dtalk.dd.utils.Logger;
 /**
  * @author : yingmu on 15-1-9.
  * @email : yingmu@mogujie.com.
- *
  */
 public class ImageRenderView extends BaseMsgRenderView {
 
@@ -30,19 +29,25 @@ public class ImageRenderView extends BaseMsgRenderView {
     private ImageLoadListener imageLoadListener;
     private BtnImageListener btnImageListener;
 
-    /** 可点击的view*/
+    /**
+     * 可点击的view
+     */
     private View messageLayout;
-    /**图片消息体*/
+    /**
+     * 图片消息体
+     */
     private BubbleImageView messageImage;
-    /** 图片状态指示*/
+    /**
+     * 图片状态指示
+     */
     private MGProgressbar imageProgress;
 
     public ImageRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public static ImageRenderView inflater(Context context,ViewGroup viewGroup,boolean isMine){
-        int resource = isMine?R.layout.tt_mine_image_message_item:R.layout.tt_other_image_message_item;
+    public static ImageRenderView inflater(Context context, ViewGroup viewGroup, boolean isMine) {
+        int resource = isMine ? R.layout.tt_mine_image_message_item : R.layout.tt_other_image_message_item;
         ImageRenderView imageRenderView = (ImageRenderView) LayoutInflater.from(context).inflate(resource, viewGroup, false);
         imageRenderView.setMine(isMine);
         imageRenderView.setParentView(viewGroup);
@@ -64,20 +69,18 @@ public class ImageRenderView extends BaseMsgRenderView {
 
     /**
      * 控件赋值
+     *
      * @param messageEntity
-     * @param userEntity
-     *
-     * 对于mine。 图片send_success 就是成功了直接取地址
-     * 对于sending  就是正在上传
-     *
-     * 对于other，消息一定是success，接受成功额
-     * 2. 然后分析loadStatus 判断消息的展示状态
+     * @param userEntity    对于mine。 图片send_success 就是成功了直接取地址
+     *                      对于sending  就是正在上传
+     *                      <p>
+     *                      对于other，消息一定是success，接受成功额
+     *                      2. 然后分析loadStatus 判断消息的展示状态
      */
     @Override
-    public void render(final MessageEntity messageEntity,final UserEntity userEntity,Context ctx) {
-        super.render(messageEntity, userEntity,ctx);
+    public void render(final MessageEntity messageEntity, final UserEntity userEntity, Context ctx) {
+        super.render(messageEntity, userEntity, ctx);
     }
-
 
 
     /**
@@ -86,24 +89,23 @@ public class ImageRenderView extends BaseMsgRenderView {
      * 1. 图片上传失败。点击图片重新上传??[也是重新发送]
      * 2. 图片上传成功，但是发送失败。 点击重新发送??
      * 3. 比较悲剧的是 图片上传失败和消息发送失败都是这个状态 不过可以通过另外一个状态来区别 图片load状态
+     *
      * @param entity
      */
     @Override
     public void msgFailure(final MessageEntity entity) {
         super.msgFailure(entity);
-        messageImage.setOnClickListener(new OnClickListener(){
+        messageImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 /**判断状态，重新发送resend*/
                 btnImageListener.onMsgFailure();
             }
         });
-        if(FileUtil.isFileExist(((ImageMessage)entity).getPath()))
-        {
-            messageImage.setImageUrl("file://"+((ImageMessage)entity).getPath());
-        }
-        else{
-            messageImage.setImageUrl(((ImageMessage)entity).getUrl());
+        if (FileUtil.isFileExist(((ImageMessage) entity).getPath())) {
+            messageImage.setImageUrl("file://" + ((ImageMessage) entity).getPath());
+        } else {
+            messageImage.setImageUrl(((ImageMessage) entity).getUrl());
         }
         imageProgress.hideProgress();
     }
@@ -123,10 +125,8 @@ public class ImageRenderView extends BaseMsgRenderView {
      */
     @Override
     public void msgSendinging(final MessageEntity entity) {
-        if(isMine())
-        {
-            if(FileUtil.isFileExist(((ImageMessage)entity).getPath()))
-            {
+        if (isMine()) {
+            if (FileUtil.isFileExist(((ImageMessage) entity).getPath())) {
 
                 messageImage.setImageLoaddingCallback(new BubbleImageView.ImageLoaddingCallback() {
                     @Override
@@ -149,10 +149,8 @@ public class ImageRenderView extends BaseMsgRenderView {
                         imageProgress.hideProgress();
                     }
                 });
-                messageImage.setImageUrl("file://"+((ImageMessage)entity).getPath());
-            }
-            else
-            {
+                messageImage.setImageUrl("file://" + ((ImageMessage) entity).getPath());
+            } else {
                 //todo  文件不存在
             }
         }
@@ -169,23 +167,22 @@ public class ImageRenderView extends BaseMsgRenderView {
     @Override
     public void msgSuccess(final MessageEntity entity) {
         super.msgSuccess(entity);
-        ImageMessage imageMessage = (ImageMessage)entity;
+        ImageMessage imageMessage = (ImageMessage) entity;
         final String imagePath = imageMessage.getPath();
         final String url = imageMessage.getUrl();
         int loadStatus = imageMessage.getLoadStatus();
-        if(TextUtils.isEmpty(url)){
+        if (TextUtils.isEmpty(url)) {
             /**消息状态异常*/
             msgStatusError(entity);
             return;
         }
 
         switch (loadStatus) {
-            case MessageConstant.IMAGE_UNLOAD:{
+            case MessageConstant.IMAGE_UNLOAD: {
                 messageImage.setImageLoaddingCallback(new BubbleImageView.ImageLoaddingCallback() {
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap bitmap) {
-                        if(imageLoadListener!=null)
-                        {
+                        if (imageLoadListener != null) {
                             imageLoadListener.onLoadComplete(imageUri);
                         }
                         getImageProgress().hideProgress();
@@ -208,27 +205,24 @@ public class ImageRenderView extends BaseMsgRenderView {
                     }
                 });
 
-                if(isMine())
-                {
-                    if(FileUtil.isFileExist(imagePath))
-                    {
-                        messageImage.setImageUrl("file://"+imagePath);
-                    }
-                    else
-                    {
+                if (isMine()) {
+                    if (FileUtil.isFileExist(imagePath)) {
+                        messageImage.setImageUrl("file://" + imagePath);
+                    } else {
                         messageImage.setImageUrl(url);
                     }
-                }
-                else {
+                } else {
                     messageImage.setImageUrl(url);
                 }
-            }break;
+            }
+            break;
 
-            case MessageConstant.IMAGE_LOADING:{
+            case MessageConstant.IMAGE_LOADING: {
 
-            }break;
+            }
+            break;
 
-            case MessageConstant.IMAGE_LOADED_SUCCESS:{
+            case MessageConstant.IMAGE_LOADED_SUCCESS: {
                 messageImage.setImageLoaddingCallback(new BubbleImageView.ImageLoaddingCallback() {
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
@@ -251,34 +245,38 @@ public class ImageRenderView extends BaseMsgRenderView {
                     }
                 });
 
-                if(isMine())
-                {
-                    if(FileUtil.isFileExist(imagePath))
-                    {
-                        messageImage.setImageUrl("file://"+imagePath);
-                    }
-                    else
-                    {
+                if (isMine()) {
+                    if (FileUtil.isFileExist(imagePath)) {
+                        messageImage.setImageUrl("file://" + imagePath);
+                    } else {
                         messageImage.setImageUrl(url);
                     }
-                }
-                else {
+                } else {
                     messageImage.setImageUrl(url);
                 }
+                messageImage.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (btnImageListener != null) {
+                            btnImageListener.onMsgSuccessLongClick();
+                        }
+                        return true;
+                    }
+                });
                 messageImage.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(btnImageListener!=null)
-                        {
+                        if (btnImageListener != null) {
                             btnImageListener.onMsgSuccess();
                         }
                     }
                 });
 
-            }break;
+            }
+            break;
 
             //todo 图像失败了，允许点击之后重新下载
-            case MessageConstant.IMAGE_LOADED_FAILURE:{
+            case MessageConstant.IMAGE_LOADED_FAILURE: {
 //                msgStatusError(imageMessage);
 //                getImageProgress().hideProgress();
                 messageImage.setImageLoaddingCallback(new BubbleImageView.ImageLoaddingCallback() {
@@ -308,37 +306,46 @@ public class ImageRenderView extends BaseMsgRenderView {
                         messageImage.setImageUrl(url);
                     }
                 });
-            }break;
+            }
+            break;
 
         }
     }
 
-    /**---------------------图片下载相关、点击、以及事件回调start-----------------------------------*/
-    public interface  BtnImageListener{
+    /**
+     * ---------------------图片下载相关、点击、以及事件回调start-----------------------------------
+     */
+    public interface BtnImageListener {
         public void onMsgSuccess();
+
         public void onMsgFailure();
+
+        public void onMsgSuccessLongClick();
     }
 
-    public void setBtnImageListener(BtnImageListener btnImageListener){
+    public void setBtnImageListener(BtnImageListener btnImageListener) {
         this.btnImageListener = btnImageListener;
     }
 
 
-    public interface ImageLoadListener{
+    public interface ImageLoadListener {
         public void onLoadComplete(String path);
+
         // 应该把exception 返回结构放进去
         public void onLoadFailed();
 
     }
 
-    public void setImageLoadListener(ImageLoadListener imageLoadListener){
+    public void setImageLoadListener(ImageLoadListener imageLoadListener) {
         this.imageLoadListener = imageLoadListener;
     }
 
     /**---------------------图片下载相关、以及事件回调 end-----------------------------------*/
 
 
-    /**----------------------set/get------------------------------------*/
+    /**
+     * ----------------------set/get------------------------------------
+     */
     public View getMessageLayout() {
         return messageLayout;
     }

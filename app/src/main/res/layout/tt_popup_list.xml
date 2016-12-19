@@ -50,5 +50,32 @@
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:visibility="gone" />
-
+    <TextView
+        android:id="@+id/forword_btn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0.5dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="转发"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/add_emo_btn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0.5dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="添加到表情"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:visibility="gone" />
 </LinearLayout>

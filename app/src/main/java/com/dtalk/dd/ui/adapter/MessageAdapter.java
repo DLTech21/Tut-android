@@ -578,16 +578,18 @@ public class MessageAdapter extends BaseAdapter {
                 }
             }
 
-            //DetailPortraitActivity 以前用的是DisplayImageActivity 这个类
             @Override
             public void onMsgSuccess() {
-//                Intent i = new Intent(ctx, PreviewMessageImagesActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(IntentConstant.CUR_MESSAGE, imageMessage);
-//                i.putExtras(bundle);
-//                ctx.startActivity(i);
-//                ((Activity) ctx).overridePendingTransition(R.anim.tt_image_enter, R.anim.tt_stay);
                 openBigPic(imageMessage, imageRenderView.getMessageImage());
+            }
+
+            @Override
+            public void onMsgSuccessLongClick() {
+                final View messageLayout = imageRenderView.getMessageLayout();
+                MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
+                boolean bResend = (imageMessage.getStatus() == MessageConstant.MSG_FAILURE)
+                        || (imageMessage.getLoadStatus() == MessageConstant.IMAGE_UNLOAD);
+                popup.show(messageLayout, DBConstant.SHOW_IMAGE_TYPE, bResend, isMine);
             }
         });
 
@@ -613,17 +615,17 @@ public class MessageAdapter extends BaseAdapter {
         });
 
         final View messageLayout = imageRenderView.getMessageLayout();
-        imageRenderView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                // 创建一个pop对象，然后 分支判断状态，然后显示需要的内容
-                MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
-                boolean bResend = (imageMessage.getStatus() == MessageConstant.MSG_FAILURE)
-                        || (imageMessage.getLoadStatus() == MessageConstant.IMAGE_UNLOAD);
-                popup.show(messageLayout, DBConstant.SHOW_IMAGE_TYPE, bResend, isMine);
-                return true;
-            }
-        });
+//        imageRenderView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                // 创建一个pop对象，然后 分支判断状态，然后显示需要的内容
+//                MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
+//                boolean bResend = (imageMessage.getStatus() == MessageConstant.MSG_FAILURE)
+//                        || (imageMessage.getLoadStatus() == MessageConstant.IMAGE_UNLOAD);
+//                popup.show(messageLayout, DBConstant.SHOW_IMAGE_TYPE, bResend, isMine);
+//                return true;
+//            }
+//        });
 
         /**父类控件中的发送失败view*/
         imageRenderView.getMessageFailed().setOnClickListener(new View.OnClickListener() {

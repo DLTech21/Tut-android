@@ -32,15 +32,15 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
     private int mHeight;
 
     private int mParentTop;
-    private TextView copyBtn, resendBtn, speakerBtn;
-    private boolean bcopyShow, bresendShow, bspeakerShow;
+    private TextView copyBtn, resendBtn, speakerBtn, forwardBtn, addEmoBtn;
+    private boolean bcopyShow, bresendShow, bspeakerShow, bForwardShow, bAddEmoShow;
 
     private Context context = null;
 
-    public static MessageOperatePopup instance(Context ctx,View parent){
-        if(null == messageOperatePopup ){
-            synchronized (MessageOperatePopup.class){
-                messageOperatePopup = new  MessageOperatePopup(ctx,parent);
+    public static MessageOperatePopup instance(Context ctx, View parent) {
+        if (null == messageOperatePopup) {
+            synchronized (MessageOperatePopup.class) {
+                messageOperatePopup = new MessageOperatePopup(ctx, parent);
             }
         }
         return messageOperatePopup;
@@ -76,6 +76,16 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         speakerBtn.setOnTouchListener(this);
         speakerBtn.setPadding(0, 13, 0, 8);
 
+        forwardBtn = (TextView) view.findViewById(R.id.forword_btn);
+        forwardBtn.setOnClickListener(this);
+        forwardBtn.setOnTouchListener(this);
+        forwardBtn.setPadding(0, 13, 0, 8);
+
+        addEmoBtn = (TextView) view.findViewById(R.id.add_emo_btn);
+        addEmoBtn.setOnClickListener(this);
+        addEmoBtn.setOnTouchListener(this);
+        addEmoBtn.setPadding(0, 13, 0, 8);
+
         mWidth = (int) context.getResources().getDimension(
                 R.dimen.message_item_popup_width_single_short);
         mHeight = (int) context.getResources().getDimension(
@@ -108,10 +118,9 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         int[] location = new int[2];
         item.getLocationOnScreen(location);
         // 默认在item上面弹出
-        if (location[1] - mParentTop/* - mHeight */<= 0) {
+        if (location[1] - mParentTop/* - mHeight */ <= 0) {
             // showTop = false;
-        }
-        else {
+        } else {
             // 如果不是在最顶部，显示的距离要上移10
             location[1] = location[1] - 10;
         }
@@ -135,11 +144,13 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         // 自己消息重发
         // 自己的消息
         // 非自己的消息
-            // 图片语音
-            // 文本
+        // 图片语音
+        // 文本
         if (bResend && bSelf) {
             resendBtn.setVisibility(View.VISIBLE);
             bresendShow = true;
+            bForwardShow = false;
+            bAddEmoShow = false;
             if (type == DBConstant.SHOW_ORIGIN_TEXT_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
@@ -150,18 +161,24 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         } else if (!bResend && bSelf) {
             resendBtn.setVisibility(View.GONE);
             bresendShow = false;
-            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE)  {
+            bForwardShow = true;
+            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
             } else {
                 copyBtn.setVisibility(View.GONE);
                 bcopyShow = false;
             }
+            if (type == DBConstant.SHOW_GIF_OTHER_TYPE) {
+                bAddEmoShow = true;
+            } else {
+                bAddEmoShow = false;
+            }
         } else {
             if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
-            }else {
+            } else {
                 copyBtn.setVisibility(View.GONE);
                 bcopyShow = false;
             }
@@ -223,7 +240,7 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
             return;
         }
         if (showTop) {
-            if (location[1] - mParentTop/* - mHeight */> 0) {
+            if (location[1] - mParentTop/* - mHeight */ > 0) {
                 mPopup.showAtLocation(item, Gravity.NO_GRAVITY, location[0]
                         + (item.getWidth() / 2 - mWidth / 2), location[1]
                         - mHeight);
