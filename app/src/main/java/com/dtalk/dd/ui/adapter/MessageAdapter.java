@@ -585,11 +585,16 @@ public class MessageAdapter extends BaseAdapter {
 
             @Override
             public void onMsgSuccessLongClick() {
+                Logger.d("sddsdfsd");
                 final View messageLayout = imageRenderView.getMessageLayout();
                 MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
                 boolean bResend = (imageMessage.getStatus() == MessageConstant.MSG_FAILURE)
                         || (imageMessage.getLoadStatus() == MessageConstant.IMAGE_UNLOAD);
-                popup.show(messageLayout, DBConstant.SHOW_IMAGE_TYPE, bResend, isMine);
+                if (imageMessage.getUrl().toLowerCase().contains(".gif")) {
+                    popup.show(messageLayout, DBConstant.SHOW_GIF_OTHER_TYPE, bResend, isMine);
+                } else {
+                    popup.show(messageLayout, DBConstant.SHOW_IMAGE_TYPE, bResend, isMine);
+                }
             }
         });
 
@@ -713,7 +718,6 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     /**
-     *
      * @param position
      * @param convertView
      * @param parent
@@ -729,7 +733,17 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             imageRenderView = (GifImageRenderView) convertView;
         }
-        GifView imageView = imageRenderView.getMessageContent();
+        final GifView imageView = imageRenderView.getMessageContent();
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
+                boolean bResend = (imageMessage.getStatus() == MessageConstant.MSG_FAILURE)
+                        || (imageMessage.getLoadStatus() == MessageConstant.IMAGE_UNLOAD);
+                popup.show(imageView, DBConstant.SHOW_GIF_OTHER_TYPE, bResend, isMine);
+                return true;
+            }
+        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -1056,6 +1070,7 @@ public class MessageAdapter extends BaseAdapter {
 
     /**
      * 文件是gif
+     *
      * @param position
      * @param convertView
      * @param parent

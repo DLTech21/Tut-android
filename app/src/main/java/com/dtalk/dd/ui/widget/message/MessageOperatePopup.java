@@ -162,7 +162,8 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
             resendBtn.setVisibility(View.GONE);
             bresendShow = false;
             bForwardShow = true;
-            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE) {
+            forwardBtn.setVisibility(View.VISIBLE);
+            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE && type != DBConstant.SHOW_GIF_OTHER_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
             } else {
@@ -171,22 +172,31 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
             }
             if (type == DBConstant.SHOW_GIF_OTHER_TYPE) {
                 bAddEmoShow = true;
+                addEmoBtn.setVisibility(View.VISIBLE);
             } else {
                 bAddEmoShow = false;
+                addEmoBtn.setVisibility(View.GONE);
             }
         } else {
-            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE) {
+            bForwardShow = true;
+            forwardBtn.setVisibility(View.VISIBLE);
+            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE && type != DBConstant.SHOW_GIF_OTHER_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
             } else {
                 copyBtn.setVisibility(View.GONE);
                 bcopyShow = false;
             }
+            if (type == DBConstant.SHOW_GIF_OTHER_TYPE) {
+                bAddEmoShow = true;
+                addEmoBtn.setVisibility(View.VISIBLE);
+            } else {
+                bAddEmoShow = false;
+                addEmoBtn.setVisibility(View.GONE);
+            }
         }
         Resources resource = context.getResources();
         if (bcopyShow && bresendShow) {
-            // int nWidth = (int) resource
-            // .getDimension(R.dimen.message_item_popup_width_double_short);
             mWidth = (int) resource
                     .getDimension(R.dimen.message_item_popup_width_double_short);
             mPopup.setWidth(mWidth);
@@ -213,6 +223,19 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
                 speakerBtn.setPadding(0, 13, 0, 8);
                 resendBtn.setBackgroundDrawable(bgRight);
                 resendBtn.setPadding(0, 13, 0, 8);
+            } else if (bForwardShow) {
+                mWidth = (int) resource
+                        .getDimension(R.dimen.message_item_popup_width_double_long);
+                mPopup.setWidth(mWidth);
+                Drawable bgLeft = resource
+                        .getDrawable(R.drawable.tt_bg_popup_left_nomal);
+                copyBtn.setBackgroundDrawable(bgLeft);
+                Drawable bgRight = resource
+                        .getDrawable(R.drawable.tt_bg_popup_right_nomal);
+                copyBtn.setPadding(0, 13, 0, 8);
+                forwardBtn.setBackgroundDrawable(bgRight);
+                forwardBtn.setPadding(0, 13, 0, 8);
+
             } else {
                 // int nWidth = (int) resource
                 // .getDimension(R.dimen.message_item_popup_width_single_short);
@@ -237,7 +260,31 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
             speakerBtn.setBackgroundDrawable(bgNormal);
             speakerBtn.setPadding(0, 13, 0, 8);
         } else {
-            return;
+            if (bForwardShow && bAddEmoShow) {
+                mWidth = (int) resource
+                        .getDimension(R.dimen.message_item_popup_width_trible_short);
+                mPopup.setWidth(mWidth);
+                Drawable bgLeft = resource
+                        .getDrawable(R.drawable.tt_bg_popup_left_nomal);
+                forwardBtn.setBackgroundDrawable(bgLeft);
+                forwardBtn.setPadding(0, 13, 0, 8);
+                Drawable bgRight = resource
+                        .getDrawable(R.drawable.tt_bg_popup_right_nomal);
+                addEmoBtn.setBackgroundDrawable(bgRight);
+                addEmoBtn.setPadding(0, 13, 0, 8);
+            } else if (bForwardShow || bAddEmoShow) {
+                mWidth = (int) resource
+                        .getDimension(R.dimen.message_item_popup_width_single_short);
+                mPopup.setWidth(mWidth);
+                Drawable bgNormal = resource
+                        .getDrawable(R.drawable.tt_bg_popup_normal);
+                forwardBtn.setBackgroundDrawable(bgNormal);
+                addEmoBtn.setBackgroundDrawable(bgNormal);
+                forwardBtn.setPadding(0, 13, 0, 8);
+                addEmoBtn.setPadding(0, 13, 0, 8);
+            } else {
+                return;
+            }
         }
         if (showTop) {
             if (location[1] - mParentTop/* - mHeight */ > 0) {
@@ -270,27 +317,42 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         void onResendClick();
 
         void onSpeakerClick();
+
+        void onForwardClick();
+
+        void onAddEmoClick();
     }
 
     @Override
     public void onClick(View v) {
         final int id = v.getId();
-
-        if (R.id.copy_btn == id) {
-            dismiss();
-            if (mListener != null) {
-                mListener.onCopyClick();
-            }
-        } else if (R.id.resend_btn == id) {
-            dismiss();
-            if (mListener != null) {
-                mListener.onResendClick();
-            }
-        } else if (R.id.speaker_btn == id) {
-            dismiss();
-            if (mListener != null) {
-                mListener.onSpeakerClick();
-            }
+        dismiss();
+        switch (id) {
+            case R.id.copy_btn:
+                if (mListener != null) {
+                    mListener.onCopyClick();
+                }
+                break;
+            case R.id.resend_btn:
+                if (mListener != null) {
+                    mListener.onResendClick();
+                }
+                break;
+            case R.id.speaker_btn:
+                if (mListener != null) {
+                    mListener.onSpeakerClick();
+                }
+                break;
+            case R.id.forword_btn:
+                if (mListener != null) {
+                    mListener.onForwardClick();
+                }
+                break;
+            case R.id.add_emo_btn:
+                if (mListener != null) {
+                    mListener.onAddEmoClick();
+                }
+                break;
         }
     }
 
