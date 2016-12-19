@@ -13,10 +13,14 @@ import com.squareup.okhttp.internal.Util;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -51,41 +55,48 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
         return gif;
     }
 
-    private FilterInputStream getFromCache(String url) throws Exception {
-        DiskLruCache cache = DiskLruCache.open(CommonUtil.getImageSavePath(), 1, 2, 2*1024*1024);
-        cache.flush();
-        String key = Util.hash(url);
-        final DiskLruCache.Snapshot snapshot;
-        try {
-            snapshot = cache.get(key);
-            if (snapshot == null) {
-                return null;
-            }
-        } catch (IOException e) {
-            return null;
+    private InputStream getFromCache(String url) throws Exception {
+        String localFilePath;
+        localFilePath = getLocalFilePath(url);
+        if (new File(localFilePath).exists()) {
+            InputStream targetStream = new FileInputStream(localFilePath);
+            return targetStream;
         }
-        Logger.d(key);
-        FilterInputStream bodyIn = new FilterInputStream(snapshot.getInputStream(1)) {
-            @Override
-            public void close() throws IOException {
-                snapshot.close();
-                super.close();
-            }
-        };
-        return bodyIn;
+
+//        DiskLruCache cache = DiskLruCache.open(CommonUtil.getImageSavePath(), 1, 2, 2 * 1024 * 1024);
+//        cache.flush();
+//        String key = Util.hash(url);
+//        final DiskLruCache.Snapshot snapshot;
+//        try {
+//            snapshot = cache.get(key);
+//            if (snapshot == null) {
+//                return null;
+//            }
+//        } catch (IOException e) {
+//            return null;
+//        }
+//        Logger.d(key);
+//        FilterInputStream bodyIn = new FilterInputStream(snapshot.getInputStream(1)) {
+//            @Override
+//            public void close() throws IOException {
+//                snapshot.close();
+//                super.close();
+//            }
+//        };
+//        return bodyIn;
+        return null;
     }
 
     public byte[] byteArrayHttpClient(final String urlString) throws Exception {
         OkHttpClient client = null;
         if (client == null) {
             client = new OkHttpClient();
-            Cache responseCache = new Cache(CommonUtil.getImageSavePath(), 2*1024*1024);
-            client.setCache(responseCache);
+//            Cache responseCache = new Cache(CommonUtil.getImageSavePath(), 2 * 1024 * 1024);
+//            client.setCache(responseCache);
             client.setReadTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
             client.setConnectTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
         }
-        Logger.d(urlString);
-        FilterInputStream inputStream = getFromCache(urlString);
+        InputStream inputStream = getFromCache(urlString);
         if (inputStream != null) {
             return IOUtils.toByteArray(inputStream);
         }
@@ -96,6 +107,11 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
             final Request request = new Request.Builder().url(url).build();
             final Response response = client.newCall(request).execute();
             in = response.body().byteStream();
+            saveFile(in, urlString);
+            InputStream inputStream1 = getFromCache(urlString);
+            if (inputStream1 != null) {
+                return IOUtils.toByteArray(inputStream1);
+            }
             return IOUtils.toByteArray(in);
         } catch (final MalformedURLException e) {
         } catch (final OutOfMemoryError e) {
@@ -110,6 +126,42 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
             }
         }
         return null;
+    }
+
+    private void saveFile(InputStream in, String decodedUrl) {
+        String localFilePath;
+        localFilePath = getLocalFilePath(decodedUrl);
+//        if (new File(localFilePath).exists()) {
+//            return;
+//        }
+        try {
+            File tmpFile = new File(localFilePath);
+            FileOutputStream fos = new FileOutputStream(tmpFile);
+            byte buf[] = new byte[1024];
+            int count = 0;
+            do {
+                int numread = in.read(buf);
+                count += numread;
+                if (numread <= 0) {
+                    break;
+                }
+                fos.write(buf, 0, numread);
+            } while (true);
+            fos.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public String getLocalFilePath(String remoteUrl) {
+        File dir = CommonUtil.getImageSavePath();
+        String savePath = dir.getAbsolutePath();
+        String localPath;
+        if (remoteUrl.contains("/")) {
+            localPath = savePath + "/" + remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
+        } else {
+            localPath = savePath + "/" + remoteUrl;
+        }
+        return localPath;
     }
 }
 

@@ -25,7 +25,7 @@ public class VideoDisplayLoader {
 
     private static VideoDisplayLoader ins = new VideoDisplayLoader();
 
-    public static VideoDisplayLoader getIns(){
+    public static VideoDisplayLoader getIns() {
         return ins;
     }
 
@@ -33,7 +33,7 @@ public class VideoDisplayLoader {
         mMCache = ImageLoader.getInstance().getMemoryCache();
     }
 
-    public void display(String url, VideoDisplayListener videoDisplayListener){
+    public void display(String url, VideoDisplayListener videoDisplayListener) {
 
         new VideoLoadTask(url, videoDisplayListener).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);//使用AsyncTask自带的线程池
 
@@ -44,7 +44,7 @@ public class VideoDisplayLoader {
         private String url;
         private VideoDisplayListener videoDisplayListener;
 
-        public VideoLoadTask(String url, VideoDisplayListener videoDisplayListener){
+        public VideoLoadTask(String url, VideoDisplayListener videoDisplayListener) {
             this.url = url;
             this.videoDisplayListener = videoDisplayListener;
         }
@@ -60,27 +60,26 @@ public class VideoDisplayLoader {
                 File tmpFile = new File(localFilePath);
                 FileOutputStream fos = new FileOutputStream(tmpFile);
                 URL url = new URL(this.url);
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.connect();
                 InputStream is = conn.getInputStream();
                 int length = conn.getContentLength();
                 byte buf[] = new byte[1024];
                 int count = 0;
-                do{
+                do {
                     int numread = is.read(buf);
                     count += numread;
                     //当前进度值
 //                    progress =(int)(((float)count / length) * 100);
-                    if(numread <= 0){
+                    if (numread <= 0) {
                         break;
                     }
-                    fos.write(buf,0,numread);
-                }while(true);
+                    fos.write(buf, 0, numread);
+                } while (true);
                 fos.close();
                 is.close();
                 return localFilePath;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return null;
             }
         }
@@ -91,23 +90,19 @@ public class VideoDisplayLoader {
         }
     }
 
-    public String getLocalFilePath(String remoteUrl){
-        String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/dtalk/video/";
-        if (!new File(savePath).exists()) {
-            new File(savePath).mkdirs();
-        }
-
+    public String getLocalFilePath(String remoteUrl) {
+        File dir = CommonUtil.getVideoSavePath();
+        String savePath = dir.getAbsolutePath();
         String localPath;
         if (remoteUrl.contains("/")) {
-            localPath =savePath + remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1)
-            ;
+            localPath = savePath + remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
         } else {
-            localPath = savePath + "/" + remoteUrl ;
+            localPath = savePath + "/" + remoteUrl;
         }
         return localPath;
     }
 
-    public interface VideoDisplayListener{
+    public interface VideoDisplayListener {
         void onVideoLoadCompleted(String url, String path);
     }
 }

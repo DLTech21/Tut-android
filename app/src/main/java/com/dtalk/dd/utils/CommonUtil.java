@@ -188,6 +188,19 @@ public class CommonUtil {
         return folder;
     }
 
+    public static File getVideoSavePath() {
+        final File folder = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath()
+                + File.separator
+                + "dalk-IM"
+                + File.separator
+                + "videos");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder;
+    }
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
