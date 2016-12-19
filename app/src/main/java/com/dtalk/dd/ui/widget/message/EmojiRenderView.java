@@ -22,14 +22,14 @@ import java.nio.ByteBuffer;
 /**
  * @author : fengzi on 15-1-25.
  * @email : fengzi@mogujie.com.
- *
+ * <p>
  * 虽然gif与text在服务端是同一种消息类型，但是在客户端应该区分开来
  */
-public class EmojiRenderView extends  BaseMsgRenderView {
+public class EmojiRenderView extends BaseMsgRenderView {
     private GifView messageContent;
 
-    public static EmojiRenderView inflater(Context context,ViewGroup viewGroup,boolean isMine){
-        int resource = isMine?R.layout.tt_mine_emoji_message_item :R.layout.tt_other_emoji_message_item;
+    public static EmojiRenderView inflater(Context context, ViewGroup viewGroup, boolean isMine) {
+        int resource = isMine ? R.layout.tt_mine_emoji_message_item : R.layout.tt_other_emoji_message_item;
         EmojiRenderView gifRenderView = (EmojiRenderView) LayoutInflater.from(context).inflate(resource, viewGroup, false);
         gifRenderView.setMine(isMine);
         gifRenderView.setParentView(viewGroup);
@@ -47,12 +47,13 @@ public class EmojiRenderView extends  BaseMsgRenderView {
 
     /**
      * 控件赋值
+     *
      * @param messageEntity
      * @param userEntity
      */
     @Override
-    public void render(MessageEntity messageEntity, UserEntity userEntity,Context context) {
-        super.render(messageEntity, userEntity,context);
+    public void render(MessageEntity messageEntity, UserEntity userEntity, Context context) {
+        super.render(messageEntity, userEntity, context);
         EmotionMessage textMessage = (EmotionMessage) messageEntity;
         String content = textMessage.getContent();
 
@@ -60,7 +61,7 @@ public class EmojiRenderView extends  BaseMsgRenderView {
         int lenght = 0;
         try {
             lenght = is.available();
-            byte[]  buffer = ByteBuffer.allocate(lenght).array();
+            byte[] buffer = ByteBuffer.allocate(lenght).array();
             is.read(buffer);
             messageContent.setBytes(buffer);
             messageContent.startAnimation();
@@ -75,7 +76,9 @@ public class EmojiRenderView extends  BaseMsgRenderView {
     }
 
 
-    /**----------------set/get---------------------------------*/
+    /**
+     * ----------------set/get---------------------------------
+     */
     public ImageView getMessageContent() {
         return messageContent;
     }
@@ -100,7 +103,7 @@ public class EmojiRenderView extends  BaseMsgRenderView {
         this.parentView = parentView;
     }
 
-    private byte[] Bitmap2Bytes(Bitmap bm){
+    private byte[] Bitmap2Bytes(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return baos.toByteArray();

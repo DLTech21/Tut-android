@@ -20,6 +20,7 @@ import com.dtalk.dd.http.moment.EaluationListBean;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.ui.activity.LookBigPicActivity;
 import com.dtalk.dd.ui.fragment.MessageImageFragment;
+import com.dtalk.dd.ui.widget.message.GifFileRenderVIew;
 import com.dtalk.dd.ui.widget.message.ShortVideoRenderView;
 import com.dtalk.dd.utils.ScreenUtil;
 import com.dtalk.dd.utils.StringUtils;
@@ -98,7 +99,7 @@ public class MessageAdapter extends BaseAdapter {
      * ----------------------init 的时候需要设定-----------------
      */
 
-    public void setImService(IMService imService,UserEntity loginUser) {
+    public void setImService(IMService imService, UserEntity loginUser) {
         this.imService = imService;
         this.loginUser = loginUser;
     }
@@ -109,8 +110,7 @@ public class MessageAdapter extends BaseAdapter {
     public void addItem(final MessageEntity msg) {
         if (msg.getDisplayType() == DBConstant.SHOW_GIF_TYPE) {
             msg.setGIfEmo(true);
-        }
-        else {
+        } else {
             msg.setGIfEmo(false);
         }
         int nextTime = msg.getCreated();
@@ -314,8 +314,14 @@ public class MessageAdapter extends BaseAdapter {
                 switch (info.getDisplayType()) {
 
                     case DBConstant.SHOW_FIEL_TYPE:
-                        type = isMine ? RenderType.MESSAGE_TYPE_MINE_FILE
-                                : RenderType.MESSAGE_TYPE_OTHER_FILE;
+                        FileMessage fileMessage = (FileMessage) info;
+                        if (fileMessage.getExt().toLowerCase().equals("gif")) {
+                            type = isMine ? RenderType.MESSAGE_TYPE_MINE_FILE_GIF
+                                    : RenderType.MESSAGE_TYPE_OTHER_FILE_GIF;
+                        } else {
+                            type = isMine ? RenderType.MESSAGE_TYPE_MINE_FILE
+                                    : RenderType.MESSAGE_TYPE_OTHER_FILE;
+                        }
                         break;
                     case DBConstant.SHOW_LOCATION_TYPE:
                         type = isMine ? RenderType.MESSAGE_TYPE_MINE_LOCATION
@@ -338,7 +344,7 @@ public class MessageAdapter extends BaseAdapter {
                         break;
                     case DBConstant.SHOW_ORIGIN_TEXT_TYPE:
                         type = isMine ? RenderType.MESSAGE_TYPE_MINE_TETX
-                                    : RenderType.MESSAGE_TYPE_OTHER_TEXT;
+                                : RenderType.MESSAGE_TYPE_OTHER_TEXT;
 
                         break;
                     case DBConstant.SHOW_GIF_TYPE:
@@ -454,8 +460,7 @@ public class MessageAdapter extends BaseAdapter {
                     ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class).putExtra(
                             "path", shortVideoMessage.getVideo_path()).putExtra(
                             "cover_path", shortVideoMessage.getVideo_cover()).putExtra("justDisplay", true));
-                }
-                else {
+                } else {
                     shortVideoRenderView.getImageProgress().showProgress();
                     shortVideoRenderView.getImagePlay().setVisibility(View.INVISIBLE);
                     VideoDisplayLoader.getIns().display(shortVideoMessage.getVideo_path_url(), new VideoDisplayLoader.VideoDisplayListener() {
@@ -640,8 +645,8 @@ public class MessageAdapter extends BaseAdapter {
         final List<EaluationListBean.EaluationPicBean> mAttachmentsList = new ArrayList<>();
         if (null != imageList && null != imageMessage) {
             for (int i = 0; i < imageList.size(); i++) {
-                ImageMessage item =imageList.get(imageList.size()-i-1);
-                if(null==item){
+                ImageMessage item = imageList.get(imageList.size() - i - 1);
+                if (null == item) {
                     continue;
                 }
                 EaluationListBean.EaluationPicBean picBean = new EaluationListBean().new EaluationPicBean();
@@ -653,7 +658,7 @@ public class MessageAdapter extends BaseAdapter {
                 picBean.imageUrl = item.getUrl();
                 picBean.smallImageUrl = item.getUrl();
                 mAttachmentsList.add(picBean);
-                if (item.getMsgId()==imageMessage.getMsgId()&&imageMessage.getId().equals(item.getId())) {
+                if (item.getMsgId() == imageMessage.getMsgId() && imageMessage.getId().equals(item.getId())) {
                     curImagePosition = i;
                 }
 
@@ -672,38 +677,47 @@ public class MessageAdapter extends BaseAdapter {
 
     /**
      * 计算每个item的坐标
+     *
      * @param iv_image
      * @param mAttachmentsList
      * @param position
      */
     private void setupCoords(Context ctx, View iv_image, List<EaluationListBean.EaluationPicBean> mAttachmentsList, int position) {
 //        x方向的第几个
-        int xn=1;
+        int xn = 1;
 //        y方向的第几个
-        int yn=1;
+        int yn = 1;
 //        x方向的总间距
-        int h=(xn-1)* ScreenUtil.instance(ctx).dip2px(4);
+        int h = (xn - 1) * ScreenUtil.instance(ctx).dip2px(4);
 //        y方向的总间距
-        int v=h;
+        int v = h;
 //        图片宽高
         int height = iv_image.getHeight();
         int width = iv_image.getWidth();
 //        获取当前点击图片在屏幕上的坐标
-        int[] points=new int[2];
+        int[] points = new int[2];
         iv_image.getLocationInWindow(points);
 //        获取第一张图片的坐标
-        int x0=points[0]-(width+h)*(xn-1) ;
-        int y0=points[1]-(height+v)*(yn-1);
+        int x0 = points[0] - (width + h) * (xn - 1);
+        int y0 = points[1] - (height + v) * (yn - 1);
 //        给所有图片添加坐标信息
-        for(int i=0;i<mAttachmentsList.size();i++){
+        for (int i = 0; i < mAttachmentsList.size(); i++) {
             EaluationListBean.EaluationPicBean ealuationPicBean = mAttachmentsList.get(i);
-            ealuationPicBean.width=width;
-            ealuationPicBean.height=height;
-            ealuationPicBean.x=x0;
-            ealuationPicBean.y=y0-ScreenUtil.instance(ctx).getStatusBarHeight(iv_image);
+            ealuationPicBean.width = width;
+            ealuationPicBean.height = height;
+            ealuationPicBean.x = x0;
+            ealuationPicBean.y = y0 - ScreenUtil.instance(ctx).getStatusBarHeight(iv_image);
         }
     }
 
+    /**
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     * @param isMine
+     * @return
+     */
     private View GifImageMsgRender(final int position, View convertView, final ViewGroup parent, final boolean isMine) {
         GifImageRenderView imageRenderView;
         final ImageMessage imageMessage = (ImageMessage) msgObjectList.get(position);
@@ -1038,6 +1052,38 @@ public class MessageAdapter extends BaseAdapter {
         return fileRenderView;
     }
 
+    /**
+     * 文件是gif
+     * @param position
+     * @param convertView
+     * @param parent
+     * @param isMine
+     * @return
+     */
+    private View GifFileMsgRender(final int position, View convertView, final ViewGroup parent, final boolean isMine) {
+        GifFileRenderVIew gifFileRenderVIew;
+        final FileMessage fileMessage = (FileMessage) msgObjectList.get(position);
+        UserEntity userEntity = imService.getContactManager().findContact(fileMessage.getFromId());
+        if (null == convertView) {
+            gifFileRenderVIew = GifFileRenderVIew.inflater(ctx, parent, isMine);
+        } else {
+            gifFileRenderVIew = (GifFileRenderVIew) convertView;
+        }
+        GifView imageView = gifFileRenderVIew.getMessageContent();
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                final String url = fileMessage.getUrl();
+                Intent intent = new Intent(ctx, PreviewGifActivity.class);
+                intent.putExtra(IntentConstant.PREVIEW_TEXT_CONTENT, url);
+                ctx.startActivity(intent);
+                ((Activity) ctx).overridePendingTransition(R.anim.tt_image_enter, R.anim.tt_stay);
+            }
+        });
+        gifFileRenderVIew.render(fileMessage, userEntity, ctx);
+        return gifFileRenderVIew;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         try {
@@ -1103,6 +1149,12 @@ public class MessageAdapter extends BaseAdapter {
                     break;
                 case MESSAGE_TYPE_OTHER_SHORTVIDEO:
                     convertView = shortvideoMsgRender(position, convertView, parent, false);
+                    break;
+                case MESSAGE_TYPE_MINE_FILE_GIF:
+                    convertView = GifFileMsgRender(position, convertView, parent, true);
+                    break;
+                case MESSAGE_TYPE_OTHER_FILE_GIF:
+                    convertView = GifFileMsgRender(position, convertView, parent, false);
                     break;
             }
             return convertView;

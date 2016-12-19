@@ -8,28 +8,29 @@ import android.view.ViewGroup;
 import com.dtalk.dd.DB.entity.MessageEntity;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
-import com.dtalk.dd.imservice.entity.ImageMessage;
+import com.dtalk.dd.imservice.entity.FileMessage;
 import com.dtalk.dd.ui.widget.GifLoadTask;
 import com.dtalk.dd.ui.widget.GifView;
 
 /**
- * Created by zhujian on 15/3/26.
+ * Created by Donal on 2016/12/19.
  */
-public class GifImageRenderView extends BaseMsgRenderView {
+
+public class GifFileRenderVIew extends BaseMsgRenderView {
     private GifView messageContent;
 
     public GifView getMessageContent() {
         return messageContent;
     }
 
-    public static GifImageRenderView inflater(Context context, ViewGroup viewGroup, boolean isMine) {
-        int resource = isMine ? R.layout.tt_mine_gifimage_message_item : R.layout.tt_other_gifimage_message_item;
-        GifImageRenderView gifRenderView = (GifImageRenderView) LayoutInflater.from(context).inflate(resource, viewGroup, false);
+    public static GifFileRenderVIew inflater(Context context, ViewGroup viewGroup, boolean isMine) {
+        int resource = isMine ? R.layout.tt_mine_giffile_message_item : R.layout.tt_other_giffile_message_item;
+        GifFileRenderVIew gifRenderView = (GifFileRenderVIew) LayoutInflater.from(context).inflate(resource, viewGroup, false);
         gifRenderView.setMine(isMine);
         return gifRenderView;
     }
 
-    public GifImageRenderView(Context context, AttributeSet attrs) {
+    public GifFileRenderVIew(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -47,8 +48,8 @@ public class GifImageRenderView extends BaseMsgRenderView {
     @Override
     public void render(MessageEntity messageEntity, UserEntity userEntity, Context context) {
         super.render(messageEntity, userEntity, context);
-        ImageMessage imageMessage = (ImageMessage) messageEntity;
-        String url = imageMessage.getUrl();
+        FileMessage fileMessage = (FileMessage) messageEntity;
+        String url = fileMessage.getUrl();
         new GifLoadTask() {
             @Override
             protected void onPostExecute(byte[] bytes) {
@@ -80,6 +81,4 @@ public class GifImageRenderView extends BaseMsgRenderView {
     public void setParentView(ViewGroup parentView) {
         this.parentView = parentView;
     }
-
-
 }

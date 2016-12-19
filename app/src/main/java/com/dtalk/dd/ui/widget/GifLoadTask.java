@@ -3,6 +3,7 @@ package com.dtalk.dd.ui.widget;
 import android.os.AsyncTask;
 
 import com.dtalk.dd.utils.CommonUtil;
+import com.dtalk.dd.utils.Logger;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -63,6 +64,7 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
         } catch (IOException e) {
             return null;
         }
+        Logger.d(key);
         FilterInputStream bodyIn = new FilterInputStream(snapshot.getInputStream(1)) {
             @Override
             public void close() throws IOException {
@@ -82,6 +84,7 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
             client.setReadTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
             client.setConnectTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
         }
+        Logger.d(urlString);
         FilterInputStream inputStream = getFromCache(urlString);
         if (inputStream != null) {
             return IOUtils.toByteArray(inputStream);

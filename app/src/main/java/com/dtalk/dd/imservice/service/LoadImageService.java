@@ -54,7 +54,8 @@ public class LoadImageService extends IntentService {
             Bitmap bitmap;
             try {
                 File file= new File(messageInfo.getPath());
-                if(file.exists() && FileUtil.getExtensionName(messageInfo.getPath()).toLowerCase().equals(".gif"))
+                String ext = FileUtil.getExtensionName(messageInfo.getPath()).toLowerCase();
+                if(file.exists() && ext.equals("gif"))
                 {
                     MoGuHttpClient httpClient = new MoGuHttpClient();
                     SystemConfigSp.instance().init(getApplicationContext());

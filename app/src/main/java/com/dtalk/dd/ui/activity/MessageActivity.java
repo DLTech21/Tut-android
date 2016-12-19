@@ -389,15 +389,16 @@ public class MessageActivity extends TTBaseActivity
 
     /**
      * 处理附件
+     *
      * @param path
      */
     private void handleAttachUrl(final String path) {
         File file = new File(path);
-        if(!file.exists()) {
-            return ;
+        if (!file.exists()) {
+            return;
         }
         final long length = file.length();
-        if(length > (10 * 1048576.0F)) {
+        if (length > (10 * 1048576.0F)) {
             ViewUtils.showMessage("文件大小超过限制，最大不能超过10M");
             return;
         }
@@ -406,12 +407,13 @@ public class MessageActivity extends TTBaseActivity
 
     /**
      * 处理发送附件消息
+     *
      * @param length
      * @param pathName
      */
     private void handleSendFileAttachMessage(long length, String pathName) {
-        if(TextUtils.isEmpty(pathName)) {
-            return ;
+        if (TextUtils.isEmpty(pathName)) {
+            return;
         }
         FileMessage fileMessage = FileMessage.buildForSend(pathName, loginUser, peerEntity);
         pushList(fileMessage);
@@ -420,12 +422,13 @@ public class MessageActivity extends TTBaseActivity
 
     /**
      * 处理发送小视频消息
+     *
      * @param coverName
      * @param pathName
      */
     private void handleSendVideoAttachMessage(String coverName, String pathName) {
-        if(TextUtils.isEmpty(pathName)) {
-            return ;
+        if (TextUtils.isEmpty(pathName)) {
+            return;
         }
         ShortVideoMessage shortVideoMessage = ShortVideoMessage.buildForSend(pathName, coverName, loginUser, peerEntity);
         pushList(shortVideoMessage);
@@ -453,31 +456,39 @@ public class MessageActivity extends TTBaseActivity
         final List<String> compressedFiles = new ArrayList<>();
         for (String item : list) {
             Logger.i(item);
-            final File imgFile = new File(item);
-            Luban.get(MessageActivity.this)
-                    .load(imgFile)
-                    .putGear(Luban.THIRD_GEAR)
-                    .setCompressListener(new OnCompressListener() {
-                        @Override
-                        public void onStart() {
-                        }
-
-                        @Override
-                        public void onSuccess(File file) {
-                            compressedFiles.add(file.getAbsolutePath());
-                            if (compressedFiles.size() == list.size()) {
-                                handleImagePickData(compressedFiles);
+            if (item.contains(".gif")) {
+                compressedFiles.add(item);
+                if (compressedFiles.size() == list.size()) {
+                    handleImagePickData(compressedFiles);
+                }
+            } else {
+                final File imgFile = new File(item);
+                Luban.get(MessageActivity.this)
+                        .load(imgFile)
+                        .putGear(Luban.THIRD_GEAR)
+                        .setCompressListener(new OnCompressListener() {
+                            @Override
+                            public void onStart() {
                             }
-                        }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            compressedFiles.add(imgFile.getAbsolutePath());
-                            if (compressedFiles.size() == list.size()) {
-                                handleImagePickData(compressedFiles);
+                            @Override
+                            public void onSuccess(File file) {
+                                compressedFiles.add(file.getAbsolutePath());
+                                if (compressedFiles.size() == list.size()) {
+                                    handleImagePickData(compressedFiles);
+                                }
                             }
-                        }
-                    }).launch();
+
+                            @Override
+                            public void onError(Throwable e) {
+                                compressedFiles.add(imgFile.getAbsolutePath());
+                                if (compressedFiles.size() == list.size()) {
+                                    handleImagePickData(compressedFiles);
+                                }
+                            }
+                        }).launch();
+            }
+
         }
     }
 
@@ -575,7 +586,7 @@ public class MessageActivity extends TTBaseActivity
         }
     }
 
-    public void onEventMainThread(ShortVideoPubEvent event){
+    public void onEventMainThread(ShortVideoPubEvent event) {
         handleSendVideoAttachMessage(event.cover, event.path);
     }
 
@@ -724,7 +735,7 @@ public class MessageActivity extends TTBaseActivity
         // 列表控件(开源PTR)
         lvPTR = (PullToRefreshListView) this.findViewById(R.id.message_list);
         textView_new_msg_tip = (TextView) findViewById(R.id.tt_new_msg_tip);
-        lvPTR.getRefreshableView().addHeaderView(LayoutInflater.from(this).inflate(R.layout.tt_messagelist_header,lvPTR.getRefreshableView(), false));
+        lvPTR.getRefreshableView().addHeaderView(LayoutInflater.from(this).inflate(R.layout.tt_messagelist_header, lvPTR.getRefreshableView(), false));
         Drawable loadingDrawable = getResources().getDrawable(R.drawable.pull_to_refresh_indicator);
         final int indicatorWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 29,
                 getResources().getDisplayMetrics());
@@ -839,10 +850,11 @@ public class MessageActivity extends TTBaseActivity
      */
     private void reqHistoryMsg() {
         historyTimes++;
-        List<MessageEntity> msgList = imService.getMessageManager().loadHistoryMsg(historyTimes,currentSessionKey,peerEntity);
+        List<MessageEntity> msgList = imService.getMessageManager().loadHistoryMsg(historyTimes, currentSessionKey, peerEntity);
         pushList(msgList);
         scrollToBottomListItem();
     }
+
     /**
      * @param msg
      */
@@ -1013,6 +1025,7 @@ public class MessageActivity extends TTBaseActivity
                 PhotoPicker.builder()
                         .setPhotoCount(9)
                         .setGridColumnCount(4)
+                        .setShowGif(true)
                         .start(this);
 
                 MessageActivity.this.overridePendingTransition(R.anim.tt_album_enter, R.anim.tt_stay);
@@ -1101,14 +1114,12 @@ public class MessageActivity extends TTBaseActivity
             break;
             case R.id.message_text:
                 break;
-            case R.id.tt_new_msg_tip:
-            {
+            case R.id.tt_new_msg_tip: {
                 scrollToBottomListItem();
                 textView_new_msg_tip.setVisibility(View.GONE);
             }
             break;
-            case R.id.take_location_btn:
-            {
+            case R.id.take_location_btn: {
 
                 Intent intent = new Intent(MessageActivity.this, BaiduMapActivity.class);
                 intent.putExtra(IntentConstant.KEY_SESSION_KEY, currentSessionKey);
@@ -1119,7 +1130,7 @@ public class MessageActivity extends TTBaseActivity
                 scrollToBottomListItem();
                 addOthersPanelView.setVisibility(View.GONE);
             }
-                break;
+            break;
             case R.id.take_file_btn:
                 startActivityForResult(new Intent(this,
                         FileExplorerActivity.class), 0x2a);
@@ -1458,27 +1469,22 @@ public class MessageActivity extends TTBaseActivity
             if (intent.getAction().equals("android.intent.action.INPUT_METHOD_CHANGED")) {
                 currentInputMethod = Settings.Secure.getString(MessageActivity.this.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
                 SystemConfigSp.instance().setStrConfig(SystemConfigSp.SysCfgDimension.DEFAULTINPUTMETHOD, currentInputMethod);
-                int height =  SystemConfigSp.instance().getIntConfig(currentInputMethod);
-                if(keyboardHeight!=height)
-                {
+                int height = SystemConfigSp.instance().getIntConfig(currentInputMethod);
+                if (keyboardHeight != height) {
                     keyboardHeight = height;
                     addOthersPanelView.setVisibility(View.GONE);
                     emoLayout.setVisibility(View.GONE);
                     MessageActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     messageEdt.requestFocus();
-                    if(keyboardHeight!=0 && addOthersPanelView.getLayoutParams().height!=keyboardHeight)
-                    {
+                    if (keyboardHeight != 0 && addOthersPanelView.getLayoutParams().height != keyboardHeight) {
                         LayoutParams params = (LayoutParams) addOthersPanelView.getLayoutParams();
                         params.height = keyboardHeight;
                     }
-                    if(keyboardHeight!=0 && emoLayout.getLayoutParams().height!=keyboardHeight)
-                    {
+                    if (keyboardHeight != 0 && emoLayout.getLayoutParams().height != keyboardHeight) {
                         LayoutParams params = (LayoutParams) emoLayout.getLayoutParams();
                         params.height = keyboardHeight;
                     }
-                }
-                else
-                {
+                } else {
                     addOthersPanelView.setVisibility(View.VISIBLE);
                     emoLayout.setVisibility(View.VISIBLE);
                     MessageActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
