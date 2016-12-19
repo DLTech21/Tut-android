@@ -6,6 +6,7 @@ import com.dtalk.dd.DB.entity.SessionEntity;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.imservice.manager.IMContactManager;
 import com.dtalk.dd.imservice.manager.IMFriendManager;
+import com.dtalk.dd.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,9 @@ import java.util.List;
  * @email : yingmu@mogujie.com.
  */
 public class RecentInfo {
-    /**sessionEntity*/
+    /**
+     * sessionEntity
+     */
     private String sessionKey;
     private int peerId;
     private int sessionType;
@@ -24,21 +27,31 @@ public class RecentInfo {
     private String latestMsgData;
     private int updateTime;
 
-    /**unreadEntity*/
+    /**
+     * unreadEntity
+     */
     private int unReadCnt;
 
-    /**group/userEntity*/
+    /**
+     * group/userEntity
+     */
     private String name;
     private List<String> avatar;
 
-    /**是否置顶*/
+    /**
+     * 是否置顶
+     */
     private boolean isTop = false;
-    /**是否屏蔽信息*/
+    /**
+     * 是否屏蔽信息
+     */
     private boolean isForbidden = false;
 
 
-    public RecentInfo(){}
-    public RecentInfo(SessionEntity sessionEntity,UserEntity entity,UnreadEntity unreadEntity){
+    public RecentInfo() {
+    }
+
+    public RecentInfo(SessionEntity sessionEntity, UserEntity entity, UnreadEntity unreadEntity) {
         sessionKey = sessionEntity.getSessionKey();
         peerId = sessionEntity.getPeerId();
         sessionType = DBConstant.SESSION_TYPE_SINGLE;
@@ -47,10 +60,10 @@ public class RecentInfo {
         latestMsgData = sessionEntity.getLatestMsgData();
         updateTime = sessionEntity.getUpdated();
 
-        if(unreadEntity !=null)
-        unReadCnt = unreadEntity.getUnReadCnt();
+        if (unreadEntity != null)
+            unReadCnt = unreadEntity.getUnReadCnt();
 
-        if(entity != null){
+        if (entity != null) {
             name = entity.getMainName();
             ArrayList<String> avatarList = new ArrayList<>();
             avatarList.add(entity.getAvatar());
@@ -63,11 +76,22 @@ public class RecentInfo {
                 break;
             case DBConstant.MSG_TYPE_GROUP_FILE:
             case DBConstant.MSG_TYPE_SINGLE_FILE:
-                latestMsgData = DBConstant.DISPLAY_FOR_FILE;
+                Logger.d(latestMsgData);
+                if (latestMsgData.contains("\"ext\":\"gif\"")) {
+                    latestMsgData = DBConstant.DISPLAY_FOR_GIF;
+                } else {
+                    latestMsgData = DBConstant.DISPLAY_FOR_FILE;
+                }
                 break;
             case DBConstant.MSG_TYPE_SINGLE_IMAGE:
             case DBConstant.MSG_TYPE_GROUP_IMAGE:
-                latestMsgData = DBConstant.DISPLAY_FOR_IMAGE;
+                Logger.d(latestMsgData);
+                if (latestMsgData.contains(".gif")) {
+                    latestMsgData = DBConstant.DISPLAY_FOR_GIF;
+                }
+                else {
+                    latestMsgData = DBConstant.DISPLAY_FOR_IMAGE;
+                }
                 break;
             case DBConstant.MSG_TYPE_SINGLE_VIDEO:
             case DBConstant.MSG_TYPE_GROUP_VIDEO:
@@ -79,8 +103,8 @@ public class RecentInfo {
     }
 
 
-    public RecentInfo(SessionEntity sessionEntity,GroupEntity groupEntity,UnreadEntity unreadEntity){
-        sessionKey =  sessionEntity.getSessionKey();
+    public RecentInfo(SessionEntity sessionEntity, GroupEntity groupEntity, UnreadEntity unreadEntity) {
+        sessionKey = sessionEntity.getSessionKey();
         peerId = sessionEntity.getPeerId();
         sessionType = DBConstant.SESSION_TYPE_GROUP;
         latestMsgType = sessionEntity.getLatestMsgType();
@@ -88,34 +112,32 @@ public class RecentInfo {
         latestMsgData = sessionEntity.getLatestMsgData();
         updateTime = sessionEntity.getUpdated();
 
-        if(unreadEntity !=null)
-        unReadCnt = unreadEntity.getUnReadCnt();
+        if (unreadEntity != null)
+            unReadCnt = unreadEntity.getUnReadCnt();
 
-        if(groupEntity !=null) {
-            ArrayList<String>  avatarList = new ArrayList<>();
+        if (groupEntity != null) {
+            ArrayList<String> avatarList = new ArrayList<>();
             name = groupEntity.getMainName();
 
             // 免打扰的设定
             int status = groupEntity.getStatus();
-            if (status == DBConstant.GROUP_STATUS_SHIELD){
+            if (status == DBConstant.GROUP_STATUS_SHIELD) {
                 isForbidden = true;
             }
 
-            ArrayList<Integer> list =  new ArrayList<>();
+            ArrayList<Integer> list = new ArrayList<>();
             list.addAll(groupEntity.getlistGroupMemberIds());
 
-            for(Integer userId:list){
+            for (Integer userId : list) {
                 UserEntity entity = IMContactManager.instance().findContact(userId);
-                if(entity!=null){
+                if (entity != null) {
                     avatarList.add(entity.getAvatar());
-                }
-                else {
+                } else {
                     entity = IMFriendManager.instance().findContact(userId);
                     if (entity != null) {
                         avatarList.add(entity.getAvatar());
-                    }
-                    else {
-                        IMContactManager.instance().reqGetDetailUser(userId+"");
+                    } else {
+                        IMContactManager.instance().reqGetDetailUser(userId + "");
                     }
                 }
 //                if(avatarList.size()>=4){
@@ -131,7 +153,11 @@ public class RecentInfo {
                 break;
             case DBConstant.MSG_TYPE_GROUP_FILE:
             case DBConstant.MSG_TYPE_SINGLE_FILE:
-                latestMsgData = DBConstant.DISPLAY_FOR_FILE;
+                if (latestMsgData.contains("\"ext\":\"gif\"")) {
+                    latestMsgData = DBConstant.DISPLAY_FOR_GIF;
+                } else {
+                    latestMsgData = DBConstant.DISPLAY_FOR_FILE;
+                }
                 break;
             case DBConstant.MSG_TYPE_GROUP_VIDEO:
             case DBConstant.MSG_TYPE_SINGLE_VIDEO:
@@ -139,7 +165,13 @@ public class RecentInfo {
                 break;
             case DBConstant.MSG_TYPE_SINGLE_IMAGE:
             case DBConstant.MSG_TYPE_GROUP_IMAGE:
-                latestMsgData = DBConstant.DISPLAY_FOR_IMAGE;
+                Logger.d(latestMsgData);
+                if (latestMsgData.contains(".gif")) {
+                    latestMsgData = DBConstant.DISPLAY_FOR_GIF;
+                }
+                else {
+                    latestMsgData = DBConstant.DISPLAY_FOR_IMAGE;
+                }
                 break;
             case DBConstant.MSG_TYPE_GROUP_AUDIO:
             case DBConstant.MSG_TYPE_SINGLE_AUDIO:
@@ -237,8 +269,8 @@ public class RecentInfo {
     public boolean isTop() {
         return isTop;
     }
-    public boolean isForbidden()
-    {
+
+    public boolean isForbidden() {
         return isForbidden;
     }
 
@@ -246,8 +278,7 @@ public class RecentInfo {
         this.isTop = isTop;
     }
 
-    public void setForbidden(boolean isForbidden)
-    {
+    public void setForbidden(boolean isForbidden) {
         this.isForbidden = isForbidden;
     }
 }

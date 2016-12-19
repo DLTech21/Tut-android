@@ -63,6 +63,7 @@ public interface DBConstant {
     public final String DISPLAY_FOR_VIDEO = "[视频]";
     public final String DISPLAY_FOR_URL = "[链接]";
     public final String DISPLAY_FOR_ERROR = "[未知消息]";
+    public final String DISPLAY_FOR_GIF = "[动画表情]";
 
 
     /**sessionType*/

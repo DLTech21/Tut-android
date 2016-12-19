@@ -114,7 +114,7 @@ public class MyFragment extends MainFragment {
                             @Override
                             public void run() {
                                 FileUtil.deleteHistoryFiles(new File(Environment.getExternalStorageDirectory().toString()
-                                        + File.separator + "MGJ-IM"+File.separator),System.currentTimeMillis());
+                                        + File.separator + "dalk-IM"+File.separator),System.currentTimeMillis());
                                 Toast toast = Toast.makeText(getActivity(),R.string.thumb_remove_finish,Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER,0,0);
                                 toast.show();
