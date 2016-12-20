@@ -331,6 +331,17 @@ public class MessageAdapter extends BaseAdapter {
                         type = isMine ? RenderType.MESSAGE_TYPE_MINE_AUDIO
                                 : RenderType.MESSAGE_TYPE_OTHER_AUDIO;
                         break;
+                    case DBConstant.SHOW_GIF_OTHER_TYPE:
+                        ImageMessage gifImageMessage = (ImageMessage) info;
+                        if (CommonUtil.gifCheck(gifImageMessage.getUrl())) {
+                            type = isMine ? RenderType.MESSAGE_TYPE_MINE_GIF_IMAGE
+                                    : RenderType.MESSAGE_TYPE_OTHER_GIF_IMAGE;
+                        } else {
+                            type = isMine ? RenderType.MESSAGE_TYPE_MINE_IMAGE
+                                    : RenderType.MESSAGE_TYPE_OTHER_IMAGE;
+                        }
+
+                        break;
                     case DBConstant.SHOW_IMAGE_TYPE:
                         ImageMessage imageMessage = (ImageMessage) info;
                         if (CommonUtil.gifCheck(imageMessage.getUrl())) {
@@ -1266,6 +1277,24 @@ public class MessageAdapter extends BaseAdapter {
             } else {
                 audioPlayerHandler.setAudioMode(AudioManager.MODE_NORMAL, ctx);
                 SpeekerToast.show(ctx, ctx.getText(R.string.audio_in_speeker), Toast.LENGTH_SHORT);
+            }
+        }
+
+        @Override
+        public void onAddEmoClick() {
+            Logger.d("sdfsdfsd " +mType);
+            if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
+                ImageMessage imageMessage = (ImageMessage) mMsgInfo;
+                Logger.d(imageMessage.toString());
+            }
+        }
+
+        @Override
+        public void onForwardClick() {
+            Logger.d("sdfsdfsd " +mType);
+            if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
+                ImageMessage imageMessage = (ImageMessage) mMsgInfo;
+                Logger.d(imageMessage.toString());
             }
         }
     }

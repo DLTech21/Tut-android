@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.R;
 import com.dtalk.dd.ui.helper.AudioPlayerHandler;
+import com.dtalk.dd.utils.Logger;
 
 /**
  * A popup window that can be used to display an arbitrary view
@@ -349,6 +350,7 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
                 }
                 break;
             case R.id.add_emo_btn:
+                Logger.d("sdfsdfsd");
                 if (mListener != null) {
                     mListener.onAddEmoClick();
                 }

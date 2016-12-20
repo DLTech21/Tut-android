@@ -58,6 +58,7 @@ public interface DBConstant {
     public final int SHOW_URL_TYPE = 8;
     public final int SHOW_FIEL_TYPE = 9;
     public final int SHOW_GIF_OTHER_TYPE = 10;
+    public final int SHOW_GIF_FILE_TYPE = 11;
 
     public final String DISPLAY_FOR_IMAGE = "[图片]";
     public final String DISPLAY_FOR_MIX = "[图文消息]";
@@ -68,7 +69,6 @@ public interface DBConstant {
     public final String DISPLAY_FOR_URL = "[链接]";
     public final String DISPLAY_FOR_ERROR = "[未知消息]";
     public final String DISPLAY_FOR_GIF = "[动画表情]";
-
 
     /**
      * sessionType

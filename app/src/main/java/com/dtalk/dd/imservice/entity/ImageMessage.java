@@ -126,7 +126,7 @@ public class ImageMessage extends MessageEntity implements Serializable {
             imageMessage.setDisplayType(DBConstant.SHOW_IMAGE_TYPE);
             String imageUrl = strContent.substring(MessageConstant.IMAGE_MSG_START.length());
             imageUrl = imageUrl.substring(0, imageUrl.indexOf(MessageConstant.IMAGE_MSG_END));
-
+            imageMessage.setDisplayType(MsgAnalyzeEngine.imageMessageGif(imageUrl));
             /**抽离出来 或者用gson*/
             JSONObject extraContent = new JSONObject();
             extraContent.put("path", "");
@@ -158,7 +158,7 @@ public class ImageMessage extends MessageEntity implements Serializable {
             imageMessage.setPath(extraContent.getString("path"));
             imageMessage.setUrl(extraContent.getString("url"));
             int loadStatus = extraContent.getInt("loadStatus");
-
+            imageMessage.setDisplayType(MsgAnalyzeEngine.imageMessageGif(imageMessage.getUrl()));
             //todo temp solution
             if (loadStatus == MessageConstant.IMAGE_LOADING) {
                 loadStatus = MessageConstant.IMAGE_UNLOAD;
@@ -294,5 +294,14 @@ public class ImageMessage extends MessageEntity implements Serializable {
 
     public void setLoadStatus(int loadStatus) {
         this.loadStatus = loadStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageMessage{" +
+                "path='" + path + '\'' +
+                ", url='" + url + '\'' +
+                ", loadStatus=" + loadStatus +
+                '}';
     }
 }
