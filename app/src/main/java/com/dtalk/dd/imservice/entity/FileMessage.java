@@ -61,6 +61,7 @@ public class FileMessage extends MessageEntity implements Serializable {
         fileMessage.setExt(fileEntity.getExt());
         fileMessage.setLoadStatus(MessageConstant.IMAGE_UNLOAD);
         fileMessage.setStatus(MessageConstant.MSG_SUCCESS);
+        fileMessage.setDisplayType(MsgAnalyzeEngine.fileMessageGif(fileMessage.getUrl()));
         return fileMessage;
     }
 
@@ -82,7 +83,7 @@ public class FileMessage extends MessageEntity implements Serializable {
             loadStatus = MessageConstant.IMAGE_UNLOAD;
         }
         fileMessage.setLoadStatus(loadStatus);
-
+        fileMessage.setDisplayType(MsgAnalyzeEngine.fileMessageGif(fileMessage.getUrl()));
         return fileMessage;
     }
 

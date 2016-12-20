@@ -312,7 +312,16 @@ public class MessageAdapter extends BaseAdapter {
                 boolean isMine = info.getFromId() == loginUser.getPeerId();
 
                 switch (info.getDisplayType()) {
-
+                    case DBConstant.SHOW_GIF_FILE_TYPE:
+                        FileMessage gifFileMessage = (FileMessage) info;
+                        if (gifFileMessage.getExt().toLowerCase().equals("gif")) {
+                            type = isMine ? RenderType.MESSAGE_TYPE_MINE_FILE_GIF
+                                    : RenderType.MESSAGE_TYPE_OTHER_FILE_GIF;
+                        } else {
+                            type = isMine ? RenderType.MESSAGE_TYPE_MINE_FILE
+                                    : RenderType.MESSAGE_TYPE_OTHER_FILE;
+                        }
+                        break;
                     case DBConstant.SHOW_FIEL_TYPE:
                         FileMessage fileMessage = (FileMessage) info;
                         if (fileMessage.getExt().toLowerCase().equals("gif")) {
@@ -749,8 +758,8 @@ public class MessageAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View view) {
                 MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
-                boolean bResend = (imageMessage.getStatus() == MessageConstant.MSG_FAILURE)
-                        || (imageMessage.getLoadStatus() == MessageConstant.IMAGE_UNLOAD);
+                boolean bResend = imageMessage.getStatus() == MessageConstant.MSG_FAILURE;
+                Logger.d(bResend+"");
                 popup.show(imageView, DBConstant.SHOW_GIF_OTHER_TYPE, bResend, isMine);
                 return true;
             }
@@ -758,6 +767,7 @@ public class MessageAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                Logger.d(imageMessage.getUrl());
                 final String url = imageMessage.getUrl();
                 Intent intent = new Intent(ctx, PreviewGifActivity.class);
                 intent.putExtra(IntentConstant.PREVIEW_TEXT_CONTENT, url);
@@ -1097,10 +1107,20 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             gifFileRenderVIew = (GifFileRenderVIew) convertView;
         }
-        GifView imageView = gifFileRenderVIew.getMessageContent();
+        final GifView imageView = gifFileRenderVIew.getMessageContent();
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(fileMessage, position));
+                boolean bResend = fileMessage.getStatus() == MessageConstant.MSG_FAILURE;
+                popup.show(imageView, DBConstant.SHOW_GIF_FILE_TYPE, bResend, isMine);
+                return true;
+            }
+        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                Logger.d(fileMessage.getDisplayType()+"");
                 final String url = fileMessage.getUrl();
                 Intent intent = new Intent(ctx, PreviewGifActivity.class);
                 intent.putExtra(IntentConstant.PREVIEW_TEXT_CONTENT, url);

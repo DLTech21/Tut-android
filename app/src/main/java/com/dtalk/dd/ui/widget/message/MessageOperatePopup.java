@@ -164,14 +164,15 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
             bresendShow = false;
             bForwardShow = true;
             forwardBtn.setVisibility(View.VISIBLE);
-            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE && type != DBConstant.SHOW_GIF_OTHER_TYPE) {
+            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE && type != DBConstant.SHOW_GIF_OTHER_TYPE
+                    && type != DBConstant.SHOW_GIF_FILE_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
             } else {
                 copyBtn.setVisibility(View.GONE);
                 bcopyShow = false;
             }
-            if (type == DBConstant.SHOW_GIF_OTHER_TYPE) {
+            if (type == DBConstant.SHOW_GIF_OTHER_TYPE || type == DBConstant.SHOW_GIF_FILE_TYPE) {
                 bAddEmoShow = true;
                 addEmoBtn.setVisibility(View.VISIBLE);
             } else {
@@ -181,14 +182,18 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         } else {
             bForwardShow = true;
             forwardBtn.setVisibility(View.VISIBLE);
-            if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE && type != DBConstant.SHOW_GIF_OTHER_TYPE) {
+            if (type != DBConstant.SHOW_IMAGE_TYPE
+                    && type != DBConstant.SHOW_AUDIO_TYPE
+                    && type != DBConstant.SHOW_GIF_TYPE
+                    && type != DBConstant.SHOW_GIF_OTHER_TYPE
+                    && type != DBConstant.SHOW_GIF_FILE_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
                 bcopyShow = true;
             } else {
                 copyBtn.setVisibility(View.GONE);
                 bcopyShow = false;
             }
-            if (type == DBConstant.SHOW_GIF_OTHER_TYPE) {
+            if (type == DBConstant.SHOW_GIF_OTHER_TYPE || type == DBConstant.SHOW_GIF_FILE_TYPE) {
                 bAddEmoShow = true;
                 addEmoBtn.setVisibility(View.VISIBLE);
             } else {

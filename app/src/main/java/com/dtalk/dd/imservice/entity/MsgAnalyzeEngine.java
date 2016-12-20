@@ -206,4 +206,11 @@ public class MsgAnalyzeEngine {
         return DBConstant.SHOW_IMAGE_TYPE;
     }
 
+    public static int fileMessageGif(String url) {
+        if (url.contains(".gif")) {
+            return DBConstant.SHOW_GIF_FILE_TYPE;
+        }
+        return DBConstant.SHOW_FIEL_TYPE;
+    }
+
 }
