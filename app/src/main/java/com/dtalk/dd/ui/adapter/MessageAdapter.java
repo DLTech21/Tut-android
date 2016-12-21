@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtalk.dd.DB.DBInterface;
+import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.http.moment.EaluationListBean;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.ui.activity.LookBigPicActivity;
@@ -64,8 +66,12 @@ import com.dtalk.dd.ui.widget.message.RenderType;
 import com.dtalk.dd.ui.widget.message.TextRenderView;
 import com.dtalk.dd.ui.widget.message.TimeRenderView;
 import com.dtalk.dd.ui.helper.listener.OnDoubleClickListener;
+import com.squareup.okhttp.internal.Util;
 import com.yixia.camera.demo.ui.record.VideoPlayerActivity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -759,7 +765,7 @@ public class MessageAdapter extends BaseAdapter {
             public boolean onLongClick(View view) {
                 MessageOperatePopup popup = getPopMenu(parent, new OperateItemClickListener(imageMessage, position));
                 boolean bResend = imageMessage.getStatus() == MessageConstant.MSG_FAILURE;
-                Logger.d(bResend+"");
+                Logger.d(bResend + "");
                 popup.show(imageView, DBConstant.SHOW_GIF_OTHER_TYPE, bResend, isMine);
                 return true;
             }
@@ -1120,7 +1126,7 @@ public class MessageAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Logger.d(fileMessage.getDisplayType()+"");
+                Logger.d(fileMessage.getDisplayType() + "");
                 final String url = fileMessage.getUrl();
                 Intent intent = new Intent(ctx, PreviewGifActivity.class);
                 intent.putExtra(IntentConstant.PREVIEW_TEXT_CONTENT, url);
@@ -1302,20 +1308,51 @@ public class MessageAdapter extends BaseAdapter {
 
         @Override
         public void onAddEmoClick() {
-            Logger.d("sdfsdfsd " +mType);
+            Logger.d("sdfsdfsd " + mType);
             if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
                 ImageMessage imageMessage = (ImageMessage) mMsgInfo;
                 Logger.d(imageMessage.toString());
+            } else if (mType == DBConstant.SHOW_GIF_FILE_TYPE) {
+                FileMessage fileMessage = (FileMessage) mMsgInfo;
+                Logger.d(fileMessage.toString());
             }
         }
 
         @Override
         public void onForwardClick() {
-            Logger.d("sdfsdfsd " +mType);
+            Logger.d("sdfsdfsd " + mType);
+            String url = "";
+            String mean = "[动画表情]";
             if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
                 ImageMessage imageMessage = (ImageMessage) mMsgInfo;
                 Logger.d(imageMessage.toString());
+                url = imageMessage.getUrl();
+            } else if (mType == DBConstant.SHOW_GIF_FILE_TYPE) {
+                FileMessage fileMessage = (FileMessage) mMsgInfo;
+                Logger.d(fileMessage.toString());
+                url = fileMessage.getUrl();
+            }
+            if (url.length() > 0) {
+                GifEmoEntity gifEmoEntity = new GifEmoEntity();
+                gifEmoEntity.setUrl(url);
+                if (getLocalGifFilePath(url) != null) {
+                    gifEmoEntity.setPath(getLocalGifFilePath(url));
+                }
+                gifEmoEntity.setType(0);
+                gifEmoEntity.setMean(mean);
+                DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
             }
         }
+    }
+
+    public String getLocalGifFilePath(String remoteUrl) {
+        File dir = CommonUtil.getImageSavePath();
+        String savePath = dir.getAbsolutePath();
+        String localPath;
+        localPath = savePath + "/" + Util.hash(remoteUrl);
+        if (new File(localPath).exists()) {
+            return localPath;
+        }
+        return null;
     }
 }

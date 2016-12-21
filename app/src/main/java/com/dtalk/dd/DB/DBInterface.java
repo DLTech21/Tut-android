@@ -9,12 +9,14 @@ import com.dtalk.dd.DB.dao.DaoMaster;
 import com.dtalk.dd.DB.dao.DaoSession;
 import com.dtalk.dd.DB.dao.DepartmentDao;
 import com.dtalk.dd.DB.dao.FriendDao;
+import com.dtalk.dd.DB.dao.GifEmoDao;
 import com.dtalk.dd.DB.dao.GroupDao;
 import com.dtalk.dd.DB.dao.MessageDao;
 import com.dtalk.dd.DB.dao.SessionDao;
 import com.dtalk.dd.DB.dao.UserDao;
 import com.dtalk.dd.DB.entity.ApplicantEntity;
 import com.dtalk.dd.DB.entity.DepartmentEntity;
+import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.DB.entity.MessageEntity;
 import com.dtalk.dd.DB.entity.SessionEntity;
@@ -43,21 +45,22 @@ import java.util.TreeSet;
 import de.greenrobot.dao.query.DeleteQuery;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
+
 /**
  * @author : yingmu on 15-1-5.
  * @email : yingmu@mogujie.com.
- *
- *  有两个静态标识可开启QueryBuilder的SQL和参数的日志输出：
- *   QueryBuilder.LOG_SQL = true;
- *   QueryBuilder.LOG_VALUES = true;
+ * <p>
+ * 有两个静态标识可开启QueryBuilder的SQL和参数的日志输出：
+ * QueryBuilder.LOG_SQL = true;
+ * QueryBuilder.LOG_VALUES = true;
  */
 public class DBInterface {
     private static DBInterface dbInterface = null;
     private DaoMaster.DevOpenHelper openHelper;
     private Context context = null;
-    private int  loginUserId =0;
+    private int loginUserId = 0;
 
-    public static DBInterface instance(){
+    public static DBInterface instance() {
         if (dbInterface == null) {
             synchronized (DBInterface.class) {
                 if (dbInterface == null) {
@@ -68,7 +71,7 @@ public class DBInterface {
         return dbInterface;
     }
 
-    private DBInterface(){
+    private DBInterface() {
     }
 
     /**
@@ -77,7 +80,7 @@ public class DBInterface {
      * check
      */
     public void close() {
-        if(openHelper !=null) {
+        if (openHelper != null) {
             openHelper.close();
             openHelper = null;
             context = null;
@@ -86,17 +89,17 @@ public class DBInterface {
     }
 
 
-    public void initDbHelp(Context ctx,int loginId){
-        if(ctx == null || loginId <=0 ){
-            Logger.e("loginId"+loginId);
-            throw  new RuntimeException("#DBInterface# init DB exception!");
+    public void initDbHelp(Context ctx, int loginId) {
+        if (ctx == null || loginId <= 0) {
+            Logger.e("loginId" + loginId);
+            throw new RuntimeException("#DBInterface# init DB exception!");
         }
         // 临时处理，为了解决离线登陆db实例初始化的过程
-        if(context != ctx || loginUserId !=loginId ){
+        if (context != ctx || loginUserId != loginId) {
             context = ctx;
             loginUserId = loginId;
             close();
-            String DBName = "tt_"+loginId+".db";
+            String DBName = "tt_" + loginId + ".db";
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(ctx, DBName, null);
             this.openHelper = helper;
         }
@@ -116,7 +119,7 @@ public class DBInterface {
     /**
      * Query for writable DB
      */
-    private DaoSession openWritableDb(){
+    private DaoSession openWritableDb() {
         isInitOk();
         SQLiteDatabase db = openHelper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
@@ -125,47 +128,51 @@ public class DBInterface {
     }
 
 
-    private void isInitOk(){
-        if(openHelper ==null){
+    private void isInitOk() {
+        if (openHelper == null) {
             Logger.e("DBInterface#isInit not success or start,cause by openHelper is null");
             // 抛出异常 todo
-            throw  new RuntimeException("DBInterface#isInit not success or start,cause by openHelper is null");
+            throw new RuntimeException("DBInterface#isInit not success or start,cause by openHelper is null");
         }
     }
 
-    public boolean isInitOK(){
-        if(openHelper ==null){
+    public boolean isInitOK() {
+        if (openHelper == null) {
             return false;
         }
         return true;
     }
 
 
-    /**-------------------------下面开始department 操作相关---------------------------------------*/
-    public void  batchInsertOrUpdateDepart(List<DepartmentEntity> entityList){
-        if(entityList.size() <=0){
-            return ;
+    /**
+     * -------------------------下面开始department 操作相关---------------------------------------
+     */
+    public void batchInsertOrUpdateDepart(List<DepartmentEntity> entityList) {
+        if (entityList.size() <= 0) {
+            return;
         }
-        DepartmentDao dao =  openWritableDb().getDepartmentDao();
+        DepartmentDao dao = openWritableDb().getDepartmentDao();
         dao.insertOrReplaceInTx(entityList);
     }
 
-    /**update*/
-    public int getDeptLastTime(){
-        DepartmentDao dao =  openReadableDb().getDepartmentDao();
+    /**
+     * update
+     */
+    public int getDeptLastTime() {
+        DepartmentDao dao = openReadableDb().getDepartmentDao();
         DepartmentEntity entity = dao.queryBuilder()
                 .orderDesc(DepartmentDao.Properties.Updated)
                 .limit(1)
                 .unique();
-        if(entity == null){
+        if (entity == null) {
             return 0;
-        }else{
+        } else {
             return entity.getUpdated();
         }
     }
 
     // 部门被删除的情况
-    public List<DepartmentEntity> loadAllDept(){
+    public List<DepartmentEntity> loadAllDept() {
         DepartmentDao dao = openReadableDb().getDepartmentDao();
         List<DepartmentEntity> result = dao.loadAll();
         return result;
@@ -173,10 +180,9 @@ public class DBInterface {
 
     /**-------------------------下面开始User 操作相关---------------------------------------*/
     /**
-     * @return
-     *  todo  USER_STATUS_LEAVE
+     * @return todo  USER_STATUS_LEAVE
      */
-    public List<UserEntity> loadAllUsers(){
+    public List<UserEntity> loadAllUsers() {
         UserDao dao = openReadableDb().getUserDao();
         List<UserEntity> result = dao.loadAll();
         FriendDao friendDao = openReadableDb().getFriendDao();
@@ -185,102 +191,105 @@ public class DBInterface {
         return result;
     }
 
-    public UserEntity getByUserName(String uName){
+    public UserEntity getByUserName(String uName) {
         UserDao dao = openReadableDb().getUserDao();
         UserEntity entity = dao.queryBuilder().where(UserDao.Properties.PinyinName.eq(uName)).unique();
         return entity;
     }
 
-    public UserEntity getByLoginId(int loginId){
+    public UserEntity getByLoginId(int loginId) {
         UserDao dao = openReadableDb().getUserDao();
         UserEntity entity = dao.queryBuilder().where(UserDao.Properties.PeerId.eq(loginId)).unique();
         return entity;
     }
 
 
-    public void insertOrUpdateUser(UserEntity entity){
-        UserDao userDao =  openWritableDb().getUserDao();
+    public void insertOrUpdateUser(UserEntity entity) {
+        UserDao userDao = openWritableDb().getUserDao();
         long rowId = userDao.insertOrReplace(entity);
     }
 
-    public void  batchInsertOrUpdateUser(List<UserEntity> entityList){
-        if(entityList.size() <=0){
-            return ;
+    public void batchInsertOrUpdateUser(List<UserEntity> entityList) {
+        if (entityList.size() <= 0) {
+            return;
         }
-        UserDao userDao =  openWritableDb().getUserDao();
+        UserDao userDao = openWritableDb().getUserDao();
         userDao.insertOrReplaceInTx(entityList);
     }
 
     public void deleteAllUser() {
-        UserDao userDao =  openWritableDb().getUserDao();
+        UserDao userDao = openWritableDb().getUserDao();
         userDao.deleteAll();
     }
 
-    /**update*/
-    public int getUserInfoLastTime(){
-        UserDao sessionDao =  openReadableDb().getUserDao();
+    /**
+     * update
+     */
+    public int getUserInfoLastTime() {
+        UserDao sessionDao = openReadableDb().getUserDao();
         UserEntity userEntity = sessionDao.queryBuilder()
                 .orderDesc(UserDao.Properties.Updated)
                 .limit(1)
                 .unique();
-        if(userEntity == null){
+        if (userEntity == null) {
             return 0;
-        }else{
+        } else {
             return userEntity.getUpdated();
         }
     }
 
     /**-------------------------下面开始FriendUser 操作相关---------------------------------------*/
     /**
-     * @return
-     *  todo  USER_STATUS_LEAVE
+     * @return todo  USER_STATUS_LEAVE
      */
-    public List<UserEntity> loadAllFriendUsers(){
+    public List<UserEntity> loadAllFriendUsers() {
         FriendDao dao = openReadableDb().getFriendDao();
         List<UserEntity> result = dao.loadAll();
         return result;
     }
 
-    public UserEntity getByFriendUserName(String uName){
+    public UserEntity getByFriendUserName(String uName) {
         FriendDao dao = openReadableDb().getFriendDao();
         UserEntity entity = dao.queryBuilder().where(FriendDao.Properties.Phone.eq(uName)).unique();
         return entity;
     }
 
-    public UserEntity getByFriendId(int loginId){
+    public UserEntity getByFriendId(int loginId) {
         FriendDao dao = openReadableDb().getFriendDao();
         UserEntity entity = dao.queryBuilder().where(FriendDao.Properties.PeerId.eq(loginId)).unique();
         return entity;
     }
 
-    public void insertOrUpdateFriendUser(UserEntity entity){
-        FriendDao userDao =  openWritableDb().getFriendDao();
+    public void insertOrUpdateFriendUser(UserEntity entity) {
+        FriendDao userDao = openWritableDb().getFriendDao();
         long rowId = userDao.insertOrReplace(entity);
     }
 
-    public void  batchInsertOrUpdateFriendUser(List<UserEntity> entityList){
-        if(entityList.size() <=0){
-            return ;
+    public void batchInsertOrUpdateFriendUser(List<UserEntity> entityList) {
+        if (entityList.size() <= 0) {
+            return;
         }
-        FriendDao userDao =  openWritableDb().getFriendDao();
+        FriendDao userDao = openWritableDb().getFriendDao();
         userDao.insertOrReplaceInTx(entityList);
     }
 
     public void deleteAllFriendUser() {
-        FriendDao userDao =  openWritableDb().getFriendDao();
+        FriendDao userDao = openWritableDb().getFriendDao();
         userDao.deleteAll();
     }
 
-    /**update*/
-    public int getFriendUserInfoLastTime(){
-        FriendDao sessionDao =  openReadableDb().getFriendDao();
+    /**
+     * update
+     */
+    public int getFriendUserInfoLastTime() {
+        FriendDao sessionDao = openReadableDb().getFriendDao();
         UserEntity userEntity = sessionDao.queryBuilder()
                 .orderDesc(FriendDao.Properties.Updated)
                 .limit(1)
                 .unique();
-        if(userEntity == null){
+        if (userEntity == null) {
             return 0;
-        }else{
+        } else {
             return userEntity.getUpdated();
         }
     }
@@ -288,25 +297,29 @@ public class DBInterface {
     /**-------------------------下面开始Group 操作相关---------------------------------------*/
     /**
      * 载入Group的所有数据
+     *
      * @return
      */
-    public List<GroupEntity> loadAllGroup(){
+    public List<GroupEntity> loadAllGroup() {
         GroupDao dao = openReadableDb().getGroupDao();
         List<GroupEntity> result = dao.loadAll();
         return result;
     }
-    public GroupEntity getByGroupId(int loginId){
+
+    public GroupEntity getByGroupId(int loginId) {
         GroupDao dao = openReadableDb().getGroupDao();
         GroupEntity entity = dao.queryBuilder().where(GroupDao.Properties.PeerId.eq(loginId)).unique();
         return entity;
     }
-    public  long insertOrUpdateGroup(GroupEntity groupEntity){
+
+    public long insertOrUpdateGroup(GroupEntity groupEntity) {
         GroupDao dao = openWritableDb().getGroupDao();
-        long pkId =  dao.insertOrReplace(groupEntity);
+        long pkId = dao.insertOrReplace(groupEntity);
         return pkId;
     }
-    public void batchInsertOrUpdateGroup(List<GroupEntity> entityList){
-        if(entityList.size() <=0){
+
+    public void batchInsertOrUpdateGroup(List<GroupEntity> entityList) {
+        if (entityList.size() <= 0) {
             return;
         }
         GroupDao dao = openWritableDb().getGroupDao();
@@ -316,9 +329,10 @@ public class DBInterface {
     /**-------------------------下面开始session 操作相关---------------------------------------*/
     /**
      * 载入session 表中的所有数据
+     *
      * @return
      */
-    public List<SessionEntity> loadAllSession(){
+    public List<SessionEntity> loadAllSession() {
         SessionDao dao = openReadableDb().getSessionDao();
         List<SessionEntity> result = dao.queryBuilder()
                 .orderDesc(SessionDao.Properties.Updated)
@@ -326,21 +340,22 @@ public class DBInterface {
         return result;
     }
 
-    public  long insertOrUpdateSession(SessionEntity sessionEntity){
+    public long insertOrUpdateSession(SessionEntity sessionEntity) {
         SessionDao dao = openWritableDb().getSessionDao();
-        long pkId =  dao.insertOrReplace(sessionEntity);
+        long pkId = dao.insertOrReplace(sessionEntity);
         return pkId;
     }
-    public void batchInsertOrUpdateSession(List<SessionEntity> entityList){
-        if(entityList.size() <=0){
+
+    public void batchInsertOrUpdateSession(List<SessionEntity> entityList) {
+        if (entityList.size() <= 0) {
             return;
         }
         SessionDao dao = openWritableDb().getSessionDao();
         dao.insertOrReplaceInTx(entityList);
     }
 
-    public void deleteSession(String sessionKey){
-        SessionDao sessionDao =  openWritableDb().getSessionDao();
+    public void deleteSession(String sessionKey) {
+        SessionDao sessionDao = openWritableDb().getSessionDao();
         DeleteQuery<SessionEntity> bd = sessionDao.queryBuilder()
                 .where(SessionDao.Properties.SessionKey.eq(sessionKey))
                 .buildDelete();
@@ -352,98 +367,103 @@ public class DBInterface {
      * 获取最后回话的时间，便于获取联系人列表变化
      * 问题: 本地消息发送失败，依旧会更新session的时间 [存在会话、不存在的会话]
      * 本质上还是最后一条成功消息的时间
+     *
      * @return
      */
-    public int getSessionLastTime(){
+    public int getSessionLastTime() {
         int timeLine = 0;
-        MessageDao messageDao =  openReadableDb().getMessageDao();
+        MessageDao messageDao = openReadableDb().getMessageDao();
         String successType = String.valueOf(MessageConstant.MSG_SUCCESS);
         String sql = "select created from Message where status=? order by created desc limit 1";
-        Cursor cursor =  messageDao.getDatabase().rawQuery(sql, new String[]{successType});
+        Cursor cursor = messageDao.getDatabase().rawQuery(sql, new String[]{successType});
         try {
-            if(cursor!=null && cursor.getCount() ==1){
+            if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
                 timeLine = cursor.getInt(0);
             }
-        }catch (Exception e){
-           Logger.e("DBInterface#getSessionLastTime cursor 查询异常");
-        }finally {
+        } catch (Exception e) {
+            Logger.e("DBInterface#getSessionLastTime cursor 查询异常");
+        } finally {
             cursor.close();
         }
         return timeLine;
     }
 
-    /**-------------------------下面开始applicant 操作相关---------------------------------------*/
-    public List<ApplicantEntity> loadAllApplicants(){
+    /**
+     * -------------------------下面开始applicant 操作相关---------------------------------------
+     */
+    public List<ApplicantEntity> loadAllApplicants() {
         ApplicantDao dao = openReadableDb().getApplicantDao();
         List<ApplicantEntity> result = dao.queryBuilder().orderAsc(ApplicantDao.Properties.Uid).list();
         return result;
     }
 
-    public List<ApplicantEntity> loadAllUnResponseApplicants(){
+    public List<ApplicantEntity> loadAllUnResponseApplicants() {
         ApplicantDao dao = openReadableDb().getApplicantDao();
         List<ApplicantEntity> result = dao.queryBuilder().where(ApplicantDao.Properties.Response.eq(0)).list();
         return result;
     }
 
-    public ApplicantEntity getByUid(String uid){
+    public ApplicantEntity getByUid(String uid) {
         ApplicantDao dao = openReadableDb().getApplicantDao();
         ApplicantEntity entity = dao.queryBuilder().where(ApplicantDao.Properties.Uid.eq(uid)).unique();
         return entity;
     }
 
-    public void insertOrUpdateApplicant(ApplicantEntity entity){
-        ApplicantDao dao =  openWritableDb().getApplicantDao();
+    public void insertOrUpdateApplicant(ApplicantEntity entity) {
+        ApplicantDao dao = openWritableDb().getApplicantDao();
         long rowId = dao.insertOrReplace(entity);
     }
 
-    public void  batchInsertOrUpdateApplicant(List<ApplicantEntity> entityList){
-        if(entityList.size() <=0){
-            return ;
+    public void batchInsertOrUpdateApplicant(List<ApplicantEntity> entityList) {
+        if (entityList.size() <= 0) {
+            return;
         }
-        ApplicantDao dao =  openWritableDb().getApplicantDao();
+        ApplicantDao dao = openWritableDb().getApplicantDao();
         dao.insertOrReplaceInTx(entityList);
     }
 
     public void deleteAllApplicant() {
-        ApplicantDao dao =  openWritableDb().getApplicantDao();
+        ApplicantDao dao = openWritableDb().getApplicantDao();
         dao.deleteAll();
     }
 
-    /**-------------------------下面开始message 操作相关---------------------------------------*/
+    /**
+     * -------------------------下面开始message 操作相关---------------------------------------
+     */
 
     // where (msgId >= startMsgId and msgId<=lastMsgId) or
     // (msgId=0 and status = 0)
     // order by created desc
     // limit count;
     // 按照时间排序
-    public List<MessageEntity> getHistoryMsg(String chatKey,int lastMsgId,int lastCreateTime,int count){
+    public List<MessageEntity> getHistoryMsg(String chatKey, int lastMsgId, int lastCreateTime, int count) {
         /**解决消息重复的问题*/
-        int preMsgId = lastMsgId +1;
+        int preMsgId = lastMsgId + 1;
         MessageDao dao = openReadableDb().getMessageDao();
         List<MessageEntity> listMsg = dao.queryBuilder().where(MessageDao.Properties.Created.le(lastCreateTime)
                 , MessageDao.Properties.SessionKey.eq(chatKey)
-                    ,MessageDao.Properties.MsgId.notEq(preMsgId)
-                    )
-                    .whereOr(MessageDao.Properties.MsgId.le(lastMsgId),
-                            MessageDao.Properties.MsgId.gt(90000000))
-                    .orderDesc(MessageDao.Properties.Created)
-                    .orderDesc(MessageDao.Properties.MsgId)
-                    .limit(count)
-                    .list();
-        Logger.e( listMsg.size() +"");
+                , MessageDao.Properties.MsgId.notEq(preMsgId)
+        )
+                .whereOr(MessageDao.Properties.MsgId.le(lastMsgId),
+                        MessageDao.Properties.MsgId.gt(90000000))
+                .orderDesc(MessageDao.Properties.Created)
+                .orderDesc(MessageDao.Properties.MsgId)
+                .limit(count)
+                .list();
+        Logger.e(listMsg.size() + "");
 
         return formatMessage(listMsg);
     }
 
     /**
      * IMGetLatestMsgIdReq 后去最后一条合法的msgid
-     * */
-    public List<Integer> refreshHistoryMsgId(String chatKey, int beginMsgId, int lastMsgId){
+     */
+    public List<Integer> refreshHistoryMsgId(String chatKey, int beginMsgId, int lastMsgId) {
         MessageDao dao = openReadableDb().getMessageDao();
 
         String sql = "select MSG_ID from Message where SESSION_KEY = ? and MSG_ID >= ? and MSG_ID <= ? order by MSG_ID asc";
-        Cursor cursor =  dao.getDatabase().rawQuery(sql, new String[]{chatKey, String.valueOf(beginMsgId), String.valueOf(lastMsgId)});
+        Cursor cursor = dao.getDatabase().rawQuery(sql, new String[]{chatKey, String.valueOf(beginMsgId), String.valueOf(lastMsgId)});
 
         List<Integer> msgIdList = new ArrayList<>();
         try {
@@ -451,47 +471,48 @@ public class DBInterface {
                 int msgId = cursor.getInt(0);
                 msgIdList.add(msgId);
             }
-        }finally {
+        } finally {
             cursor.close();
         }
         return msgIdList;
     }
 
 
-    public long insertOrUpdateMix(MessageEntity message){
+    public long insertOrUpdateMix(MessageEntity message) {
         MessageDao dao = openWritableDb().getMessageDao();
-        MessageEntity parent =  dao.queryBuilder().where(MessageDao.Properties.MsgId.eq(message.getMsgId())
-        ,MessageDao.Properties.SessionKey.eq(message.getSessionKey())).unique();
+        MessageEntity parent = dao.queryBuilder().where(MessageDao.Properties.MsgId.eq(message.getMsgId())
+                , MessageDao.Properties.SessionKey.eq(message.getSessionKey())).unique();
 
         long resId = parent.getId();
-        if(parent.getDisplayType() != DBConstant.SHOW_MIX_TEXT){
+        if (parent.getDisplayType() != DBConstant.SHOW_MIX_TEXT) {
             return resId;
         }
 
         boolean needUpdate = false;
         MixMessage mixParent = (MixMessage) formatMessage(parent);
         List<MessageEntity> msgList = mixParent.getMsgList();
-        for(int index =0;index < msgList.size(); index ++){
-            if(msgList.get(index).getId() ==  message.getId()){
+        for (int index = 0; index < msgList.size(); index++) {
+            if (msgList.get(index).getId() == message.getId()) {
                 msgList.set(index, message);
                 needUpdate = true;
                 break;
             }
         }
 
-        if(needUpdate){
+        if (needUpdate) {
             mixParent.setMsgList(msgList);
             long pkId = dao.insertOrReplace(mixParent);
             return pkId;
         }
-       return resId;
+        return resId;
     }
 
-    /**有可能是混合消息
+    /**
+     * 有可能是混合消息
      * 批量接口{batchInsertOrUpdateMessage} 没有存在场景
-     * */
-    public long insertOrUpdateMessage(MessageEntity message){
-        if(message.getId()!=null && message.getId() < 0){
+     */
+    public long insertOrUpdateMessage(MessageEntity message) {
+        if (message.getId() != null && message.getId() < 0) {
             // mix消息
             return insertOrUpdateMix(message);
         }
@@ -503,99 +524,102 @@ public class DBInterface {
     /**
      * todo 这个地方调用存在特殊场景，如果list中包含Id为负Mix子类型，更新就有问题
      * 现在的调用列表没有这个情景，使用的时候注意
-     * */
-    public void batchInsertOrUpdateMessage(List<MessageEntity> entityList){
+     */
+    public void batchInsertOrUpdateMessage(List<MessageEntity> entityList) {
         MessageDao dao = openWritableDb().getMessageDao();
         dao.insertOrReplaceInTx(entityList);
     }
 
 
-    public void deleteMessageById(long localId){
-        if(localId<=0){return;}
+    public void deleteMessageById(long localId) {
+        if (localId <= 0) {
+            return;
+        }
         Set<Long> setIds = new TreeSet<>();
         setIds.add(localId);
         batchDeleteMessageById(setIds);
     }
 
-    public void batchDeleteMessageById(Set<Long> pkIds){
-        if(pkIds.size() <=0){
+    public void batchDeleteMessageById(Set<Long> pkIds) {
+        if (pkIds.size() <= 0) {
             return;
         }
         MessageDao dao = openWritableDb().getMessageDao();
         dao.deleteByKeyInTx(pkIds);
     }
 
-    public void deleteMessageByMsgId(int msgId){
-        if(msgId <= 0){
+    public void deleteMessageByMsgId(int msgId) {
+        if (msgId <= 0) {
             return;
         }
-        MessageDao messageDao =  openWritableDb().getMessageDao();
+        MessageDao messageDao = openWritableDb().getMessageDao();
         QueryBuilder<MessageEntity> qb = openWritableDb().getMessageDao().queryBuilder();
         DeleteQuery<MessageEntity> bd = qb.where(MessageDao.Properties.MsgId.eq(msgId)).buildDelete();
         bd.executeDeleteWithoutDetachingEntities();
     }
 
-    public MessageEntity getMessageByMsgId(int messageId){
+    public MessageEntity getMessageByMsgId(int messageId) {
         MessageDao dao = openReadableDb().getMessageDao();
         Query query = dao.queryBuilder().where(
                 MessageDao.Properties.Id.eq(messageId))
                 .build();
-        return formatMessage((MessageEntity)query.unique());
+        return formatMessage((MessageEntity) query.unique());
     }
 
-    /**根据主键查询
+    /**
+     * 根据主键查询
      * not use
-     * */
-    public MessageEntity getMessageById(long localId){
+     */
+    public MessageEntity getMessageById(long localId) {
         MessageDao dao = openReadableDb().getMessageDao();
-        MessageEntity messageEntity=
+        MessageEntity messageEntity =
                 dao.queryBuilder().where(MessageDao.Properties.Id.eq(localId)).unique();
         return formatMessage(messageEntity);
     }
 
 
-    private MessageEntity formatMessage(MessageEntity msg){
-         MessageEntity messageEntity = null;
-            int displayType = msg.getDisplayType();
-            switch (displayType){
-                case DBConstant.SHOW_MIX_TEXT:
-                    try {
-                        messageEntity =  MixMessage.parseFromDB(msg);
-                    } catch (JSONException e) {
-                        Logger.e(e.toString());
-                    }
-                    break;
-                case DBConstant.SHOW_AUDIO_TYPE:
-                    messageEntity = AudioMessage.parseFromDB(msg);
-                    break;
-                case DBConstant.SHOW_IMAGE_TYPE:
-                    messageEntity = ImageMessage.parseFromDB(msg);
-                    break;
-                case DBConstant.SHOW_ORIGIN_TEXT_TYPE:
-                    messageEntity = TextMessage.parseFromDB(msg);
-                    break;
-                case DBConstant.SHOW_LOCATION_TYPE:
-                    messageEntity = LocationMessage.parseFromDB(msg);
-                    break;
-                case DBConstant.SHOW_FIEL_TYPE:
-                    messageEntity = FileMessage.parseFromDB(msg);
-                    break;
-                case DBConstant.SHOW_VIDEO_TYPE:
-                    messageEntity = ShortVideoMessage.parseFromDB(msg);
-                    break;
-            }
+    private MessageEntity formatMessage(MessageEntity msg) {
+        MessageEntity messageEntity = null;
+        int displayType = msg.getDisplayType();
+        switch (displayType) {
+            case DBConstant.SHOW_MIX_TEXT:
+                try {
+                    messageEntity = MixMessage.parseFromDB(msg);
+                } catch (JSONException e) {
+                    Logger.e(e.toString());
+                }
+                break;
+            case DBConstant.SHOW_AUDIO_TYPE:
+                messageEntity = AudioMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_IMAGE_TYPE:
+                messageEntity = ImageMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_ORIGIN_TEXT_TYPE:
+                messageEntity = TextMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_LOCATION_TYPE:
+                messageEntity = LocationMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_FIEL_TYPE:
+                messageEntity = FileMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_VIDEO_TYPE:
+                messageEntity = ShortVideoMessage.parseFromDB(msg);
+                break;
+        }
         return messageEntity;
     }
 
 
-    public List<MessageEntity> formatMessage(List<MessageEntity> msgList){
-        if(msgList.size() <= 0){
+    public List<MessageEntity> formatMessage(List<MessageEntity> msgList) {
+        if (msgList.size() <= 0) {
             return Collections.emptyList();
         }
         ArrayList<MessageEntity> newList = new ArrayList<>();
-        for(MessageEntity info:msgList){
+        for (MessageEntity info : msgList) {
             int displayType = info.getDisplayType();
-            switch (displayType){
+            switch (displayType) {
                 case DBConstant.SHOW_MIX_TEXT:
                     try {
                         newList.add(MixMessage.parseFromDB(info));
@@ -627,6 +651,29 @@ public class DBInterface {
             }
         }
         return newList;
+    }
+
+
+    /**
+     * -------------------------下面开始 gif 操作相关---------------------------------------
+     */
+    public List<GifEmoEntity> loadAllGifs() {
+        GifEmoDao dao = openReadableDb().getGifEmoDao();
+        List<GifEmoEntity> result = dao.queryBuilder().orderAsc(GifEmoDao.Properties.Id).list();
+        return result;
+    }
+
+    public void insertOrUpdateGifEmo(GifEmoEntity entity) {
+        GifEmoDao dao = openWritableDb().getGifEmoDao();
+        long rowId = dao.insertOrReplace(entity);
+    }
+
+    public void batchInsertOrUpdateGifEmo(List<GifEmoEntity> entityList) {
+        if (entityList.size() <= 0) {
+            return;
+        }
+        GifEmoDao dao = openWritableDb().getGifEmoDao();
+        dao.insertOrReplaceInTx(entityList);
     }
 
 }

@@ -156,11 +156,7 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
         File dir = CommonUtil.getImageSavePath();
         String savePath = dir.getAbsolutePath();
         String localPath;
-        if (remoteUrl.contains("/")) {
-            localPath = savePath + "/" + remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
-        } else {
-            localPath = savePath + "/" + remoteUrl;
-        }
+        localPath = savePath + "/" + Util.hash(remoteUrl);
         return localPath;
     }
 }

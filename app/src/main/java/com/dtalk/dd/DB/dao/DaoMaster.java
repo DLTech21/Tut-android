@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.dtalk.dd.DB.entity.GifEmoEntity;
+
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
@@ -24,6 +27,7 @@ public class DaoMaster extends AbstractDaoMaster {
         SessionDao.createTable(db, ifNotExists);
         ApplicantDao.createTable(db, ifNotExists);
         FriendDao.createTable(db, ifNotExists);
+        GifEmoDao.createTable(db, ifNotExists);
     }
     
     /** Drops underlying database table using DAOs. */
@@ -35,6 +39,7 @@ public class DaoMaster extends AbstractDaoMaster {
         SessionDao.dropTable(db, ifExists);
         ApplicantDao.dropTable(db, ifExists);
         FriendDao.dropTable(db, ifExists);
+        GifEmoDao.dropTable(db, ifExists);
     }
     
     public static abstract class OpenHelper extends SQLiteOpenHelper {
@@ -73,6 +78,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(SessionDao.class);
         registerDaoClass(ApplicantDao.class);
         registerDaoClass(FriendDao.class);
+        registerDaoClass(GifEmoDao.class);
     }
     
     public DaoSession newSession() {

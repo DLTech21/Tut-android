@@ -11,6 +11,7 @@ import de.greenrobot.dao.internal.DaoConfig;
 
 import com.dtalk.dd.DB.entity.ApplicantEntity;
 import com.dtalk.dd.DB.entity.DepartmentEntity;
+import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.DB.entity.MessageEntity;
@@ -32,6 +33,7 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig sessionDaoConfig;
     private final DaoConfig applicantDaoConfig;
     private final DaoConfig friendUserDaoConfig;
+    private final DaoConfig gifEmoDaoConfig;
 
     private final DepartmentDao departmentDao;
     private final UserDao userDao;
@@ -40,6 +42,7 @@ public class DaoSession extends AbstractDaoSession {
     private final SessionDao sessionDao;
     private final ApplicantDao applicantDao;
     private final FriendDao friendDao;
+    private final GifEmoDao gifEmoDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -66,6 +69,9 @@ public class DaoSession extends AbstractDaoSession {
         friendUserDaoConfig = daoConfigMap.get(FriendDao.class).clone();
         friendUserDaoConfig.initIdentityScope(type);
 
+        gifEmoDaoConfig = daoConfigMap.get(GifEmoDao.class).clone();
+        gifEmoDaoConfig.initIdentityScope(type);
+
         departmentDao = new DepartmentDao(departmentDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
         groupDao = new GroupDao(groupDaoConfig, this);
@@ -73,6 +79,7 @@ public class DaoSession extends AbstractDaoSession {
         sessionDao = new SessionDao(sessionDaoConfig, this);
         applicantDao = new ApplicantDao(applicantDaoConfig, this);
         friendDao = new FriendDao(friendUserDaoConfig, this);
+        gifEmoDao = new GifEmoDao(gifEmoDaoConfig, this);
 
         registerDao(DepartmentEntity.class, departmentDao);
         registerDao(UserEntity.class, userDao);
@@ -81,6 +88,7 @@ public class DaoSession extends AbstractDaoSession {
         registerDao(SessionEntity.class, sessionDao);
         registerDao(ApplicantEntity.class, applicantDao);
         registerDao(UserEntity.class, friendDao);
+        registerDao(GifEmoEntity.class, gifEmoDao);
     }
     
     public void clear() {
@@ -91,6 +99,7 @@ public class DaoSession extends AbstractDaoSession {
         sessionDaoConfig.getIdentityScope().clear();
         applicantDaoConfig.getIdentityScope().clear();
         friendUserDaoConfig.getIdentityScope().clear();
+        gifEmoDaoConfig.getIdentityScope().clear();
     }
 
     public DepartmentDao getDepartmentDao() {
@@ -120,4 +129,6 @@ public class DaoSession extends AbstractDaoSession {
     public FriendDao getFriendDao() {
         return friendDao;
     }
+
+    public GifEmoDao getGifEmoDao() {return gifEmoDao;}
 }
