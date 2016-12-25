@@ -61,4 +61,15 @@ public class GifEmoEntity {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "GifEmoEntity{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", path='" + path + '\'' +
+                ", mean='" + mean + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

@@ -224,6 +224,26 @@ public class ImageMessage extends MessageEntity implements Serializable {
         return imageMessage;
     }
 
+    public static ImageMessage buildForSendGifUrl(String url, UserEntity fromUser, PeerEntity peerEntity) {
+        ImageMessage imageMessage = new ImageMessage();
+        int nowTime = (int) (System.currentTimeMillis() / 1000);
+        imageMessage.setFromId(fromUser.getPeerId());
+        imageMessage.setToId(peerEntity.getPeerId());
+        imageMessage.setUpdated(nowTime);
+        imageMessage.setCreated(nowTime);
+        imageMessage.setDisplayType(DBConstant.SHOW_IMAGE_TYPE);
+        imageMessage.setUrl(url);
+        int peerType = peerEntity.getType();
+        int msgType = peerType == DBConstant.SESSION_TYPE_GROUP ? DBConstant.MSG_TYPE_GROUP_IMAGE
+                : DBConstant.MSG_TYPE_SINGLE_IMAGE;
+        imageMessage.setMsgType(msgType);
+
+        imageMessage.setStatus(MessageConstant.MSG_SENDING);
+        imageMessage.setLoadStatus(MessageConstant.IMAGE_LOADED_SUCCESS);
+        imageMessage.buildSessionKey(true);
+        return imageMessage;
+    }
+
     /**
      * Not-null value.
      */

@@ -660,12 +660,14 @@ public class DBInterface {
     public List<GifEmoEntity> loadAllGifs() {
         GifEmoDao dao = openReadableDb().getGifEmoDao();
         List<GifEmoEntity> result = dao.queryBuilder().orderAsc(GifEmoDao.Properties.Id).list();
+        Logger.d("d" + result.size());
         return result;
     }
 
     public void insertOrUpdateGifEmo(GifEmoEntity entity) {
         GifEmoDao dao = openWritableDb().getGifEmoDao();
         long rowId = dao.insertOrReplace(entity);
+        Logger.d("d" + rowId);
     }
 
     public void batchInsertOrUpdateGifEmo(List<GifEmoEntity> entityList) {

@@ -50,8 +50,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.dtalk.dd.DB.DBInterface;
+import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
+import com.dtalk.dd.ui.widget.CustomeEmoGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -147,6 +150,7 @@ public class MessageActivity extends TTBaseActivity
     private LinearLayout emoLayout = null;
     private EmoGridView emoGridView = null;
     private YayaEmoGridView yayaEmoGridView = null;
+    private CustomeEmoGridView customeEmoGridView = null;
     private RadioGroup emoRadioGroup = null;
     private String audioSavePath = null;
     private InputMethodManager inputManager = null;
@@ -808,14 +812,16 @@ public class MessageActivity extends TTBaseActivity
             emoLayout.setLayoutParams(paramEmoLayout);
         }
         emoGridView = (EmoGridView) findViewById(R.id.emo_gridview);
-        yayaEmoGridView = (YayaEmoGridView) findViewById(R.id.yaya_emo_gridview);
         emoRadioGroup = (RadioGroup) findViewById(R.id.emo_tab_group);
         emoGridView.setOnEmoGridViewItemClick(onEmoGridViewItemClick);
         emoGridView.setAdapter();
+        yayaEmoGridView = (YayaEmoGridView) findViewById(R.id.yaya_emo_gridview);
         yayaEmoGridView.setOnEmoGridViewItemClick(yayaOnEmoGridViewItemClick);
         yayaEmoGridView.setAdapter();
         emoRadioGroup.setOnCheckedChangeListener(emoOnCheckedChangeListener);
 
+        customeEmoGridView = (CustomeEmoGridView) findViewById(R.id.cus_emo_gridview);
+        customeEmoGridView.setOnEmoGridViewItemClick(cusOnEmoGridViewItemClick);
 
         //LOADING
         View view = LayoutInflater.from(MessageActivity.this)
@@ -828,6 +834,17 @@ public class MessageActivity extends TTBaseActivity
 
         //ROOT_LAYOUT_LISTENER
         baseRoot.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+        displayCusEmo();
+    }
+
+
+    private void displayCusEmo() {
+        if (DBInterface.instance().loadAllGifs().size() > 0) {
+            customeEmoGridView.setAdapter();
+            findViewById(R.id.tab0).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.tab0).setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -1332,12 +1349,21 @@ public class MessageActivity extends TTBaseActivity
                     if (emoGridView.getVisibility() != View.VISIBLE) {
                         yayaEmoGridView.setVisibility(View.GONE);
                         emoGridView.setVisibility(View.VISIBLE);
+                        customeEmoGridView.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tab1:
                     if (yayaEmoGridView.getVisibility() != View.VISIBLE) {
                         emoGridView.setVisibility(View.GONE);
                         yayaEmoGridView.setVisibility(View.VISIBLE);
+                        customeEmoGridView.setVisibility(View.GONE);
+                    }
+                    break;
+                case R.id.tab0:
+                    if (customeEmoGridView.getVisibility() != View.VISIBLE) {
+                        emoGridView.setVisibility(View.GONE);
+                        yayaEmoGridView.setVisibility(View.GONE);
+                        customeEmoGridView.setVisibility(View.VISIBLE);
                     }
                     break;
             }
@@ -1362,6 +1388,22 @@ public class MessageActivity extends TTBaseActivity
 
             imService.getMessageManager().sendText(textMessage);
             pushList(textMessage);
+            scrollToBottomListItem();
+        }
+    };
+
+    private CustomeEmoGridView.OnEmoGridViewItemClick cusOnEmoGridViewItemClick = new CustomeEmoGridView.OnEmoGridViewItemClick() {
+        @Override
+        public void onItemClick(GifEmoEntity facesPos, int viewIndex) {
+            if (facesPos.getUrl().length() > 0) {
+                ImageMessage imageMessage = ImageMessage.buildForSendGifUrl(facesPos.getUrl(), loginUser, peerEntity);
+                pushList(imageMessage);
+                imService.getMessageManager().sendSingleImage(imageMessage);
+            } else if (facesPos.getPath().length() > 0 && new File(facesPos.getPath()).exists()) {
+                ImageMessage imageMessage = ImageMessage.buildForSend(facesPos.getPath(), loginUser, peerEntity);
+                pushList(imageMessage);
+                imService.getMessageManager().sendSingleImage(imageMessage);
+            }
             scrollToBottomListItem();
         }
     };

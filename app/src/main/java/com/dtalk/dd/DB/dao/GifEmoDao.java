@@ -47,8 +47,8 @@ public class GifEmoDao extends AbstractDao<GifEmoEntity, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         db.execSQL("CREATE TABLE " + constraint + "'GifEmo' (" + //
-                "'_id' INTEGER NOT NULL ," +
-                "'URL' TEXT NOT NULL PRIMARY KEY," +
+                "'_id' INTEGER NOT NULL PRIMARY KEY," +
+                "'URL' TEXT NOT NULL UNIQUE," +
                 "'PATH' TEXT NOT NULL ," +
                 "'MEAN' TEXT NOT NULL ," +
                 "'TYPE' INTEGER NOT NULL );");

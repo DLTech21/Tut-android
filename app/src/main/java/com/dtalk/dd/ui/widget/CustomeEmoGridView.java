@@ -1,4 +1,3 @@
-
 package com.dtalk.dd.ui.widget;
 
 import android.content.Context;
@@ -9,16 +8,16 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dtalk.dd.DB.DBInterface;
+import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.R;
-import com.dtalk.dd.ui.adapter.ViewPageAdapter;
-import com.dtalk.dd.ui.adapter.YayaEmoGridViewAdapter;
 import com.dtalk.dd.config.SysConstant;
+import com.dtalk.dd.ui.adapter.CustomeEmoGridViewAdapter;
+import com.dtalk.dd.ui.adapter.ViewPageAdapter;
 import com.dtalk.dd.ui.helper.Emoparser;
 import com.dtalk.dd.utils.CommonUtil;
 import com.dtalk.dd.utils.Logger;
@@ -26,34 +25,48 @@ import com.dtalk.dd.utils.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YayaEmoGridView extends LinearLayout {
+/**
+ * Created by Donal on 2016/12/24.
+ */
+
+public class CustomeEmoGridView extends LinearLayout {
     private Context _context;
     private ViewPager _viewPager;
     private LinearLayout _llDot;
 
     private OnEmoGridViewItemClick onEmoGridViewItemClick;
-
+    CustomeEmoGridViewAdapter customeEmoGridViewAdapter;
     private ImageView[] dots;
-    /** ViewPager当前页 */
+    /**
+     * ViewPager当前页
+     */
     private int currentIndex;
-    /** ViewPager页数 */
+    /**
+     * ViewPager页数
+     */
     private int viewPager_size;
-    /** 默认一页20个item */
+    /**
+     * 默认一页20个item
+     */
     private double pageItemCount = 8d;
 
-    /** 保存每个页面的GridView视图 */
+    /**
+     * 保存每个页面的GridView视图
+     */
     private List<GridView> list_Views;
 
-    /** viewpage高度 */
+    /**
+     * viewpage高度
+     */
 
-    public YayaEmoGridView(Context cxt) {
+    public CustomeEmoGridView(Context cxt) {
         super(cxt);
         _context = cxt;
         initViewPage();
         initFootDots();
     }
 
-    public YayaEmoGridView(Context cxt, AttributeSet attrs) {
+    public CustomeEmoGridView(Context cxt, AttributeSet attrs) {
         super(cxt, attrs);
         _context = cxt;
         initViewPage();
@@ -67,7 +80,7 @@ public class YayaEmoGridView extends LinearLayout {
 
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
                 CommonUtil.getDefaultPannelHeight(_context));
-        params.gravity=Gravity.BOTTOM;
+        params.gravity = Gravity.BOTTOM;
         _viewPager.setLayoutParams(params);
         _llDot.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
@@ -76,10 +89,10 @@ public class YayaEmoGridView extends LinearLayout {
         addView(_viewPager);
         addView(_llDot);
     }
+
     // 底部的三点
     private void initFootDots() {
-        viewPager_size = (int) Math.ceil(Emoparser.getInstance(_context)
-                .getYayaResIdList().length / pageItemCount);
+        viewPager_size = (int) Math.ceil(DBInterface.instance().loadAllGifs().size() / pageItemCount);
         int mod = Emoparser.getInstance(_context).getResIdList().length
                 % (SysConstant.pageSize - 1);
         if (mod == 1)
@@ -126,7 +139,7 @@ public class YayaEmoGridView extends LinearLayout {
 
                         @Override
                         public void onPageScrolled(int arg0, float arg1,
-                                int arg2) {
+                                                   int arg2) {
 
                         }
 
@@ -159,20 +172,26 @@ public class YayaEmoGridView extends LinearLayout {
 
     }
 
-    /** 生成gridView数据 */
-    private int[] getGridViewData(int index) {
+    /**
+     * 生成gridView数据
+     */
+    private List<GifEmoEntity> getGridViewData(int index) {
+        List<GifEmoEntity> gifEmoEntities = DBInterface.instance().loadAllGifs();
+        for (GifEmoEntity gifEmoEntity : gifEmoEntities) {
+            Logger.d(gifEmoEntity.toString());
+        }
         ++index;
         int startPos = (index - 1) * SysConstant.yayaPageSize;
         int endPos = index * SysConstant.yayaPageSize - 1;
 
-        if (endPos > Emoparser.getInstance(_context).getYayaResIdList().length) {
-            endPos = Emoparser.getInstance(_context).getYayaResIdList().length-1;
+        if (endPos > gifEmoEntities.size()) {
+            endPos = gifEmoEntities.size() - 1;
         }
-        int[] tmps = new int[endPos - startPos + 1];
+        List<GifEmoEntity> tmps = new ArrayList<GifEmoEntity>();
 
         int num = 0;
         for (int i = startPos; i <= endPos; i++) {
-            tmps[num] = Emoparser.getInstance(_context).getYayaResIdList()[i];
+            tmps.add(num, gifEmoEntities.get(i));
             num++;
         }
         return tmps;
@@ -188,15 +207,15 @@ public class YayaEmoGridView extends LinearLayout {
         gridView.setPadding(8, 8, 8, 0);
         gridView.setVerticalSpacing(20);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
-
-        gridView.setAdapter(new YayaEmoGridViewAdapter(_context,
-                getGridViewData(index)));
-        gridView.setOnItemClickListener(new OnItemClickListener() {
+        customeEmoGridViewAdapter = new CustomeEmoGridViewAdapter(_context,
+                getGridViewData(index));
+        gridView.setAdapter(customeEmoGridViewAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                                    int position, long id) {
                 int start = index * SysConstant.yayaPageSize;
-                onEmoGridViewItemClick.onItemClick(position + start, index);
+                onEmoGridViewItemClick.onItemClick((GifEmoEntity) customeEmoGridViewAdapter.getItem(position + start), index);
             }
         });
         return gridView;
@@ -208,6 +227,6 @@ public class YayaEmoGridView extends LinearLayout {
     }
 
     public interface OnEmoGridViewItemClick {
-        public void onItemClick(int facesPos, int viewIndex);
+        public void onItemClick(GifEmoEntity facesPos, int viewIndex);
     }
 }

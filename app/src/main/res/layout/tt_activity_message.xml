@@ -180,6 +180,15 @@
                 android:layout_weight="1"
                 android:visibility="gone" />
 
+            <com.dtalk.dd.ui.widget.CustomeEmoGridView
+                android:id="@+id/cus_emo_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
             <RadioGroup
                 android:id="@+id/emo_tab_group"
                 android:layout_width="match_parent"
@@ -192,6 +201,19 @@
 
             <!-- 第一个标签，注意button属性设置成null，以此去掉自带的radio button -->
             <!-- 注意：id="@id/tab1"，为什么不是+id呢？这个和加载先后有关系,Google一下吧 -->
+                <RadioButton
+                    android:id="@+id/tab0"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:text="收藏的表情"
+                    android:button="@null"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/tab_bg_selector"/>
+
                 <RadioButton
                     android:id="@id/tab1"
                     android:tag="tab1"
