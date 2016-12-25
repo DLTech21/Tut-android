@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dtalk.dd.DB.entity.GifEmoEntity;
+import com.dtalk.dd.R;
 import com.dtalk.dd.ui.plugin.ImageLoadManager;
 import com.dtalk.dd.utils.Logger;
 
@@ -61,8 +62,11 @@ public class CustomeEmoGridViewAdapter extends BaseAdapter {
             if (null == gridViewHolder || null == convertView) {
                 return null;
             }
-//            gridViewHolder.faceIv.setImageBitmap(getBitmap(position));
-            ImageLoadManager.setImageGlide(context, emoResIds.get(position).getUrl(), gridViewHolder.faceIv);
+            if (emoResIds.get(position).getType() == -1) {
+                ImageLoadManager.setDrawableGlide(context, R.drawable.tt_group_manager_add_user, gridViewHolder.faceIv);
+            } else {
+                ImageLoadManager.setImageGlide(context, emoResIds.get(position).getUrl(), gridViewHolder.faceIv);
+            }
             return convertView;
         } catch (Exception e) {
             Logger.e(e.getMessage());

@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.GifEmoEntity;
 
 import de.greenrobot.dao.AbstractDao;
@@ -52,6 +53,12 @@ public class GifEmoDao extends AbstractDao<GifEmoEntity, Long> {
                 "'PATH' TEXT NOT NULL ," +
                 "'MEAN' TEXT NOT NULL ," +
                 "'TYPE' INTEGER NOT NULL );");
+
+        GifEmoEntity gifEmoEntity = new GifEmoEntity();
+        gifEmoEntity.setUrl("add");
+        gifEmoEntity.setType(-1);
+        gifEmoEntity.setMean("");
+        DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
     }
 
     /**

@@ -1395,16 +1395,21 @@ public class MessageActivity extends TTBaseActivity
     private CustomeEmoGridView.OnEmoGridViewItemClick cusOnEmoGridViewItemClick = new CustomeEmoGridView.OnEmoGridViewItemClick() {
         @Override
         public void onItemClick(GifEmoEntity facesPos, int viewIndex) {
-            if (facesPos.getUrl().length() > 0) {
-                ImageMessage imageMessage = ImageMessage.buildForSendGifUrl(facesPos.getUrl(), loginUser, peerEntity);
-                pushList(imageMessage);
-                imService.getMessageManager().sendSingleImage(imageMessage);
-            } else if (facesPos.getPath().length() > 0 && new File(facesPos.getPath()).exists()) {
-                ImageMessage imageMessage = ImageMessage.buildForSend(facesPos.getPath(), loginUser, peerEntity);
-                pushList(imageMessage);
-                imService.getMessageManager().sendSingleImage(imageMessage);
+            if (facesPos.getType() == -1) {
+                //add gif or other
+
+            } else {
+                if (facesPos.getUrl().length() > 0) {
+                    ImageMessage imageMessage = ImageMessage.buildForSendGifUrl(facesPos.getUrl(), loginUser, peerEntity);
+                    pushList(imageMessage);
+                    imService.getMessageManager().sendSingleImage(imageMessage);
+                } else if (facesPos.getPath().length() > 0 && new File(facesPos.getPath()).exists()) {
+                    ImageMessage imageMessage = ImageMessage.buildForSend(facesPos.getPath(), loginUser, peerEntity);
+                    pushList(imageMessage);
+                    imService.getMessageManager().sendSingleImage(imageMessage);
+                }
+                scrollToBottomListItem();
             }
-            scrollToBottomListItem();
         }
     };
 

@@ -1334,28 +1334,28 @@ public class MessageAdapter extends BaseAdapter {
 
         @Override
         public void onForwardClick() {
-            Logger.d("sdfsdfsd " + mType);
-            String url = "";
-            String mean = "[动画表情]";
-            if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
-                ImageMessage imageMessage = (ImageMessage) mMsgInfo;
-                Logger.d(imageMessage.toString());
-                url = imageMessage.getUrl();
-            } else if (mType == DBConstant.SHOW_GIF_FILE_TYPE) {
-                FileMessage fileMessage = (FileMessage) mMsgInfo;
-                Logger.d(fileMessage.toString());
-                url = fileMessage.getUrl();
-            }
-            if (url.length() > 0) {
-                GifEmoEntity gifEmoEntity = new GifEmoEntity();
-                gifEmoEntity.setUrl(url);
-                if (getLocalGifFilePath(url) != null) {
-                    gifEmoEntity.setPath(getLocalGifFilePath(url));
-                }
-                gifEmoEntity.setType(0);
-                gifEmoEntity.setMean(mean);
-                DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
-            }
+//            Logger.d("sdfsdfsd " + mType);
+//            String url = "";
+//            String mean = "[动画表情]";
+//            if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
+//                ImageMessage imageMessage = (ImageMessage) mMsgInfo;
+//                Logger.d(imageMessage.toString());
+//                url = imageMessage.getUrl();
+//            } else if (mType == DBConstant.SHOW_GIF_FILE_TYPE) {
+//                FileMessage fileMessage = (FileMessage) mMsgInfo;
+//                Logger.d(fileMessage.toString());
+//                url = fileMessage.getUrl();
+//            }
+//            if (url.length() > 0) {
+//                GifEmoEntity gifEmoEntity = new GifEmoEntity();
+//                gifEmoEntity.setUrl(url);
+//                if (getLocalGifFilePath(url) != null) {
+//                    gifEmoEntity.setPath(getLocalGifFilePath(url));
+//                }
+//                gifEmoEntity.setType(0);
+//                gifEmoEntity.setMean(mean);
+//                DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
+//            }
         }
     }
 
