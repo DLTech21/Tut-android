@@ -110,5 +110,6 @@ dependencies {
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
     compile 'cn.jiguang:jpush:2.1.8'
     compile 'com.github.razerdp:BasePopup:v1.4.0'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
 }
 

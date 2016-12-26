@@ -10,15 +10,17 @@ import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.imservice.entity.ImageMessage;
 import com.dtalk.dd.ui.widget.GifLoadTask;
-import com.dtalk.dd.ui.widget.GifView;
+
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Created by zhujian on 15/3/26.
  */
 public class GifImageRenderView extends BaseMsgRenderView {
-    private GifView messageContent;
+    private GifImageView messageContent;
 
-    public GifView getMessageContent() {
+    public GifImageView getMessageContent() {
         return messageContent;
     }
 
@@ -35,7 +37,7 @@ public class GifImageRenderView extends BaseMsgRenderView {
 
     protected void onFinishInflate() {
         super.onFinishInflate();
-        messageContent = (GifView) findViewById(R.id.message_image);
+        messageContent = (GifImageView) findViewById(R.id.message_image);
     }
 
     /**
@@ -52,8 +54,11 @@ public class GifImageRenderView extends BaseMsgRenderView {
         new GifLoadTask() {
             @Override
             protected void onPostExecute(byte[] bytes) {
-                messageContent.setBytes(bytes);
-                messageContent.startAnimation();
+                try {
+                    GifDrawable gifFromBytes = new GifDrawable(bytes);
+                    messageContent.setImageDrawable(gifFromBytes);
+                } catch (Exception e) {
+                }
             }
 
             @Override

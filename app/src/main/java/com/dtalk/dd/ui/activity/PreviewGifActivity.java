@@ -10,7 +10,6 @@ import com.dtalk.dd.R;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.ui.helper.Emoparser;
 import com.dtalk.dd.ui.widget.GifLoadTask;
-import com.dtalk.dd.ui.widget.GifView;
 
 import java.io.IOException;
 import java.io.InputStream;

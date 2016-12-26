@@ -12,12 +12,14 @@ import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.imservice.entity.EmotionMessage;
 import com.dtalk.dd.ui.helper.Emoparser;
-import com.dtalk.dd.ui.widget.GifView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * @author : fengzi on 15-1-25.
@@ -26,7 +28,7 @@ import java.nio.ByteBuffer;
  * 虽然gif与text在服务端是同一种消息类型，但是在客户端应该区分开来
  */
 public class EmojiRenderView extends BaseMsgRenderView {
-    private GifView messageContent;
+    private GifImageView messageContent;
 
     public static EmojiRenderView inflater(Context context, ViewGroup viewGroup, boolean isMine) {
         int resource = isMine ? R.layout.tt_mine_emoji_message_item : R.layout.tt_other_emoji_message_item;
@@ -42,7 +44,7 @@ public class EmojiRenderView extends BaseMsgRenderView {
 
     protected void onFinishInflate() {
         super.onFinishInflate();
-        messageContent = (GifView) findViewById(R.id.message_content);
+        messageContent = (GifImageView) findViewById(R.id.message_content);
     }
 
     /**
@@ -56,15 +58,9 @@ public class EmojiRenderView extends BaseMsgRenderView {
         super.render(messageEntity, userEntity, context);
         EmotionMessage textMessage = (EmotionMessage) messageEntity;
         String content = textMessage.getContent();
-
-        InputStream is = getResources().openRawResource(Emoparser.getInstance(getContext()).getResIdByCharSequence(content));
-        int lenght = 0;
         try {
-            lenght = is.available();
-            byte[] buffer = ByteBuffer.allocate(lenght).array();
-            is.read(buffer);
-            messageContent.setBytes(buffer);
-            messageContent.startAnimation();
+            GifDrawable gifFromResource = new GifDrawable( getResources(), Emoparser.getInstance(getContext()).getResIdByCharSequence(content));
+            messageContent.setImageDrawable(gifFromResource);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,7 +79,7 @@ public class EmojiRenderView extends BaseMsgRenderView {
         return messageContent;
     }
 
-    public void setMessageContent(GifView messageContent) {
+    public void setMessageContent(GifImageView messageContent) {
         this.messageContent = messageContent;
     }
 

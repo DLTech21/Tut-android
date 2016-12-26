@@ -45,12 +45,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
-                <com.dtalk.dd.ui.widget.GifView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/message_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="0dp"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    />
 
                 <com.dtalk.dd.ui.widget.MGProgressbar
                     android:id="@+id/tt_image_progress"

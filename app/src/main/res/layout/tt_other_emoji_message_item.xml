@@ -42,14 +42,14 @@
             android:layout_toRightOf="@id/user_portrait"
             android:orientation="horizontal" >
 
-            <com.dtalk.dd.ui.widget.GifView
+            <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/message_content"
                 android:layout_width="105dp"
                 android:layout_height="115dp"
                 android:gravity="left"
                 android:paddingLeft="0dp"
-                android:paddingRight="0dp"/>
-
+                android:paddingRight="0dp"
+                />
             <!--
                  <TextView
                 android:id="@+id/message_content"

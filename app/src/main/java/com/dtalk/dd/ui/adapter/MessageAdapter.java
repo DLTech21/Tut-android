@@ -22,7 +22,6 @@ import com.dtalk.dd.http.moment.EaluationListBean;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.event.AddEmoEvent;
 import com.dtalk.dd.ui.activity.LookBigPicActivity;
-import com.dtalk.dd.ui.fragment.MessageImageFragment;
 import com.dtalk.dd.ui.widget.message.GifFileRenderVIew;
 import com.dtalk.dd.ui.widget.message.ShortVideoRenderView;
 import com.dtalk.dd.utils.ScreenUtil;
@@ -47,10 +46,8 @@ import com.dtalk.dd.imservice.entity.MixMessage;
 import com.dtalk.dd.imservice.entity.TextMessage;
 import com.dtalk.dd.imservice.service.IMService;
 import com.dtalk.dd.ui.activity.PreviewGifActivity;
-import com.dtalk.dd.ui.activity.PreviewMessageImagesActivity;
 import com.dtalk.dd.ui.activity.PreviewTextActivity;
 import com.dtalk.dd.ui.helper.Emoparser;
-import com.dtalk.dd.ui.widget.GifView;
 import com.dtalk.dd.ui.widget.message.FileRenderView;
 import com.dtalk.dd.ui.widget.message.GifImageRenderView;
 import com.dtalk.dd.ui.widget.message.LocationRenderView;
@@ -71,8 +68,6 @@ import com.squareup.okhttp.internal.Util;
 import com.yixia.camera.demo.ui.record.VideoPlayerActivity;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +75,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * @author : yingmu on 15-1-8.
@@ -762,7 +758,7 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             imageRenderView = (GifImageRenderView) convertView;
         }
-        final GifView imageView = imageRenderView.getMessageContent();
+        final GifImageView imageView = imageRenderView.getMessageContent();
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -1116,7 +1112,7 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             gifFileRenderVIew = (GifFileRenderVIew) convertView;
         }
-        final GifView imageView = gifFileRenderVIew.getMessageContent();
+        final GifImageView imageView = gifFileRenderVIew.getMessageContent();
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

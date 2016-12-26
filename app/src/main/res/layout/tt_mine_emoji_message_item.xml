@@ -61,14 +61,15 @@
             android:textSize="14sp" />
         -->
 
-        <com.dtalk.dd.ui.widget.GifView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/message_content"
             android:layout_width="105dp"
             android:layout_height="115dp"
             android:gravity="right"
             android:layout_marginTop="0dp"
             android:paddingLeft="0dp"
-            android:paddingRight="0dp"/>
+            android:paddingRight="0dp"
+            />
     </LinearLayout>
 
 </com.dtalk.dd.ui.widget.message.EmojiRenderView>
