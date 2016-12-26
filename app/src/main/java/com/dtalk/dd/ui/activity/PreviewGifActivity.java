@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
 /**
  * @author : fengzi on 15-1-25.
  * @email : fengzi@mogujie.com.
@@ -22,26 +25,21 @@ import java.nio.ByteBuffer;
  * preview a GIF image when click on the gif message
  */
 public class PreviewGifActivity extends Activity implements View.OnClickListener {
-    GifView gifView = null;
+    GifImageView gifView = null;
     ImageView backView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tt_activity_preview_gif);
-        gifView = (GifView) findViewById(R.id.gif);
+        gifView = (GifImageView) findViewById(R.id.gif);
         backView = (ImageView)findViewById(R.id.back_btn);
         backView.setOnClickListener(this);
         String content = getIntent().getStringExtra(IntentConstant.PREVIEW_TEXT_CONTENT);
         if(Emoparser.getInstance(this).isMessageGif(content))
         {
-            InputStream is = getResources().openRawResource(Emoparser.getInstance(this).getResIdByCharSequence(content));
-            int lenght = 0;
             try {
-                lenght = is.available();
-                byte[]  buffer = ByteBuffer.allocate(lenght).array();
-                is.read(buffer);
-                gifView.setBytes(buffer);
-                gifView.startAnimation();
+                GifDrawable gifFromResource = new GifDrawable( getResources(), Emoparser.getInstance(getApplicationContext()).getResIdByCharSequence(content));
+                gifView.setImageDrawable(gifFromResource);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -51,8 +49,11 @@ public class PreviewGifActivity extends Activity implements View.OnClickListener
             new GifLoadTask() {
                 @Override
                 protected void onPostExecute(byte[] bytes) {
-                    gifView.setBytes(bytes);
-                    gifView.startAnimation();
+                    try {
+                        GifDrawable gifFromBytes = new GifDrawable(bytes);
+                        gifView.setImageDrawable(gifFromBytes);
+                    } catch (Exception e) {
+                    }
                 }
                 @Override
                 protected void onPreExecute() {
@@ -66,7 +67,6 @@ public class PreviewGifActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        gifView.stopAnimation();
         PreviewGifActivity.this.finish();
     }
 }

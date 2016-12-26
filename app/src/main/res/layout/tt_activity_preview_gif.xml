@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <com.dtalk.dd.ui.widget.GifView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/gif"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
