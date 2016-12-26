@@ -20,6 +20,7 @@ import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.http.moment.EaluationListBean;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
+import com.dtalk.dd.imservice.event.AddEmoEvent;
 import com.dtalk.dd.ui.activity.LookBigPicActivity;
 import com.dtalk.dd.ui.fragment.MessageImageFragment;
 import com.dtalk.dd.ui.widget.message.GifFileRenderVIew;
@@ -77,6 +78,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author : yingmu on 15-1-8.
@@ -1308,7 +1311,6 @@ public class MessageAdapter extends BaseAdapter {
 
         @Override
         public void onAddEmoClick() {
-            Logger.d("sdfsdfsd " + mType);
             String url = "";
             String mean = "[动画表情]";
             if (mType == DBConstant.SHOW_GIF_OTHER_TYPE) {
@@ -1330,6 +1332,7 @@ public class MessageAdapter extends BaseAdapter {
                 gifEmoEntity.setMean(mean);
                 DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
             }
+            EventBus.getDefault().post(new AddEmoEvent());
         }
 
         @Override

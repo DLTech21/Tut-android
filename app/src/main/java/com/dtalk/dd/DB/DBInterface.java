@@ -601,11 +601,20 @@ public class DBInterface {
             case DBConstant.SHOW_LOCATION_TYPE:
                 messageEntity = LocationMessage.parseFromDB(msg);
                 break;
+            case DBConstant.SHOW_GIF_TYPE:
+                messageEntity = EmotionMessage.parseFromDB(msg);
+                break;
             case DBConstant.SHOW_FIEL_TYPE:
                 messageEntity = FileMessage.parseFromDB(msg);
                 break;
             case DBConstant.SHOW_VIDEO_TYPE:
                 messageEntity = ShortVideoMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_GIF_OTHER_TYPE:
+                messageEntity = ImageMessage.parseFromDB(msg);
+                break;
+            case DBConstant.SHOW_GIF_FILE_TYPE:
+                messageEntity = FileMessage.parseFromDB(msg);
                 break;
         }
         return messageEntity;
@@ -648,6 +657,12 @@ public class DBInterface {
                 case DBConstant.SHOW_VIDEO_TYPE:
                     newList.add(ShortVideoMessage.parseFromDB(info));
                     break;
+                case DBConstant.SHOW_GIF_OTHER_TYPE:
+                    newList.add(ImageMessage.parseFromDB(info));
+                    break;
+                case DBConstant.SHOW_GIF_FILE_TYPE:
+                    newList.add(FileMessage.parseFromDB(info));
+                    break;
             }
         }
         return newList;
@@ -658,10 +673,27 @@ public class DBInterface {
      * -------------------------下面开始 gif 操作相关---------------------------------------
      */
     public List<GifEmoEntity> loadAllGifs() {
+        try {
+            GifEmoEntity gifEmoEntity = new GifEmoEntity();
+            gifEmoEntity.setUrl("add");
+            gifEmoEntity.setType(-1);
+            gifEmoEntity.setMean("add");
+            gifEmoEntity.setPath("add");
+            DBInterface.instance().insertGifEmo(gifEmoEntity);
+        } catch (Exception e) {
+
+        }
+
         GifEmoDao dao = openReadableDb().getGifEmoDao();
         List<GifEmoEntity> result = dao.queryBuilder().orderAsc(GifEmoDao.Properties.Id).list();
         Logger.d("d" + result.size());
         return result;
+    }
+
+    public void insertGifEmo(GifEmoEntity entity) {
+        GifEmoDao dao = openWritableDb().getGifEmoDao();
+        long rowId = dao.insert(entity);
+        Logger.d("d" + rowId);
     }
 
     public void insertOrUpdateGifEmo(GifEmoEntity entity) {

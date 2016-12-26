@@ -53,8 +53,10 @@ import com.bumptech.glide.Glide;
 import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
+import com.dtalk.dd.imservice.event.AddEmoEvent;
 import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
 import com.dtalk.dd.ui.widget.CustomeEmoGridView;
+import com.dtalk.dd.utils.RegularUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -185,7 +187,7 @@ public class MessageActivity extends TTBaseActivity
     int rootBottom = Integer.MIN_VALUE, keyboardHeight = 0;
     switchInputMethodReceiver receiver;
     private String currentInputMethod;
-
+    boolean addEmoShow = false;
     /**
      * 全局Toast
      */
@@ -379,12 +381,28 @@ public class MessageActivity extends TTBaseActivity
                 break;
             case PhotoPicker.REQUEST_CODE:
             case PhotoPreview.REQUEST_CODE:
-                List<String> photos = null;
-                if (data != null) {
-                    photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                }
-                if (photos != null) {
-                    compressWithLs(photos);
+                if (!addEmoShow) {
+                    List<String> photos = null;
+                    if (data != null) {
+                        photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    }
+                    if (photos != null) {
+                        compressWithLs(photos);
+                    }
+                } else {
+                    List<String> photos = null;
+                    if (data != null) {
+                        photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    }
+                    for (String local : photos) {
+                        GifEmoEntity gifEmoEntity = new GifEmoEntity();
+                        gifEmoEntity.setUrl(local);
+                        gifEmoEntity.setPath(local);
+                        gifEmoEntity.setType(0);
+                        gifEmoEntity.setMean("[动画表情]");
+                        DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
+                    }
+                    displayCusEmo();
                 }
                 break;
         }
@@ -837,6 +855,9 @@ public class MessageActivity extends TTBaseActivity
         displayCusEmo();
     }
 
+    public void onEvent(AddEmoEvent event) {
+        displayCusEmo();
+    }
 
     private void displayCusEmo() {
         if (DBInterface.instance().loadAllGifs().size() > 0) {
@@ -1039,6 +1060,7 @@ public class MessageActivity extends TTBaseActivity
             }
             break;
             case R.id.take_photo_btn: {
+                addEmoShow = false;
                 PhotoPicker.builder()
                         .setPhotoCount(9)
                         .setGridColumnCount(4)
@@ -1084,6 +1106,7 @@ public class MessageActivity extends TTBaseActivity
                 } else if (emoLayout.getVisibility() == View.GONE) {
                     emoLayout.setVisibility(View.VISIBLE);
                     yayaEmoGridView.setVisibility(View.VISIBLE);
+                    customeEmoGridView.setVisibility(View.GONE);
                     emoRadioGroup.check(R.id.tab1);
                     emoGridView.setVisibility(View.GONE);
                     inputManager.hideSoftInputFromWindow(messageEdt.getWindowToken(), 0);
@@ -1397,9 +1420,14 @@ public class MessageActivity extends TTBaseActivity
         public void onItemClick(GifEmoEntity facesPos, int viewIndex) {
             if (facesPos.getType() == -1) {
                 //add gif or other
-
+                addEmoShow = true;
+                PhotoPicker.builder()
+                        .setPhotoCount(1)
+                        .setGridColumnCount(4)
+                        .setShowGif(true)
+                        .start(MessageActivity.this);
             } else {
-                if (facesPos.getUrl().length() > 0) {
+                if (facesPos.getUrl().length() > 0 && RegularUtils.isURL(facesPos.getUrl())) {
                     ImageMessage imageMessage = ImageMessage.buildForSendGifUrl(facesPos.getUrl(), loginUser, peerEntity);
                     pushList(imageMessage);
                     imService.getMessageManager().sendSingleImage(imageMessage);

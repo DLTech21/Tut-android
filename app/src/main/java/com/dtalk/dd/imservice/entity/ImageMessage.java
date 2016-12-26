@@ -147,8 +147,8 @@ public class ImageMessage extends MessageEntity implements Serializable {
 
 
     public static ImageMessage parseFromDB(MessageEntity entity) {
-        if (entity.getDisplayType() != DBConstant.SHOW_IMAGE_TYPE) {
-            throw new RuntimeException("#ImageMessage# parseFromDB,not SHOW_IMAGE_TYPE");
+        if (entity.getDisplayType() != DBConstant.SHOW_IMAGE_TYPE && entity.getDisplayType() != DBConstant.SHOW_GIF_OTHER_TYPE) {
+            throw new RuntimeException("#ImageMessage# parseFromDB,not SHOW_IMAGE_TYPE or SHOW_GIF_OTHER_TYPE" + entity.getDisplayType());
         }
         ImageMessage imageMessage = new ImageMessage(entity);
         String originContent = entity.getContent();

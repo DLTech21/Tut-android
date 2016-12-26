@@ -53,12 +53,6 @@ public class GifEmoDao extends AbstractDao<GifEmoEntity, Long> {
                 "'PATH' TEXT NOT NULL ," +
                 "'MEAN' TEXT NOT NULL ," +
                 "'TYPE' INTEGER NOT NULL );");
-
-        GifEmoEntity gifEmoEntity = new GifEmoEntity();
-        gifEmoEntity.setUrl("add");
-        gifEmoEntity.setType(-1);
-        gifEmoEntity.setMean("");
-        DBInterface.instance().insertOrUpdateGifEmo(gifEmoEntity);
     }
 
     /**
@@ -111,7 +105,7 @@ public class GifEmoDao extends AbstractDao<GifEmoEntity, Long> {
 
     @Override
     protected Long updateKeyAfterInsert(GifEmoEntity entity, long rowId) {
-        entity.setId(rowId);
+//        entity.setId(rowId);
         return rowId;
     }
 

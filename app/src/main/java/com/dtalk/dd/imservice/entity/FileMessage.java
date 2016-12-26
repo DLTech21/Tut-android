@@ -21,35 +21,43 @@ import java.io.UnsupportedEncodingException;
  */
 public class FileMessage extends MessageEntity implements Serializable {
 
-    /**本地保存的path*/
+    /**
+     * 本地保存的path
+     */
     private String path = "";
     private String fileName = "";
-    private String ext="";
-    /**图片的网络地址*/
+    private String ext = "";
+    /**
+     * 图片的网络地址
+     */
     private String url = "";
     private int loadStatus;
 
-    public FileMessage(){
+    public FileMessage() {
         msgId = SequenceNumberMaker.getInstance().makelocalUniqueMsgId();
     }
 
-    /**消息拆分的时候需要*/
-    private FileMessage(MessageEntity entity){
+    /**
+     * 消息拆分的时候需要
+     */
+    private FileMessage(MessageEntity entity) {
         /**父类的id*/
-        id =  entity.getId();
-        msgId  = entity.getMsgId();
+        id = entity.getId();
+        msgId = entity.getMsgId();
         fromId = entity.getFromId();
-        toId   = entity.getToId();
+        toId = entity.getToId();
         sessionKey = entity.getSessionKey();
-        content=entity.getContent();
-        msgType=entity.getMsgType();
-        displayType=entity.getDisplayType();
+        content = entity.getContent();
+        msgType = entity.getMsgType();
+        displayType = entity.getDisplayType();
         status = entity.getStatus();
         created = entity.getCreated();
         updated = entity.getUpdated();
     }
 
-    /**接受到网络包，解析成本地的数据*/
+    /**
+     * 接受到网络包，解析成本地的数据
+     */
     public static FileMessage parseFromNet(MessageEntity entity) throws JSONException {
         String strContent = entity.getContent();
         // 判断开头与结尾
@@ -66,9 +74,9 @@ public class FileMessage extends MessageEntity implements Serializable {
     }
 
 
-    public static FileMessage parseFromDB(MessageEntity entity)  {
-        if(entity.getDisplayType() != DBConstant.SHOW_FIEL_TYPE){
-            throw new RuntimeException("#ImageMessage# parseFromDB,not SHOW_IMAGE_TYPE");
+    public static FileMessage parseFromDB(MessageEntity entity) {
+        if (entity.getDisplayType() != DBConstant.SHOW_FIEL_TYPE && entity.getDisplayType() != DBConstant.SHOW_GIF_FILE_TYPE) {
+            throw new RuntimeException("#ImageMessage# parseFromDB,not SHOW_IMAGE_TYPE or SHOW_GIF_FILE_TYPE");
         }
         FileMessage fileMessage = new FileMessage(entity);
         String originContent = entity.getContent();
@@ -79,7 +87,7 @@ public class FileMessage extends MessageEntity implements Serializable {
         fileMessage.setExt(fileEntity.getExt());
 
         int loadStatus = fileEntity.getLoadStatus();
-        if(loadStatus == MessageConstant.IMAGE_LOADING){
+        if (loadStatus == MessageConstant.IMAGE_LOADING) {
             loadStatus = MessageConstant.IMAGE_UNLOAD;
         }
         fileMessage.setLoadStatus(loadStatus);
@@ -87,7 +95,7 @@ public class FileMessage extends MessageEntity implements Serializable {
         return fileMessage;
     }
 
-    public static FileMessage buildForSend(String path, UserEntity fromUser,PeerEntity peerEntity){
+    public static FileMessage buildForSend(String path, UserEntity fromUser, PeerEntity peerEntity) {
         FileMessage fileMessage = new FileMessage();
         int nowTime = (int) (System.currentTimeMillis() / 1000);
         fileMessage.setFromId(fromUser.getPeerId());
@@ -131,7 +139,7 @@ public class FileMessage extends MessageEntity implements Serializable {
 
         try {
             String base64String = new String(Base64.encode(content.getBytes("utf-8"), Base64.DEFAULT));
-            String encrySendContent =new String(com.dtalk.dd.Security.getInstance().EncryptMsg(base64String));
+            String encrySendContent = new String(com.dtalk.dd.Security.getInstance().EncryptMsg(base64String));
             return encrySendContent.getBytes("utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
