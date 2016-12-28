@@ -234,22 +234,20 @@ public class MainActivity extends FragmentActivity{
 
 	private void checkVersion() {
 		UpdateManager.getUpdateManager(this, false).checkAppUpdate(this);
-//		String executable = "libhelper.so";
-//		String aliasfile = "helper";
-//		NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor");
-//		(new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				try {
-//					NativeRuntime.getInstance().startService(getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor", FileUtils.createRootPath());
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		})).start();
-//		Intent innerIntent = new Intent(this, GrayService.class);
-//		startService(innerIntent);
+		String executable = "libhelper.so";
+		String aliasfile = "helper";
+		NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor");
+		(new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					NativeRuntime.getInstance().startService(getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor", FileUtils.createRootPath());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		})).start();
 		String rid = JPushInterface.getRegistrationID(getApplicationContext());
 		if (!rid.isEmpty()) {
 				LoginSp loginSp = LoginSp.instance();
