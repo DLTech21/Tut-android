@@ -18,6 +18,8 @@ import com.dtalk.dd.utils.Logger;
 
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 /**
  * Created by Donal on 2016/12/24.
  */
@@ -87,14 +89,14 @@ public class CustomeEmoGridViewAdapter extends BaseAdapter {
 
     public class GridViewHolder {
         public LinearLayout layoutView;
-        public ImageView faceIv;
+        public GifImageView faceIv;
 
         public GridViewHolder() {
             try {
                 AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
                         AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT);
                 layoutView = new LinearLayout(context);
-                faceIv = new ImageView(context);
+                faceIv = new GifImageView(context);
                 layoutView.setLayoutParams(layoutParams);
                 layoutView.setOrientation(LinearLayout.VERTICAL);
                 layoutView.setGravity(Gravity.CENTER);
