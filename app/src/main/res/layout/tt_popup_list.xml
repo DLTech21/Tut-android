@@ -74,7 +74,7 @@
         android:clickable="true"
         android:gravity="center_horizontal"
         android:paddingTop="10dp"
-        android:text="添加到表情"
+        android:text="添加表情"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:visibility="gone" />

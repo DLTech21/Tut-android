@@ -119,9 +119,9 @@ public class ImageMessage extends MessageEntity implements Serializable {
     public static ImageMessage parseFromNet(MessageEntity entity) throws JSONException {
         String strContent = entity.getContent();
         // 判断开头与结尾
+        Logger.d(strContent);
         if (strContent.startsWith(MessageConstant.IMAGE_MSG_START)
                 && strContent.endsWith(MessageConstant.IMAGE_MSG_END)) {
-            // image message todo 字符串处理下
             ImageMessage imageMessage = new ImageMessage(entity);
             imageMessage.setDisplayType(DBConstant.SHOW_IMAGE_TYPE);
             String imageUrl = strContent.substring(MessageConstant.IMAGE_MSG_START.length());

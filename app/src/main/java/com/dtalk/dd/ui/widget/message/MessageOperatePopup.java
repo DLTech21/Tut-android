@@ -147,6 +147,7 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         // 非自己的消息
         // 图片语音
         // 文本
+        bForwardShow = false;
         if (bResend && bSelf) {
             resendBtn.setVisibility(View.VISIBLE);
             bresendShow = true;
@@ -162,8 +163,8 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
         } else if (!bResend && bSelf) {
             resendBtn.setVisibility(View.GONE);
             bresendShow = false;
-            bForwardShow = true;
-            forwardBtn.setVisibility(View.VISIBLE);
+//            bForwardShow = true;
+//            forwardBtn.setVisibility(View.VISIBLE);
             if (type != DBConstant.SHOW_IMAGE_TYPE && type != DBConstant.SHOW_AUDIO_TYPE && type != DBConstant.SHOW_GIF_TYPE && type != DBConstant.SHOW_GIF_OTHER_TYPE
                     && type != DBConstant.SHOW_GIF_FILE_TYPE) {
                 copyBtn.setVisibility(View.VISIBLE);
@@ -180,8 +181,8 @@ public class MessageOperatePopup implements View.OnClickListener, View.OnTouchLi
                 addEmoBtn.setVisibility(View.GONE);
             }
         } else {
-            bForwardShow = true;
-            forwardBtn.setVisibility(View.VISIBLE);
+//            bForwardShow = true;
+//            forwardBtn.setVisibility(View.VISIBLE);
             if (type != DBConstant.SHOW_IMAGE_TYPE
                     && type != DBConstant.SHOW_AUDIO_TYPE
                     && type != DBConstant.SHOW_GIF_TYPE
