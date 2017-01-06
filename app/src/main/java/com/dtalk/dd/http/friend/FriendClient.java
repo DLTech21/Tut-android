@@ -142,16 +142,17 @@ public class FriendClient extends BaseClient {
                         callback.onCloseConnection();
                         try {
                             Logger.e(s);
-                            JSONObject jsonObject = new JSONObject(s);
-                            if (jsonObject.has("remarks")) {
-                                OtherUserInfo res = JSON.parseObject(s, OtherUserInfo.class);
-                                callback.onSuccess(res);
-                            } else {
+//                            JSONObject jsonObject = new JSONObject(s);
+//                            if (jsonObject.has("remarks")) {
+//                                Logger.e("remarks");
+//                                OtherUserInfo res = JSON.parseObject(s, OtherUserInfo.class);
+//                                callback.onSuccess(res);
+//                            } else {
                                 OtherUserInfoNoRemark res = JSON.parseObject(s, OtherUserInfoNoRemark.class);
                                 callback.onSuccess(res);
-                            }
+//                            }
                         } catch (Exception e) {
-                            Logger.e(e.getLocalizedMessage());
+                            Logger.e(e);
                             callback.onException(e);
                         }
                     }

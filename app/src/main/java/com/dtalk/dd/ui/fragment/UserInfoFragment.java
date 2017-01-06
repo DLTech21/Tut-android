@@ -52,19 +52,21 @@ public class UserInfoFragment extends MainFragment {
         @Override
         public void onIMServiceConnected() {
             Logger.d("detail#onIMServiceConnected");
-
+            if (!EventBus.getDefault().isRegistered(UserInfoFragment.this)) {
+                EventBus.getDefault().register(UserInfoFragment.this);
+            }
             imService = imServiceConnector.getIMService();
             if (imService == null) {
                 Logger.e("detail#imService is null");
                 return;
             }
-            EventBus.getDefault().registerSticky(UserInfoFragment.this);
             if (currentUserId == 0) {
                 Logger.e("detail#intent params error!!");
                 return;
             }
             currentUser = imService.getContactManager().findContact(currentUserId);
             if (currentUser != null) {
+                hideProgressBar();
                 initBaseProfile();
                 initDetailProfile();
             }
@@ -172,7 +174,7 @@ public class UserInfoFragment extends MainFragment {
         IMBaseImageView portraitImageView = (IMBaseImageView) curView.findViewById(R.id.user_portrait);
 
         setTextViewContent(R.id.nickName, currentUser.getMainName());
-        setTextViewContent(R.id.userName, currentUser.getRealName());
+        setTextViewContent(R.id.userName, "Tut号:"+currentUser.getPhone());
         //头像设置
         portraitImageView.setDefaultImageRes(R.drawable.tt_default_user_portrait_corner);
         portraitImageView.setCorner(8);

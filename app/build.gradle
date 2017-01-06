@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'com.antfortune.freeline'
 ext {
     SUPPORT_LIBRARY_VERSION = '24.2.1'
     BUILD_TOOLS = "24.0.2"

@@ -233,21 +233,21 @@ public class MainActivity extends FragmentActivity{
 	}
 
 	private void checkVersion() {
-		UpdateManager.getUpdateManager(this, false).checkAppUpdate(this);
-		String executable = "libhelper.so";
-		String aliasfile = "helper";
-		NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor");
-		(new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					NativeRuntime.getInstance().startService(getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor", FileUtils.createRootPath());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		})).start();
+//		UpdateManager.getUpdateManager(this, false).checkAppUpdate(this);
+//		String executable = "libhelper.so";
+//		String aliasfile = "helper";
+//		NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor");
+//		(new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				try {
+//					NativeRuntime.getInstance().startService(getPackageName() + "/com.dtalk.dd.imservice.service.HostMonitor", FileUtils.createRootPath());
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		})).start();
 		String rid = JPushInterface.getRegistrationID(getApplicationContext());
 		if (!rid.isEmpty()) {
 				LoginSp loginSp = LoginSp.instance();
@@ -257,10 +257,10 @@ public class MainActivity extends FragmentActivity{
 				if (loginSp.getLoginIdentity() == null)
 					return;
 				int loginId = loginSp.getLoginIdentity().getLoginId();
-				String isUpdateCid = SandboxUtils.getInstance().get(IMApplication.getInstance(), loginId + "-regId");
-				if (StringUtils.empty(isUpdateCid)) {
+//				String isUpdateCid = SandboxUtils.getInstance().get(IMApplication.getInstance(), loginId + "-regId");
+//				if (StringUtils.empty(isUpdateCid)) {
 					UserClient.updateUserPush(rid, null);
-				}
+//				}
 		}
 	}
 

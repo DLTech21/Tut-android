@@ -34,6 +34,7 @@ import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.imservice.entity.UnreadEntity;
 import com.dtalk.dd.imservice.event.ApplicantEvent;
+import com.dtalk.dd.imservice.event.LoginEvent;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.imservice.manager.IMNotificationManager;
 import com.dtalk.dd.protobuf.helper.ProtoBuf2JavaBean;
@@ -83,8 +84,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 				applicantEntity.setId(System.currentTimeMillis() / 1000);
 				switch (applicantEntity.getType()) {
 					case 1:
+						triggerEvent(LoginEvent.FRIEND_RELOAD);
 						DBInterface.instance().insertOrUpdateApplicant(applicantEntity);
 						triggerEvent(ApplicantEvent.NEW_FRIEND_APPLICANT);
+						break;
+					case 2:
+						triggerEvent(LoginEvent.FRIEND_RELOAD);
 						break;
 					case 99:
 					case 100:

@@ -23,5 +23,6 @@ public enum LoginEvent {
     PC_ONLINE,
     PC_OFFLINE,
     KICK_PC_SUCCESS,
-    KICK_PC_FAILED
+    KICK_PC_FAILED,
+    FRIEND_RELOAD
 }

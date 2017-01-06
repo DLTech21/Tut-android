@@ -119,6 +119,9 @@ public class IMService extends Service {
                break;
            case LOGIN_OUT:
                handleLoginout();break;
+           case FRIEND_RELOAD:
+               imFriendManager.onLocalNetOk();
+               break;
        }
     }
 

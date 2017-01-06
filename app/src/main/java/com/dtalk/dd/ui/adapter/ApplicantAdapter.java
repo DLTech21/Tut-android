@@ -17,6 +17,7 @@ import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.imservice.event.ApplicantEvent;
+import com.dtalk.dd.imservice.event.LoginEvent;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.ThemeUtils;
@@ -153,6 +154,7 @@ public class ApplicantAdapter extends BaseAdapter implements
                 DBInterface.instance().insertOrUpdateApplicant(applicantEntity);
                 applicantHolder.confirm.setVisibility(View.INVISIBLE);
                 triggerEvent(ApplicantEvent.CONFIRM_FRIEND_APPLICANT);
+                triggerEvent(LoginEvent.FRIEND_RELOAD);
             }
 
             @Override
