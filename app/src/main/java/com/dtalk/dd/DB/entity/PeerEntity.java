@@ -2,13 +2,17 @@ package com.dtalk.dd.DB.entity;
 
 import com.dtalk.dd.protobuf.helper.EntityChangeEngine;
 
+import java.io.Serializable;
+
+import me.iwf.photopicker.event.Selectable;
+
 /**
  * @author : yingmu on 15-3-25.
  * @email : yingmu@mogujie.com.
  *
  * 聊天对象抽象类  may be user/group
  */
-public abstract class PeerEntity {
+public abstract class PeerEntity implements Serializable{
     protected Long id;
     protected int peerId;
     /** Not-null value.

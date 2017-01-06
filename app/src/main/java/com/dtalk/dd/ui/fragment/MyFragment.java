@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
+import com.dtalk.dd.ui.activity.MyUserInfoActivity;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.imservice.event.UserInfoEvent;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
@@ -254,7 +255,8 @@ public class MyFragment extends MainFragment {
 		userContainer.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				IMUIHelper.openUserProfileActivity(getActivity(), loginContact.getPeerId());
+//				IMUIHelper.openUserProfileActivity(getActivity(), loginContact.getPeerId());
+                MyUserInfoActivity.launch(getActivity(), loginContact);
 			}
 		});
 	}

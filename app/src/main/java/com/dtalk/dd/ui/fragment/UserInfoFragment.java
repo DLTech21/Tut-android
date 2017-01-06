@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
+import com.dtalk.dd.Security;
 import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.http.base.BaseClient;
@@ -30,6 +31,7 @@ import com.dtalk.dd.ui.activity.DetailPortraitActivity;
 import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.MD5Util;
 import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.StringUtils;
 import com.dtalk.dd.utils.ThemeUtils;
@@ -174,24 +176,13 @@ public class UserInfoFragment extends MainFragment {
         IMBaseImageView portraitImageView = (IMBaseImageView) curView.findViewById(R.id.user_portrait);
 
         setTextViewContent(R.id.nickName, currentUser.getMainName());
-        setTextViewContent(R.id.userName, "Tut号:"+currentUser.getPhone());
+        setTextViewContent(R.id.userName, "Tut号: tut_"+ Security.getInstance().EncryptMsg(currentUser.getPhone()));
         //头像设置
+
         portraitImageView.setDefaultImageRes(R.drawable.tt_default_user_portrait_corner);
         portraitImageView.setCorner(8);
         portraitImageView.setImageResource(R.drawable.tt_default_user_portrait_corner);
         portraitImageView.setImageUrl(currentUser.getAvatar());
-
-        portraitImageView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), DetailPortraitActivity.class);
-//                intent.putExtra(IntentConstant.KEY_AVATAR_URL, currentUser.getAvatar());
-//                intent.putExtra(IntentConstant.KEY_IS_IMAGE_CONTACT_AVATAR, true);
-//
-//                startActivity(intent);
-            }
-        });
 
         TextView tvRegion = (TextView) curView.findViewById(R.id.tv_region);
         if (StringUtils.notEmpty(currentUser.getArea())) {

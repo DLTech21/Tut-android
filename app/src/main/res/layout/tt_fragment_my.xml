@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+	>
 
     <LinearLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/default_bk"
+        android:background="#ebebeb"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/user_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ececec"
-            android:paddingBottom="25dp"
-            android:paddingTop="25dp"
+            android:background="@color/white"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+			android:paddingTop="10dp"
+			android:paddingBottom="10dp"
             >
 
             <com.dtalk.dd.ui.widget.IMBaseImageView
@@ -25,6 +28,7 @@
                 android:layout_height="70dp"
                 android:layout_marginLeft="15dp"
                 android:layout_alignParentLeft="true"
+				android:layout_centerVertical="true"
                 android:src="@drawable/tt_default_user_portrait_corner"
                 android:scaleType="centerCrop" />
 
@@ -43,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
-                    android:textSize="17sp"/>
+                    android:textSize="15dp"/>
 
                 <TextView
                     android:id="@+id/userName"
@@ -52,7 +56,7 @@
                     android:layout_below="@id/nickName"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/default_light_grey_color"
-                    android:textSize="14sp"
+                    android:textSize="13dp"
                     />
             </RelativeLayout>
 
@@ -68,6 +72,7 @@
 
         <RelativeLayout
             android:id="@+id/settingPage"
+			android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="45dp" >
 
@@ -100,6 +105,7 @@
 
 	    <RelativeLayout
 	        android:id="@+id/clearPage"
+			android:background="@color/white"
 	        android:layout_width="match_parent"
 	        android:layout_height="45dp" >
 	
@@ -131,6 +137,7 @@
 	        />
 	
 	    <RelativeLayout
+			android:background="@color/white"
 	        android:id="@+id/exitPage"
 	        android:layout_width="match_parent"
 	        android:layout_height="45dp">

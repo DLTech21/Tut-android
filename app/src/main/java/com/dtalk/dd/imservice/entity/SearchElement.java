@@ -1,6 +1,8 @@
 package com.dtalk.dd.imservice.entity;
 
-public class SearchElement {
+import java.io.Serializable;
+
+public class SearchElement implements Serializable{
 	public int startIndex = -1;
 	public int endIndex = -1;
 	

@@ -2,11 +2,12 @@ package com.dtalk.dd.utils.pinyin;
 
 import com.dtalk.dd.utils.pinyin.HanziToPinyin3.Token;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PinYin {
-	public static class PinYinElement {
+public class PinYin implements Serializable{
+	public static class PinYinElement implements Serializable{
 
         // 开源TT ==> kaiyuantt
 		public String pinyin;
