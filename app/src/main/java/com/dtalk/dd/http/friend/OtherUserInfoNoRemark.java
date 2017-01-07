@@ -1,9 +1,11 @@
 package com.dtalk.dd.http.friend;
 
+import java.io.Serializable;
+
 /**
  * Created by Donal on 16/7/19.
  */
-public class OtherUserInfoNoRemark {
+public class OtherUserInfoNoRemark implements Serializable{
     private int status;
     private String msg;
     private String nickname;

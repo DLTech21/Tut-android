@@ -167,6 +167,7 @@ public class LoginActivity extends TTBaseActivity {
                     public void onSuccess(Object data) {
                         UserInfo user = (UserInfo) data;
                         if (user.getStatus() == 1) {
+//                            SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), user, "user");
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "token", user.getToken());
                             imService.getLoginManager().login(loginIdentity);
                         } else {
@@ -360,6 +361,7 @@ public class LoginActivity extends TTBaseActivity {
                     public void onSuccess(Object data) {
                         UserInfo user = (UserInfo) data;
                         if (user.getStatus() == 1) {
+//                            SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), user, "user");
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "token", user.getToken());
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "avatar", user.getAvatar());
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "cover", user.getMoment_cover());

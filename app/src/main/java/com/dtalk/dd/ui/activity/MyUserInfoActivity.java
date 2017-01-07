@@ -16,7 +16,14 @@ import android.widget.TextView;
 
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
+import com.dtalk.dd.app.IMApplication;
+import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
+import com.dtalk.dd.http.user.UserClient;
+import com.dtalk.dd.http.user.UserInfo;
+import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
 import com.dtalk.dd.ui.base.TTBaseActivity;
+import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yixia.camera.demo.ui.BaseActivity;
@@ -33,7 +40,7 @@ import me.iwf.photopicker.PhotoPreview;
  * Created by Donal on 2017/1/6.
  */
 
-public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickListener{
+public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickListener {
 
     private RelativeLayout re_avatar;
     private RelativeLayout re_name;
@@ -61,17 +68,18 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
     String sign;
     String nick;
     String region;
-    private UserEntity currentUser;
+    private OtherUserInfoNoRemark currentUser;
 
     public static void launch(Context context, UserEntity entity) {
-        context.startActivity(new Intent(context, MyUserInfoActivity.class).putExtra("user", entity));
+        context.startActivity(new Intent(context, MyUserInfoActivity.class));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         LayoutInflater.from(this).inflate(R.layout.activity_myuser, topContentView);
-        currentUser = (UserEntity) getIntent().getSerializableExtra("user");
+        currentUser = SandboxUtils.getInstance().getUser();
         initView();
 
     }
@@ -79,19 +87,20 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initView() {
         setLeftButton(R.drawable.tt_top_back);
         setLeftText(getResources().getString(R.string.top_left_back));
-        setTitle("注册");
+        setTitle("个人资料");
         topLeftBtn.setOnClickListener(this);
         letTitleTxt.setOnClickListener(this);
 
-        hxid = currentUser.getId()+"";
-        nick = currentUser.getMainName();
-        sex = currentUser.getGender()+"";
-//        sign = currentUser.get;
+        hxid = currentUser.getUid();
+        nick = currentUser.getNickname();
+        sex = currentUser.getSex();
+        sign = currentUser.getSignature();
 
         region = currentUser.getArea();
         String avatar = currentUser.getAvatar();
@@ -131,11 +140,11 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
             tv_sex.setText("");
         }
 
-//        if (sign.equals("0")) {
-//            tv_sign.setText("未填写");
-//        } else {
-//            tv_sign.setText(sign);
-//        }
+        if (sign.equals("0")) {
+            tv_sign.setText("未填写");
+        } else {
+            tv_sign.setText(sign);
+        }
 
 //        showUserAvatar(iv_avatar, avatar);
 //        refresh();
@@ -162,8 +171,8 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
                             .start(MyUserInfoActivity.this);
                     break;
                 case R.id.re_name:
-//                    startActivityForResult(new Intent(MyUserInfoActivity.this,
-//                            UpdateNickActivity.class),UPDATE_NICK);
+                    startActivityForResult(new Intent(MyUserInfoActivity.this,
+                            UpdateNickActivity.class), UPDATE_NICK);
                     break;
                 case R.id.re_sex:
                     showSexDialog();
@@ -224,11 +233,40 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
     }
 
 
-
     public void updateSex(final String sexnum) {
-        String json = "{\"sex\":"+ "\"" + sexnum + "\"}";
-//        updateUserInfo(json);
-//        LocalUserInfo.getInstance(MyUserInfoActivity.this).setUserInfo("sex", sexnum);
+        String json = "{\"sex\":" + "\"" + sexnum + "\"}";
+        UserClient.updateUserByJson(json, new BaseClient.ClientCallback() {
+            @Override
+            public void onPreConnection() {
+
+            }
+
+            @Override
+            public void onCloseConnection() {
+
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                OtherUserInfoNoRemark userInfo = SandboxUtils.getInstance().getUser();
+                userInfo.setSex(sexnum);
+                SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), userInfo, "user");
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
     }
 
+    public void onEvent(UpdateUserInfoEvent event) {
+        nick = SandboxUtils.getInstance().getUser().getNickname();
+        tv_name.setText(nick);
+    }
 }

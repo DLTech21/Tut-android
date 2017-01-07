@@ -2,6 +2,10 @@ package com.dtalk.dd.utils;
 
 import android.content.Context;
 
+import com.dtalk.dd.app.IMApplication;
+import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
+import com.dtalk.dd.http.user.UserInfo;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +40,14 @@ public class SandboxUtils {
             }
             return sandboxUtils;
         }
+    }
+
+    public OtherUserInfoNoRemark getUser() {
+        OtherUserInfoNoRemark userInfo = (OtherUserInfoNoRemark) sandboxUtils.readObject(IMApplication.getInstance(), "user");
+        if (userInfo != null) {
+            return userInfo;
+        }
+        return null;
     }
 
     public boolean containsProperty(Context context, String key) {
@@ -276,8 +288,7 @@ public class SandboxUtils {
         return exist;
     }
 
-    public void removeObject(Context context, String file)
-    {
+    public void removeObject(Context context, String file) {
         if (isExistDataCache(context, file)) {
             File data = context.getFileStreamPath(file);
             data.delete();
