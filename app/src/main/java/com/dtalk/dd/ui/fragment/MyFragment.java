@@ -262,9 +262,9 @@ public class MyFragment extends MainFragment {
                 MyUserInfoActivity.launch(getActivity(), loginContact);
 			}
 		});
+        userNameView.setVisibility(View.GONE);
         if (currentUser != null) {
             nickNameView.setText(currentUser.getNickname());
-//            userNameView.setText(currentUser.getRealName());
             portraitImageView.setImageUrl(currentUser.getAvatar());
         }
 	}

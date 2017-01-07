@@ -125,6 +125,7 @@
     </RelativeLayout> -->
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/re_erweima"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -223,6 +224,7 @@
             android:background="#dadada" />
     </RelativeLayout>
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/re_region"
         android:layout_width="match_parent"
         android:layout_height="48dp"
