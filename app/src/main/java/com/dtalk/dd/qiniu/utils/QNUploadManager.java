@@ -106,6 +106,30 @@ public class QNUploadManager {
                 }, null));
     }
 
+    public void uploadAvatar(final String path, final SVProgressHUD svProgressHUD, final OnQNUploadCallback callback) {
+        final Map<String, String> uploadedFiles = new HashMap<>();
+        String qiniuKey = "avatar/" + MD5Util.getMD5String(path) + ".png";
+        Logger.d(token);
+        uploadManager.put(path, qiniuKey, token, new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                Logger.d(info.toString());
+                uploadedFiles.put(key, Config.QINIU_PREFIX+key);
+                if (callback != null) {
+                    callback.uploadCompleted(uploadedFiles);
+                }
+            }
+        }, new UploadOptions(null, null, false,
+                new UpProgressHandler(){
+                    public void progress(String key, double percent){
+                        Logger.i(key + ": " + percent);
+                        if (svProgressHUD != null) {
+                            svProgressHUD.getProgressBar().setProgress((int) (percent * 100));
+                        }
+                    }
+                }, null));
+    }
+
     public interface OnQNUploadCallback {
         abstract void uploadCompleted(Map<String, String> uploadedFiles);
     }

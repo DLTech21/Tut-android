@@ -22,15 +22,23 @@ import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
+import com.dtalk.dd.qiniu.utils.Mac;
+import com.dtalk.dd.qiniu.utils.PutPolicy;
+import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.base.TTBaseActivity;
+import com.dtalk.dd.ui.plugin.ImageLoadManager;
+import com.dtalk.dd.utils.MD5Util;
 import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yixia.camera.demo.ui.BaseActivity;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import me.iwf.photopicker.PhotoPicker;
@@ -118,6 +126,7 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
         re_erweima.setOnClickListener(new MyListener());
         // 头像
         iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
+        ImageLoadManager.setCircleAvatarGlide(IMApplication.getInstance(), avatar, iv_avatar);
         tv_name = (TextView) this.findViewById(R.id.tv_name);
 //        tv_fxid = (TextView) this.findViewById(R.id.tv_fxid);
         tv_sex = (TextView) this.findViewById(R.id.tv_sex);
@@ -185,7 +194,82 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
                     break;
             }
         }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK &&
+                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+
+            List<String> photos = null;
+            if (data != null) {
+                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            }
+            if (photos != null) {
+                handleTakePhotoData(photos);
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                handlePhoto(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+    public void handleTakePhotoData(List<String> photos) {
+        if (photos != null || photos.size() > 0) {
+            String avatar = photos.get(0);
+            CropImage.activity(Uri.parse("file://" + avatar)).setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
+        }
+    }
+
+    public void handlePhoto(Uri uri) {
+//        showUserAvatar(iv_avatar, uri.toString());
+        ImageLoadManager.setCircleAvatarGlide(IMApplication.getInstance(), uri.toString(), iv_avatar);
+        uploadAvatar(uri.toString().replace("file://", ""));
+    }
+
+    private void uploadAvatar(String path) {
+        QNUploadManager.getInstance(IMApplication.getInstance()).uploadAvatar(path, null, new QNUploadManager.OnQNUploadCallback() {
+            @Override
+            public void uploadCompleted(final Map<String, String> uploadedFiles) {
+                String json = "{\"avatar\":"+ "\"" + (String) uploadedFiles.values().toArray()[0] + "\"}";
+                UserClient.updateUserByJson(json, new BaseClient.ClientCallback() {
+                    @Override
+                    public void onPreConnection() {
+
+                    }
+
+                    @Override
+                    public void onCloseConnection() {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Object data) {
+                        OtherUserInfoNoRemark userInfo = SandboxUtils.getInstance().getUser();
+                        userInfo.setAvatar((String) uploadedFiles.values().toArray()[0]);
+                        SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), userInfo, "user");
+                        ImageLoadManager.setCircleAvatarGlide(IMApplication.getInstance(), (String) uploadedFiles.values().toArray()[0], iv_avatar);
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+
+                    }
+
+                    @Override
+                    public void onException(Exception e) {
+
+                    }
+                });
+            }
+        });
     }
 
     private void showSexDialog() {

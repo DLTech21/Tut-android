@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
+import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.ui.activity.MyUserInfoActivity;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.imservice.event.UserInfoEvent;
@@ -29,6 +30,7 @@ import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.utils.FileUtil;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.SandboxUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -41,6 +43,7 @@ public class MyFragment extends MainFragment {
 	private View exitView;
     private View clearView;
     private View settingView;
+    private OtherUserInfoNoRemark currentUser;
 
     private IMServiceConnector imServiceConnector = new IMServiceConnector(){
         @Override
@@ -78,7 +81,7 @@ public class MyFragment extends MainFragment {
 		curView = inflater.inflate(R.layout.tt_fragment_my, topContentView);
 
 		initRes();
-
+        currentUser = SandboxUtils.getInstance().getUser();
 		return curView;
 	}
 
@@ -259,6 +262,11 @@ public class MyFragment extends MainFragment {
                 MyUserInfoActivity.launch(getActivity(), loginContact);
 			}
 		});
+        if (currentUser != null) {
+            nickNameView.setText(currentUser.getNickname());
+//            userNameView.setText(currentUser.getRealName());
+            portraitImageView.setImageUrl(currentUser.getAvatar());
+        }
 	}
 
     private void deleteFilesByDirectory(File directory) {

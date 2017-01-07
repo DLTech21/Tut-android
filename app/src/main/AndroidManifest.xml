@@ -157,6 +157,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name="com.dtalk.dd.ui.activity.MyUserInfoActivity"
             android:configChanges="orientation|keyboardHidden"

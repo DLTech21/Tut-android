@@ -112,5 +112,6 @@ dependencies {
     compile 'cn.jiguang:jpush:2.1.8'
     compile 'com.github.razerdp:BasePopup:v1.4.0'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
 }
 
