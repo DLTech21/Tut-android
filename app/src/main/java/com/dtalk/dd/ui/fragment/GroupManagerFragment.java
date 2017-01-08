@@ -19,6 +19,7 @@ import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.DB.sp.ConfigurationSp;
 import com.dtalk.dd.R;
 import com.dtalk.dd.config.IntentConstant;
+import com.dtalk.dd.ui.activity.UpdateGroupNameActivity;
 import com.dtalk.dd.ui.adapter.GroupManagerAdapter;
 import com.dtalk.dd.ui.helper.CheckboxConfigHelper;
 import com.dtalk.dd.imservice.event.GroupEvent;
@@ -36,25 +37,30 @@ import de.greenrobot.event.EventBus;
 
 
 /**
- * @YM
- * 个人与群组的聊天详情都会来到这个页面
+ * @YM 个人与群组的聊天详情都会来到这个页面
  * single: 这有sessionId的头像，以及加号"+" ， 创建群成功之后，跳到聊天的页面
  * group:  群成员，加减号 ， 修改成功之后，跳到群管理页面
  * 临时群任何人都可以加人，但是只有群主可以踢人”这个逻辑修改下，正式群暂时只给createId开放
  */
-public class GroupManagerFragment extends TTBaseFragment implements View.OnClickListener{
+public class GroupManagerFragment extends TTBaseFragment implements View.OnClickListener {
     private View curView = null;
-    /**adapter配置*/
+    /**
+     * adapter配置
+     */
     private GridView gridView;
     private GroupManagerAdapter adapter;
 
 
-    /**详情的配置  勿扰以及指定聊天*/
+    /**
+     * 详情的配置  勿扰以及指定聊天
+     */
     CheckboxConfigHelper checkBoxConfiger = new CheckboxConfigHelper();
     CheckBox noDisturbCheckbox;
     CheckBox topSessionCheckBox;
 
-    /**需要的状态参数*/
+    /**
+     * 需要的状态参数
+     */
     private IMService imService;
     private String curSessionKey;
     private PeerEntity peerEntity;
@@ -69,7 +75,7 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (null != curView) {
             ((ViewGroup) curView.getParent()).removeView(curView);
             return curView;
@@ -115,7 +121,7 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
     }
 
 
-    private IMServiceConnector imServiceConnector = new IMServiceConnector(){
+    private IMServiceConnector imServiceConnector = new IMServiceConnector() {
         @Override
         public void onServiceDisconnected() {
         }
@@ -124,10 +130,10 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
         public void onIMServiceConnected() {
             Logger.d("groupmgr#onIMServiceConnected");
             imService = imServiceConnector.getIMService();
-            if(imService == null){
-              Toast.makeText(GroupManagerFragment.this.getActivity(),
+            if (imService == null) {
+                Toast.makeText(GroupManagerFragment.this.getActivity(),
                         getResources().getString(R.string.im_service_disconnected), Toast.LENGTH_SHORT).show();
-               return;
+                return;
             }
             checkBoxConfiger.init(imService.getConfigSp());
             initView();
@@ -138,104 +144,112 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
 
     private void initView() {
         setTopTitle(getString(R.string.chat_detail));
-        if (null == imService || null == curView ) {
+        if (null == imService || null == curView) {
             Logger.e("groupmgr#init failed,cause by imService or curView is null");
             return;
         }
 
-        curSessionKey =  getActivity().getIntent().getStringExtra(IntentConstant.KEY_SESSION_KEY);
+        curSessionKey = getActivity().getIntent().getStringExtra(IntentConstant.KEY_SESSION_KEY);
         if (TextUtils.isEmpty(curSessionKey)) {
             Logger.e("groupmgr#getSessionInfoFromIntent failed");
             return;
         }
         peerEntity = imService.getSessionManager().findPeerEntity(curSessionKey);
-        if(peerEntity == null){
-            Logger.e("groupmgr#findPeerEntity failed,sessionKey:%s",curSessionKey);
+        if (peerEntity == null) {
+            Logger.e("groupmgr#findPeerEntity failed,sessionKey:%s", curSessionKey);
             return;
         }
-        switch (peerEntity.getType()){
-            case DBConstant.SESSION_TYPE_GROUP:{
+        switch (peerEntity.getType()) {
+            case DBConstant.SESSION_TYPE_GROUP: {
                 GroupEntity groupEntity = (GroupEntity) peerEntity;
                 // 群组名称的展示
                 TextView groupNameView = (TextView) curView.findViewById(R.id.group_manager_title);
                 groupNameView.setText(groupEntity.getMainName());
-            }break;
+            }
+            break;
 
-            case DBConstant.SESSION_TYPE_SINGLE:{
+            case DBConstant.SESSION_TYPE_SINGLE: {
                 // 个人不显示群聊名称
                 View groupNameContainerView = curView.findViewById(R.id.group_manager_name);
                 groupNameContainerView.setVisibility(View.GONE);
-            }break;
+            }
+            break;
         }
+        curView.findViewById(R.id.groupname_layout).setOnClickListener(this);
         // 初始化配置checkBox
         initCheckbox();
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         Logger.d("groupmgr#initAdapter");
 
         gridView = (GridView) curView.findViewById(R.id.group_manager_grid);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));// 去掉点击时的黄色背影
         gridView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 
-        adapter = new GroupManagerAdapter(getActivity(),imService,peerEntity);
+        adapter = new GroupManagerAdapter(getActivity(), imService, peerEntity);
         gridView.setAdapter(adapter);
     }
 
-    /**事件驱动通知*/
-    public void onEventMainThread(GroupEvent event){
-        switch (event.getEvent()){
+    /**
+     * 事件驱动通知
+     */
+    public void onEventMainThread(GroupEvent event) {
+        switch (event.getEvent()) {
 
             case CHANGE_GROUP_MEMBER_FAIL:
-            case CHANGE_GROUP_MEMBER_TIMEOUT:{
+            case CHANGE_GROUP_MEMBER_TIMEOUT: {
                 Toast.makeText(getActivity(), getString(R.string.change_temp_group_failed), Toast.LENGTH_SHORT).show();
                 return;
             }
-            case CHANGE_GROUP_MEMBER_SUCCESS:{
+            case CHANGE_GROUP_MEMBER_SUCCESS: {
                 onMemberChangeSuccess(event);
-            }break;
+            }
+            break;
         }
     }
 
-    private void onMemberChangeSuccess(GroupEvent event){
+    private void onMemberChangeSuccess(GroupEvent event) {
         int groupId = event.getGroupEntity().getPeerId();
-        if(groupId != peerEntity.getPeerId()){
+        if (groupId != peerEntity.getPeerId()) {
             return;
         }
         List<Integer> changeList = event.getChangeList();
-        if(changeList == null || changeList.size()<=0){
+        if (changeList == null || changeList.size() <= 0) {
             return;
         }
         int changeType = event.getChangeType();
 
-        switch (changeType){
+        switch (changeType) {
             case DBConstant.GROUP_MODIFY_TYPE_ADD:
                 ArrayList<UserEntity> newList = new ArrayList<>();
-                for(Integer userId:changeList){
-                    UserEntity userEntity =  imService.getContactManager().findContact(userId);
-                    if(userEntity!=null) {
+                for (Integer userId : changeList) {
+                    UserEntity userEntity = imService.getContactManager().findContact(userId);
+                    if (userEntity != null) {
                         newList.add(userEntity);
                     }
                 }
                 adapter.add(newList);
                 break;
             case DBConstant.GROUP_MODIFY_TYPE_DEL:
-                for(Integer userId:changeList){
+                for (Integer userId : changeList) {
                     adapter.removeById(userId);
                 }
                 break;
         }
     }
 
-	private void initCheckbox() {
+    private void initCheckbox() {
         checkBoxConfiger.initCheckBox(noDisturbCheckbox, curSessionKey, ConfigurationSp.CfgDimension.NOTIFICATION);
-        checkBoxConfiger.initTopCheckBox(topSessionCheckBox,curSessionKey);
+        checkBoxConfiger.initTopCheckBox(topSessionCheckBox, curSessionKey);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.groupname_layout:
+                GroupEntity groupEntity = (GroupEntity) peerEntity;
+                UpdateGroupNameActivity.open(getActivity(), groupEntity.getId() + "", groupEntity.getMainName());
                 break;
         }
     }

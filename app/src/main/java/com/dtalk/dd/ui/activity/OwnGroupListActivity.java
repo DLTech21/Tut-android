@@ -53,6 +53,7 @@ public class OwnGroupListActivity extends TTBaseActivity implements View.OnClick
         if(EventBus.getDefault().isRegistered(OwnGroupListActivity.this)){
             EventBus.getDefault().unregister(OwnGroupListActivity.this);
         }
+        imServiceConnector.disconnect(this);
     }
 
     @Override

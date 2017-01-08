@@ -13,36 +13,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.dtalk.dd.R;
-import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
-import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
-import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
 import com.dtalk.dd.ui.base.TTBaseActivity;
-import com.dtalk.dd.utils.SandboxUtils;
-
-import de.greenrobot.event.EventBus;
-
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-
-import com.dtalk.dd.DB.entity.UserEntity;
-import com.dtalk.dd.R;
-import com.dtalk.dd.app.IMApplication;
-import com.dtalk.dd.http.base.BaseClient;
-import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
-import com.dtalk.dd.http.user.UserClient;
-import com.dtalk.dd.http.user.UserInfo;
-import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
-import com.dtalk.dd.ui.base.TTBaseActivity;
-import com.dtalk.dd.utils.SandboxUtils;
-
-import de.greenrobot.event.EventBus;
 
 
 public class UpdateGroupNameActivity extends TTBaseActivity implements View.OnClickListener {
@@ -76,7 +49,7 @@ public class UpdateGroupNameActivity extends TTBaseActivity implements View.OnCl
         dialog.setMessage("正在更新...");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.show();
-        UserClient.updateName(id, nick, new BaseClient.ClientCallback() {
+        UserClient.updateName(id, newNick, new BaseClient.ClientCallback() {
             @Override
             public void onPreConnection() {
 
