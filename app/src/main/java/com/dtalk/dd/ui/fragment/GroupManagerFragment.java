@@ -42,7 +42,7 @@ import de.greenrobot.event.EventBus;
  * group:  群成员，加减号 ， 修改成功之后，跳到群管理页面
  * 临时群任何人都可以加人，但是只有群主可以踢人”这个逻辑修改下，正式群暂时只给createId开放
  */
-public class GroupManagerFragment extends TTBaseFragment{
+public class GroupManagerFragment extends TTBaseFragment implements View.OnClickListener{
     private View curView = null;
     /**adapter配置*/
     private GridView gridView;
@@ -230,5 +230,13 @@ public class GroupManagerFragment extends TTBaseFragment{
 	private void initCheckbox() {
         checkBoxConfiger.initCheckBox(noDisturbCheckbox, curSessionKey, ConfigurationSp.CfgDimension.NOTIFICATION);
         checkBoxConfiger.initTopCheckBox(topSessionCheckBox,curSessionKey);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.groupname_layout:
+                break;
+        }
     }
 }

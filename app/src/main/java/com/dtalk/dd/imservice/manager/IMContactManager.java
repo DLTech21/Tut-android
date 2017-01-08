@@ -218,7 +218,7 @@ public class IMContactManager extends IMManager {
                         userEntity.setMomentcover(otherUserInfo.getMoment_cover());
                         PinYin.getPinYin(userEntity.getMainName(), userEntity.getPinyinElement());
                         if (StringUtils.notEmpty(otherUserInfo.getRemarks())) {
-                            userEntity.setRealName(otherUserInfo.getRemarks().getRemarkname());
+                            userEntity.setRealName(otherUserInfo.getNickname());
                         }
                         boolean needEvent = false;
                         ArrayList<UserEntity> dbNeed = new ArrayList<>();

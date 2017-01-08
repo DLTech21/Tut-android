@@ -14,6 +14,7 @@ import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.imservice.event.ApplicantEvent;
+import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
 import com.dtalk.dd.ui.plugin.UpdateManager;
 import com.dtalk.dd.utils.FileUtils;
 import com.dtalk.dd.R;
@@ -281,6 +282,7 @@ public class MainActivity extends FragmentActivity {
             public void onSuccess(Object data) {
                 OtherUserInfoNoRemark otherUserInfoNoRemark = (OtherUserInfoNoRemark) data;
                 SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), otherUserInfoNoRemark, "user");
+                EventBus.getDefault().post(new UpdateUserInfoEvent());
             }
 
             @Override

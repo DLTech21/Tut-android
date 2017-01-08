@@ -12,26 +12,36 @@ import android.widget.TextView;
 import com.dtalk.dd.DB.entity.MessageEntity;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
+import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.MessageConstant;
+import com.dtalk.dd.ui.plugin.ImageLoadManager;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
+import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.SandboxUtils;
 
 /**
  * @author : yingmu on 15-1-9.
  * @email : yingmu@mogujie.com.
  */
-public abstract class BaseMsgRenderView extends RelativeLayout{
-    /** 头像*/
+public abstract class BaseMsgRenderView extends RelativeLayout {
+    /**
+     * 头像
+     */
     protected IMBaseImageView portrait;
-    /** 消息状态*/
+    /**
+     * 消息状态
+     */
     protected ImageView messageFailed;
     protected ProgressBar loadingProgressBar;
     protected TextView name;
 
-    /**渲染的消息实体*/
+    /**
+     * 渲染的消息实体
+     */
     protected MessageEntity messageEntity;
     protected ViewGroup parentView;
-    protected  boolean isMine;
+    protected boolean isMine;
 
     protected BaseMsgRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,39 +58,38 @@ public abstract class BaseMsgRenderView extends RelativeLayout{
     }
 
 
-
     // 消息失败绑定事件 三种不同的弹窗
     // image的load状态就是 sending状态的一个子状态
-    public  void msgSendinging(final MessageEntity messageEntity){
+    public void msgSendinging(final MessageEntity messageEntity) {
         messageFailed.setVisibility(View.GONE);
         loadingProgressBar.setVisibility(View.VISIBLE);
     }
 
-    public void msgFailure(final MessageEntity messageEntity){
+    public void msgFailure(final MessageEntity messageEntity) {
         messageFailed.setVisibility(View.VISIBLE);
         loadingProgressBar.setVisibility(View.GONE);
     }
 
-    public void msgSuccess(final MessageEntity messageEntity){
+    public void msgSuccess(final MessageEntity messageEntity) {
         messageFailed.setVisibility(View.GONE);
         loadingProgressBar.setVisibility(View.GONE);
     }
 
-    public void msgStatusError(final MessageEntity messageEntity){
+    public void msgStatusError(final MessageEntity messageEntity) {
         messageFailed.setVisibility(View.GONE);
         loadingProgressBar.setVisibility(View.GONE);
     }
 
-    /**控件赋值*/
-    public void render(final MessageEntity entity, UserEntity userEntity,final Context ctx){
+    /**
+     * 控件赋值
+     */
+    public void render(final MessageEntity entity, UserEntity userEntity, final Context ctx) {
         this.messageEntity = entity;
-        if(userEntity == null){
-            // 没有找到对应的用户信息 todo
-            // 请求用户信息 设定默认头像、默认姓名、
-            userEntity=new UserEntity();
-            userEntity.setMainName("未知");
-            userEntity.setRealName("未知");
-        }
+//        if(userEntity == null){
+//            userEntity=new UserEntity();
+//            userEntity.setMainName("未知");
+//            userEntity.setRealName("未知");
+//        }
 
         String avatar = userEntity.getAvatar();
         int msgStatus = messageEntity.getStatus();
@@ -90,25 +99,30 @@ public abstract class BaseMsgRenderView extends RelativeLayout{
         portrait.setCorner(5);
         portrait.setImageUrl(avatar);
         // 设定姓名 应该消息都是有的
-       if(!isMine){
-           name.setText(userEntity.getMainName());
-           name.setVisibility(View.VISIBLE);
-       }
-
-
+        if (!isMine) {
+            name.setText(userEntity.getMainName());
+            name.setVisibility(View.GONE);
+        } else {
+            try {
+                avatar = SandboxUtils.getInstance().getUser().getAvatar();
+                ImageLoadManager.setCircleAvatarGlide(IMApplication.getInstance(), avatar, portrait);
+            } catch (Exception e) {
+                Logger.e(e);
+            }
+        }
         /**头像的跳转事件暂时放在这里， todo 业务结合紧密，但是应该不会改了*/
         final int userId = userEntity.getPeerId();
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IMUIHelper.openUserProfileActivity(getContext(),userId);
+                IMUIHelper.openUserProfileActivity(getContext(), userId);
             }
         });
         /**头像事件 end*/
 
         // 设定三种信息的弹窗类型
         // 判定消息的状态 成功还是失败  todo 具体实现放在子类中
-        switch (msgStatus){
+        switch (msgStatus) {
             case MessageConstant.MSG_FAILURE:
                 msgFailure(messageEntity);
                 break;
@@ -129,7 +143,9 @@ public abstract class BaseMsgRenderView extends RelativeLayout{
         // 展示类型有四种(图片、文字、语音、混排)
     }
 
-   /**-------------------------set/get--------------------------*/
+    /**
+     * -------------------------set/get--------------------------
+     */
     public ImageView getPortrait() {
         return portrait;
     }

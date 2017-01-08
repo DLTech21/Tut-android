@@ -71,14 +71,11 @@ public class FriendFragment extends MainFragment implements SortSideBar.OnTouchi
             // 初始化视图
             initAdapter();
             renderEntityList();
-            EventBus.getDefault().registerSticky(FriendFragment.this);
+
         }
 
         @Override
         public void onServiceDisconnected() {
-            if (EventBus.getDefault().isRegistered(FriendFragment.this)) {
-                EventBus.getDefault().unregister(FriendFragment.this);
-            }
         }
     };
 
@@ -86,6 +83,9 @@ public class FriendFragment extends MainFragment implements SortSideBar.OnTouchi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imServiceConnector.connect(getActivity());
+        if (!EventBus.getDefault().isRegistered(FriendFragment.this)) {
+            EventBus.getDefault().register(FriendFragment.this);
+        }
     }
 
     @Override
@@ -172,6 +172,7 @@ public class FriendFragment extends MainFragment implements SortSideBar.OnTouchi
     private void renderUserList(){
         List<UserEntity> contactList = imFriendManager.getContactSortedList();
         // 没有任何的联系人数据
+        Logger.e(contactList.size()+"");
         if (contactList.size() <= 0) {
             return;
         }

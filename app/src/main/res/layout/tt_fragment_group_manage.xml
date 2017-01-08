@@ -48,6 +48,7 @@
                     android:textSize="15sp" />
 
                 <RelativeLayout
+                    android:id="@+id/groupname_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|right"

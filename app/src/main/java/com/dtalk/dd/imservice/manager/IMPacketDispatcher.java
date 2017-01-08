@@ -55,7 +55,7 @@ public class IMPacketDispatcher {
 
             case IMBaseDefine.BuddyListCmdID.CID_BUDDY_LIST_ALL_FRIEND_RESPONSE_VALUE:
                     IMBuddy.IMAllFriendRsp imAllFriendRsp = IMBuddy.IMAllFriendRsp.parseFrom(buffer);
-                    IMFriendManager.instance().onRepAllUsers(imAllFriendRsp);
+//                    IMFriendManager.instance().onRepAllUsers(imAllFriendRsp);
                 return;
 
             case IMBaseDefine.BuddyListCmdID.CID_BUDDY_LIST_USER_INFO_RESPONSE_VALUE:

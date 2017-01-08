@@ -62,7 +62,7 @@ public class IMFriendManager extends IMManager {
         Logger.d("contact#loadAllUserInfo");
 
         List<UserEntity> userlist = dbInterface.loadAllFriendUsers();
-        Logger.d("contact#loadAllUserInfo dbsuccess");
+        Logger.e("contact#loadAllUserInfo dbsuccess " + userlist.size());
 
         for(UserEntity userInfo:userlist){
             // todo DB的状态不包含拼音的，这个样每次都要加载啊
@@ -77,7 +77,6 @@ public class IMFriendManager extends IMManager {
      * 网络链接成功，登陆之后请求
      */
     public void onLocalNetOk(){
-//        reqGetAllUsers(0);
         reqGetAllFriends();
     }
 
@@ -137,7 +136,7 @@ public class IMFriendManager extends IMManager {
                     userEntity.setMainName(userInfo.getNickname());
                     userEntity.setPhone(userInfo.getUsername());
                     userEntity.setPinyinName(userInfo.getNickname());
-                    userEntity.setRealName(userInfo.getRemarkname());
+                    userEntity.setRealName(userInfo.getNickname());
                     userEntity.setUpdated(timeNow);
                     userEntity.setPeerId(Integer.valueOf(userInfo.getUid()));
                     userEntity.setArea(userInfo.getArea());
@@ -147,7 +146,11 @@ public class IMFriendManager extends IMManager {
                     needDb.add(userEntity);
                 }
                 dbInterface.deleteAllFriendUser();
-                dbInterface.batchInsertOrUpdateFriendUser(needDb);
+                try {
+                    dbInterface.batchInsertOrUpdateFriendUser(needDb);
+                } catch (Exception e) {
+                    Logger.e(e);
+                }
                 triggerEvent(FriendInfoEvent.FRIEND_INFO_OK);
             }
 
@@ -163,57 +166,6 @@ public class IMFriendManager extends IMManager {
         });
     }
 
-    private void reqGetAllUsers(int lastUpdateTime) {
-        Logger.i("contact#reqGetAllUsers");
-        int userId = IMLoginManager.instance().getLoginId();
-
-        IMBuddy.IMAllFriendReq imAllUserReq  = IMBuddy.IMAllFriendReq.newBuilder()
-                .setUserId(userId)
-                .setLatestUpdateTime(lastUpdateTime).build();
-        int sid = IMBaseDefine.ServiceID.SID_BUDDY_LIST_VALUE;
-        int cid = IMBaseDefine.BuddyListCmdID.CID_BUDDY_LIST_ALL_FRIEND_REQUEST_VALUE;
-        imSocketManager.sendRequest(imAllUserReq, sid, cid);
-    }
-
-    /**
-     * yingmu change id from string to int
-     * @param imAllFriendRsp
-     *
-     * 1.请求所有用户的信息,总的版本号version
-     * 2.匹配总的版本号，返回可能存在变更的
-     * 3.选取存在变更的，请求用户详细信息
-     * 4.更新DB，保存globalVersion 以及用户的信息
-     */
-    public void onRepAllUsers(IMBuddy.IMAllFriendRsp imAllFriendRsp) {
-        Logger.i("contact#onRepAllUsers");
-        int userId = imAllFriendRsp.getUserId();
-        int lastTime = imAllFriendRsp.getLatestUpdateTime();
-        // lastTime 需要保存嘛? 不保存了
-
-        int count =  imAllFriendRsp.getUserListCount();
-        Logger.e("contact#user cnt:%d"+ count);
-        if(count <=0){
-            return;
-        }
-
-        int loginId = IMLoginManager.instance().getLoginId();
-        if(userId != loginId){
-            Logger.e("[fatal error] userId not equels loginId ,cause by onRepAllUsers");
-            return ;
-        }
-
-        List<IMBaseDefine.UserInfo> changeList =  imAllFriendRsp.getUserListList();
-        ArrayList<UserEntity> needDb = new ArrayList<>();
-        for(IMBaseDefine.UserInfo userInfo:changeList){
-            UserEntity entity =  ProtoBuf2JavaBean.getUserEntity(userInfo);
-            userMap.put(entity.getPeerId(),entity);
-            needDb.add(entity);
-        }
-        dbInterface.deleteAllFriendUser();
-        dbInterface.batchInsertOrUpdateFriendUser(needDb);
-        triggerEvent(FriendInfoEvent.FRIEND_INFO_OK);
-    }
-
     public UserEntity findContact(int buddyId){
         if(buddyId > 0 && userMap.containsKey(buddyId)){
             return userMap.get(buddyId);
@@ -223,6 +175,7 @@ public class IMFriendManager extends IMManager {
 
     public  List<UserEntity> getContactSortedList() {
         // todo eric efficiency
+        Logger.e(userMap.size()+"");
         List<UserEntity> contactList = new ArrayList<>(userMap.values());
         Collections.sort(contactList, new Comparator<UserEntity>(){
             @Override

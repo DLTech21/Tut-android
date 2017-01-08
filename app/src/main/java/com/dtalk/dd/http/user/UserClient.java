@@ -129,4 +129,32 @@ public class UserClient extends BaseClient {
                     }
                 });
     }
+
+    public static void updateName(String id, String name, final ClientCallback callback) {
+        HttpParams params = new HttpParams();
+        params.put("id", id);
+        params.put("name", name);
+        OkGo.post(getAbsoluteUrl("/Api/Member/changeGroupName"))
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        callback.onPreConnection();
+                    }
+
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        callback.onCloseConnection();
+                        callback.onSuccess(s);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callback.onCloseConnection();
+                        callback.onFailure(e.getLocalizedMessage());
+                    }
+                });
+    }
 }
