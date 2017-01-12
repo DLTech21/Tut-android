@@ -85,11 +85,11 @@ public abstract class BaseMsgRenderView extends RelativeLayout {
      */
     public void render(final MessageEntity entity, UserEntity userEntity, final Context ctx) {
         this.messageEntity = entity;
-//        if(userEntity == null){
-//            userEntity=new UserEntity();
-//            userEntity.setMainName("未知");
-//            userEntity.setRealName("未知");
-//        }
+        if(userEntity == null){
+            userEntity=new UserEntity();
+            userEntity.setMainName("");
+            userEntity.setRealName("");
+        }
 
         String avatar = userEntity.getAvatar();
         int msgStatus = messageEntity.getStatus();

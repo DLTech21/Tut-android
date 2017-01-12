@@ -12,27 +12,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.user.UserClient;
+import com.dtalk.dd.imservice.event.GroupEvent;
 import com.dtalk.dd.ui.base.TTBaseActivity;
 
+import de.greenrobot.event.EventBus;
 
 public class UpdateGroupNameActivity extends TTBaseActivity implements View.OnClickListener {
     EditText et_nick;
     String nick;
     String id;
+    GroupEntity groupEntity;
 
-    public static void open(Context context, String id, String name) {
-        context.startActivity(new Intent(context, UpdateGroupNameActivity.class).putExtra("id", id).putExtra("name", name));
+    public static void open(Context context, GroupEntity groupEntity) {
+        context.startActivity(new Intent(context, UpdateGroupNameActivity.class).putExtra("groupEntity", groupEntity));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater.from(this).inflate(R.layout.activity_update_nick, topContentView);
-        nick = getIntent().getStringExtra("name");
-        id = getIntent().getStringExtra("id");
+        groupEntity = (GroupEntity) getIntent().getSerializableExtra("groupEntity");
+        nick = groupEntity.getMainName();
+        id = groupEntity.getId() + "";
         et_nick = (EditText) this.findViewById(R.id.et_nick);
         et_nick.setText(nick);
         setLeftButton(R.drawable.tt_top_back);
@@ -62,6 +67,8 @@ public class UpdateGroupNameActivity extends TTBaseActivity implements View.OnCl
 
             @Override
             public void onSuccess(Object data) {
+                groupEntity.setMainName(newNick);
+                EventBus.getDefault().post(new GroupEvent(GroupEvent.Event.GROUP_INFO_UPDATED, groupEntity));
                 finish();
             }
 

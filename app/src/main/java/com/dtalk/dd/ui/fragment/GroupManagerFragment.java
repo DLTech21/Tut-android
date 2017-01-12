@@ -196,7 +196,6 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
      */
     public void onEventMainThread(GroupEvent event) {
         switch (event.getEvent()) {
-
             case CHANGE_GROUP_MEMBER_FAIL:
             case CHANGE_GROUP_MEMBER_TIMEOUT: {
                 Toast.makeText(getActivity(), getString(R.string.change_temp_group_failed), Toast.LENGTH_SHORT).show();
@@ -206,6 +205,11 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
                 onMemberChangeSuccess(event);
             }
             break;
+            case GROUP_INFO_UPDATED:
+                TextView groupNameView = (TextView) curView.findViewById(R.id.group_manager_title);
+                groupNameView.setText(event.getGroupEntity().getMainName());
+                imService.getGroupManager().onLocalNetOk();
+                break;
         }
     }
 
@@ -249,8 +253,9 @@ public class GroupManagerFragment extends TTBaseFragment implements View.OnClick
         switch (view.getId()) {
             case R.id.groupname_layout:
                 GroupEntity groupEntity = (GroupEntity) peerEntity;
-                UpdateGroupNameActivity.open(getActivity(), groupEntity.getId() + "", groupEntity.getMainName());
+                UpdateGroupNameActivity.open(getActivity(), groupEntity);
                 break;
         }
     }
+
 }

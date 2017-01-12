@@ -54,6 +54,7 @@ import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.GifEmoEntity;
 import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.event.AddEmoEvent;
+import com.dtalk.dd.imservice.event.GroupEvent;
 import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
 import com.dtalk.dd.ui.widget.CustomeEmoGridView;
 import com.dtalk.dd.utils.RegularUtils;
@@ -1566,6 +1567,14 @@ public class MessageActivity extends TTBaseActivity
                     messageEdt.requestFocus();
                 }
             }
+        }
+    }
+
+    public void onEventMainThread(GroupEvent event) {
+        switch (event.getEvent()) {
+            case GROUP_INFO_UPDATED:
+                setTitle(event.getGroupEntity().getMainName());
+                break;
         }
     }
 }

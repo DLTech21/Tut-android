@@ -14,20 +14,22 @@ public class GroupEvent {
     private GroupEntity groupEntity;
     private Event event;
 
-    /**很多的场景只是关心改变的类型以及change的Ids*/
+    /**
+     * 很多的场景只是关心改变的类型以及change的Ids
+     */
     private int changeType;
     private List<Integer> changeList;
 
-    public GroupEvent(Event event){
+    public GroupEvent(Event event) {
         this.event = event;
     }
 
-    public GroupEvent(Event event,GroupEntity groupEntity){
+    public GroupEvent(Event event, GroupEntity groupEntity) {
         this.groupEntity = groupEntity;
         this.event = event;
     }
 
-    public enum Event{
+    public enum Event {
         NONE,
 
         GROUP_INFO_OK,
@@ -67,6 +69,7 @@ public class GroupEvent {
     public GroupEntity getGroupEntity() {
         return groupEntity;
     }
+
     public void setGroupEntity(GroupEntity groupEntity) {
         this.groupEntity = groupEntity;
     }
@@ -74,6 +77,7 @@ public class GroupEvent {
     public Event getEvent() {
         return event;
     }
+
     public void setEvent(Event event) {
         this.event = event;
     }

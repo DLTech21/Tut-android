@@ -7,7 +7,7 @@ import android.text.TextUtils;
 /**
  * @author : yingmu on 15-1-6.
  * @email : yingmu@mogujie.com.
- *
+ * <p>
  * todo need Encryption
  */
 public class LoginSp {
@@ -22,25 +22,27 @@ public class LoginSp {
     SharedPreferences sharedPreferences;
 
     private static LoginSp loginSp = null;
-    public static LoginSp instance(){
-        if(loginSp ==null){
-            synchronized (LoginSp.class){
+
+    public static LoginSp instance() {
+        if (loginSp == null) {
+            synchronized (LoginSp.class) {
                 loginSp = new LoginSp();
             }
         }
         return loginSp;
     }
-    private LoginSp(){
+
+    private LoginSp() {
     }
 
 
-    public void  init(Context ctx){
+    public void init(Context ctx) {
         this.ctx = ctx;
-        sharedPreferences= ctx.getSharedPreferences
-                (fileName,ctx.MODE_PRIVATE);
+        sharedPreferences = ctx.getSharedPreferences
+                (fileName, ctx.MODE_PRIVATE);
     }
 
-    public  void setLoginInfo(String userName,String pwd,int loginId){
+    public void setLoginInfo(String userName, String pwd, int loginId) {
         // 横写
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_LOGIN_NAME, userName);
@@ -50,23 +52,27 @@ public class LoginSp {
         editor.commit();
     }
 
-    public SpLoginIdentity getLoginIdentity(){
-        String userName =  sharedPreferences.getString(KEY_LOGIN_NAME,null);
-        String pwd = sharedPreferences.getString(KEY_PWD,null);
-        int loginId = sharedPreferences.getInt(KEY_LOGIN_ID,0);
-        /**pwd不判空: loginOut的时候会将pwd清空*/
-        if(TextUtils.isEmpty(userName) || loginId == 0){
+    public SpLoginIdentity getLoginIdentity() {
+        try {
+            String userName = sharedPreferences.getString(KEY_LOGIN_NAME, null);
+            String pwd = sharedPreferences.getString(KEY_PWD, null);
+            int loginId = sharedPreferences.getInt(KEY_LOGIN_ID, 0);
+            /**pwd不判空: loginOut的时候会将pwd清空*/
+            if (TextUtils.isEmpty(userName) || loginId == 0) {
+                return null;
+            }
+            return new SpLoginIdentity(userName, pwd, loginId);
+        } catch (Exception e) {
             return null;
         }
-        return new SpLoginIdentity(userName,pwd,loginId);
     }
 
-    public class SpLoginIdentity{
+    public class SpLoginIdentity {
         private String loginName;
         private String pwd;
         private int loginId;
 
-        public SpLoginIdentity(String mUserName,String mPwd,int mLoginId){
+        public SpLoginIdentity(String mUserName, String mPwd, int mLoginId) {
             loginName = mUserName;
             pwd = mPwd;
             loginId = mLoginId;
