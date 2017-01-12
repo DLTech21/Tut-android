@@ -264,6 +264,10 @@ public class MobileFragment extends TTBaseActivity implements View.OnClickListen
         singleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                if (cursor == null) {
+                    handler1.sendEmptyMessage(-1);
+                    return;
+                }
                 if (cursor.getColumnCount() == 1) {
                     handler1.sendEmptyMessage(-1);
                     return;
@@ -326,7 +330,7 @@ public class MobileFragment extends TTBaseActivity implements View.OnClickListen
     }
 
     protected void WarningDialog() {
-        String message = "请在手机的【设置】->【应用】->【福聊】->底部的【权限管理】->【信任该程序】即可";
+        String message = "请在手机的【设置】->【应用】->【Tut】->底部的【权限管理】->【信任该程序】即可";
         Builder builder = new Builder(this);
         builder.setMessage(message);
         builder.setTitle("温馨提示：");
