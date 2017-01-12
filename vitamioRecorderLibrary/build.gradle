@@ -3,12 +3,12 @@ apply plugin: 'com.android.library'
 ext {
     SUPPORT_LIBRARY_VERSION = '24.2.1'
     BUILD_TOOLS = "24.0.2"
-    TARGET_SDK = 24
+    TARGET_SDK = 22
     MIN_SDK = 16
 }
 
 android {
-    compileSdkVersion TARGET_SDK
+    compileSdkVersion 24
     buildToolsVersion BUILD_TOOLS
 
     defaultConfig {
