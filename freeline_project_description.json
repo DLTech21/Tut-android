@@ -1,0 +1,225 @@
+{
+    "android_gradle_plugin_version": "2.2.2",
+    "apk_path": "/Users/Donal/Documents/develop/Tut-android/app/build/outputs/apk/app-dd-debug.apk",
+    "auto_dependency": true,
+    "build_cache_dir": "/Users/Donal/Documents/develop/Tut-android/app/build/freeline",
+    "build_directory": "/Users/Donal/Documents/develop/Tut-android/app/build",
+    "build_script": "./gradlew :app:assembleDebug",
+    "build_script_work_directory": "",
+    "build_tools_directory": "/Users/Donal/Library/Android/sdk/build-tools/24.0.2",
+    "build_tools_version": "24.0.2",
+    "compile_sdk_directory": "/Users/Donal/Library/Android/sdk/platforms/android-24",
+    "compile_sdk_version": "android-24",
+    "databinding": [
+        
+    ],
+    "databinding_modules": [
+        
+    ],
+    "debug_package": "com.dtalk.dd",
+    "exclude_dep_res_paths": [
+        
+    ],
+    "extra_dep_res_paths": [
+        
+    ],
+    "freeline_cache_dir": "/Users/Donal/Documents/develop/Tut-android",
+    "freeline_gradle_plugin_version": "0.8.5",
+    "ignore_resource_ids": [
+        "avd_hide_password_1",
+        "avd_hide_password_2",
+        "avd_hide_password_3",
+        "avd_show_password_1",
+        "avd_show_password_2",
+        "avd_show_password_3"
+    ],
+    "java_home": "/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home",
+    "launcher": "com.dtalk.dd.ui.activity.LoginActivity",
+    "main_assets_directory": [
+        "/Users/Donal/Documents/develop/Tut-android/app/src/debug/assets",
+        "/Users/Donal/Documents/develop/Tut-android/app/src/main/assets"
+    ],
+    "main_jniLibs_directory": [
+        "/Users/Donal/Documents/develop/Tut-android/app/src/debug/jniLibs",
+        "/Users/Donal/Documents/develop/Tut-android/app/src/main/jniLibs"
+    ],
+    "main_jni_directory": [
+        "/Users/Donal/Documents/develop/Tut-android/app/src/debug/jni"
+    ],
+    "main_manifest_path": "/Users/Donal/Documents/develop/Tut-android/app/src/main/AndroidManifest.xml",
+    "main_project_dir": "app",
+    "main_project_name": "app",
+    "main_r_path": "/Users/Donal/Documents/develop/Tut-android/app/build/generated/source/r/debug/R.java",
+    "main_res_directory": [
+        "/Users/Donal/Documents/develop/Tut-android/app/src/debug/res",
+        "/Users/Donal/Documents/develop/Tut-android/app/src/main/res"
+    ],
+    "main_src_directory": [
+        "/Users/Donal/Documents/develop/Tut-android/app/src/debug/java",
+        "/Users/Donal/Documents/develop/Tut-android/app/src/main/java"
+    ],
+    "module_dependencies": {
+        "PhotoPicker": [
+            
+        ],
+        "app": [
+            "mgimlibs",
+            "PhotoPicker",
+            "emoj_library",
+            "vitamioRecorderLibrary"
+        ],
+        "emoj_library": [
+            
+        ],
+        "mgimlibs": [
+            
+        ],
+        "vitamioRecorderLibrary": [
+            
+        ]
+    },
+    "modules": [
+        {
+            "name": "app",
+            "path": "/Users/Donal/Documents/develop/Tut-android/app"
+        },
+        {
+            "name": "mgimlibs",
+            "path": "/Users/Donal/Documents/develop/Tut-android/mgimlibs"
+        },
+        {
+            "name": "PhotoPicker",
+            "path": "/Users/Donal/Documents/develop/Tut-android/PhotoPicker"
+        },
+        {
+            "name": "emoj_library",
+            "path": "/Users/Donal/Documents/develop/Tut-android/emoj_library"
+        },
+        {
+            "name": "vitamioRecorderLibrary",
+            "path": "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary"
+        }
+    ],
+    "package": "com.dtalk.dd",
+    "product_flavor": "",
+    "project_source_sets": {
+        "PhotoPicker": {
+            "main_assets_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/release/assets",
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/main/assets"
+            ],
+            "main_jniLibs_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/release/jniLibs",
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/main/jniLibs"
+            ],
+            "main_jni_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/release/jni",
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/main/jni"
+            ],
+            "main_manifest_path": "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/main/AndroidManifest.xml",
+            "main_res_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/release/res",
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/main/res"
+            ],
+            "main_src_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/release/java",
+                "/Users/Donal/Documents/develop/Tut-android/PhotoPicker/src/main/java"
+            ]
+        },
+        "app": {
+            "main_assets_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/app/src/debug/assets",
+                "/Users/Donal/Documents/develop/Tut-android/app/src/main/assets"
+            ],
+            "main_jniLibs_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/app/src/debug/jniLibs",
+                "/Users/Donal/Documents/develop/Tut-android/app/src/main/jniLibs"
+            ],
+            "main_jni_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/app/src/debug/jni"
+            ],
+            "main_manifest_path": "/Users/Donal/Documents/develop/Tut-android/app/src/main/AndroidManifest.xml",
+            "main_res_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/app/src/debug/res",
+                "/Users/Donal/Documents/develop/Tut-android/app/src/main/res"
+            ],
+            "main_src_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/app/src/debug/java",
+                "/Users/Donal/Documents/develop/Tut-android/app/src/main/java"
+            ]
+        },
+        "emoj_library": {
+            "main_assets_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/release/assets",
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/main/assets"
+            ],
+            "main_jniLibs_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/release/jniLibs",
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/main/jniLibs"
+            ],
+            "main_jni_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/release/jni",
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/main/jni"
+            ],
+            "main_manifest_path": "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/main/AndroidManifest.xml",
+            "main_res_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/release/res",
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/main/res"
+            ],
+            "main_src_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/release/java",
+                "/Users/Donal/Documents/develop/Tut-android/emoj_library/src/main/java"
+            ]
+        },
+        "mgimlibs": {
+            "main_assets_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/release/assets",
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/main/assets"
+            ],
+            "main_jniLibs_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/release/jniLibs",
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/main/jniLibs"
+            ],
+            "main_jni_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/release/jni",
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/main/jni"
+            ],
+            "main_manifest_path": "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/main/AndroidManifest.xml",
+            "main_res_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/release/res",
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/main/res"
+            ],
+            "main_src_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/release/java",
+                "/Users/Donal/Documents/develop/Tut-android/mgimlibs/src/main/java"
+            ]
+        },
+        "vitamioRecorderLibrary": {
+            "main_assets_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/release/assets",
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/main/assets"
+            ],
+            "main_jniLibs_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/release/jniLibs",
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/main/jniLibs"
+            ],
+            "main_jni_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/release/jni",
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/main/jni"
+            ],
+            "main_manifest_path": "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/main/AndroidManifest.xml",
+            "main_res_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/release/res",
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/main/res"
+            ],
+            "main_src_directory": [
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/release/java",
+                "/Users/Donal/Documents/develop/Tut-android/vitamioRecorderLibrary/src/main/java"
+            ]
+        }
+    },
+    "project_type": "gradle",
+    "root_dir": "/Users/Donal/Documents/develop/Tut-android",
+    "sdk_directory": "/Users/Donal/Library/Android/sdk",
+    "use_jdk8": true
+}
