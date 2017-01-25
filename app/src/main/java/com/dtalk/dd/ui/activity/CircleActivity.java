@@ -355,11 +355,16 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
             @Override
             public void onSuccess(Object data) {
                 Comment comm = (Comment) data;
-                moment.comment.add(comm);
-                adapter.notifyDataSetChanged();
-                messageEdt.setText("");
-                if (tt_layout_bottom.getVisibility() == View.VISIBLE) {
-                    tt_layout_bottom.setVisibility(View.INVISIBLE);
+                if (comm.status == 1) {
+                    moment.comment.add(comm);
+                    adapter.notifyDataSetChanged();
+                    messageEdt.setText("");
+                    if (tt_layout_bottom.getVisibility() == View.VISIBLE) {
+                        tt_layout_bottom.setVisibility(View.INVISIBLE);
+                    }
+                }
+                else {
+                    svProgressHUD.showErrorWithStatus(comm.msg);
                 }
             }
 

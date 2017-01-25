@@ -6,12 +6,12 @@ package com.dtalk.dd.config;
  *
  */
 public class UrlConstant {
-    public final static String BASE_API = "http://115.159.211.199";
+    public final static String BASE_API = "http://122.10.30.171";
     // 头像路径前缀
     public final static String AVATAR_URL_PREFIX = "";
 
     // access 地址
-    public final static String ACCESS_MSG_ADDRESS = "http://115.159.211.199:8080/msg_server";
+    public final static String ACCESS_MSG_ADDRESS = "http://122.10.30.171:8080/msg_server";
 
 
     public final static String QINIU_PREFIX = "http://7xj66h.com1.z0.glb.clouddn.com/";

@@ -176,11 +176,7 @@ public class UserInfoFragment extends MainFragment {
         IMBaseImageView portraitImageView = (IMBaseImageView) curView.findViewById(R.id.user_portrait);
 
         setTextViewContent(R.id.nickName, currentUser.getMainName());
-        try {
-            setTextViewContent(R.id.userName, "Tut号: tut_" + BaseClient.encryptParam(currentUser.getPhone()));
-        } catch (Exception e) {
-
-        }
+        setTextViewContent(R.id.userName, "Tut号: tut_"+ Security.getInstance().EncryptMsg(currentUser.getPhone()));
         //头像设置
 
         portraitImageView.setDefaultImageRes(R.drawable.tt_default_user_portrait_corner);

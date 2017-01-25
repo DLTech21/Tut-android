@@ -9,7 +9,7 @@
     <string name="menu_undo">后退</string>
     <string name="menu_search">搜索</string>
     <string name="menu_users">用户</string>
-    <string name="chat_title">TuT</string>
+    <string name="chat_title">盼盼</string>
     <string name="loading_contacts">加载中...</string>
     <string name="request_unread_msg_faild">请求未读消息失败</string>
     <string name="load_contacts_failed">数据请求失败,请重试</string>

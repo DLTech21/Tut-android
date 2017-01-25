@@ -140,45 +140,50 @@ public class BaseCircleRenderView extends RelativeLayout {
             layComment.setVisibility(GONE);
             return;
         }
-
-        Lu_Comment_TextView temp = new Lu_Comment_TextView(ctx);
-        final List<Lu_Comment_TextView.Lu_PingLun_info_Entity> mList = new ArrayList<Lu_Comment_TextView.Lu_PingLun_info_Entity>();
-        for (Comment comment : moment.comment) {
-            if (!comment.uid.equals(comment.reply_uid)) {
-                Lu_Comment_TextView.Lu_PingLun_info_Entity mEntity = temp.getLu_pingLun_info_entity(comment.comment_id, comment.uid, comment.nickname, comment.avatar, comment.reply_uid, comment.reply_nickname, comment.avatar, comment.content);
-                mList.add(mEntity);
-            } else {
-                Lu_Comment_TextView.Lu_PingLun_info_Entity mEntity = temp.getLu_pingLun_info_entity(comment.comment_id, comment.uid, comment.nickname, comment.avatar, null, null, null, comment.content);
-                mList.add(mEntity);
+        try {
+            Lu_Comment_TextView temp = new Lu_Comment_TextView(ctx);
+            final List<Lu_Comment_TextView.Lu_PingLun_info_Entity> mList = new ArrayList<Lu_Comment_TextView.Lu_PingLun_info_Entity>();
+            for (Comment comment : moment.comment) {
+                if (!comment.uid.equals(comment.reply_uid)) {
+                    Lu_Comment_TextView.Lu_PingLun_info_Entity mEntity = temp.getLu_pingLun_info_entity(comment.comment_id, comment.uid, comment.nickname, comment.avatar, comment.reply_uid, comment.reply_nickname, comment.avatar, comment.content);
+                    mList.add(mEntity);
+                } else {
+                    Lu_Comment_TextView.Lu_PingLun_info_Entity mEntity = temp.getLu_pingLun_info_entity(comment.comment_id, comment.uid, comment.nickname, comment.avatar, null, null, null, comment.content);
+                    mList.add(mEntity);
+                }
             }
+            Logger.d(mList.size() + "");
+            layComment.setEntities(mList, new Lu_PingLunLayout.Lu_PingLunLayoutListener() {
+                @Override
+                public void onNameClickListener(String onClickID, String onClickName, String onClickLogo, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int FuncPosition, int itemPosition) {
+                    IMUIHelper.openUserProfileActivity(getContext(), Integer.valueOf(onClickID));
+                }
+
+                @Override
+                public void onTextClickListener(String onClickText, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int FuncPosition, int itemPosition) {
+                    Logger.d("onTextClickListener = [" + onClickText + "], mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], FuncPosition = [" + FuncPosition + "], itemPosition = [" + itemPosition + "]");
+                }
+
+                @Override
+                public void onClickOtherListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
+                    Logger.d("onClickOtherListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                }
+
+                @Override
+                public void onLongClickListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
+                    Logger.d("onLongClickListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                }
+
+                @Override
+                public void onClickListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
+                    Logger.d("onClickListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
+                    onMoreCircleListener.onCommentClick(moment, position, itemPosition, mLu_pingLun_info_entity);
+                }
+            });
+        } catch (Exception e) {
+            Logger.e(e);
         }
-        layComment.setEntities(mList, new Lu_PingLunLayout.Lu_PingLunLayoutListener() {
-            @Override
-            public void onNameClickListener(String onClickID, String onClickName, String onClickLogo, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int FuncPosition, int itemPosition) {
-                IMUIHelper.openUserProfileActivity(getContext(), Integer.valueOf(onClickID));
-            }
 
-            @Override
-            public void onTextClickListener(String onClickText, Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int FuncPosition, int itemPosition) {
-                Logger.d("onTextClickListener = [" + onClickText + "], mLu_pingLun_info_entity = [" + mLu_pingLun_info_entity + "], FuncPosition = [" + FuncPosition + "], itemPosition = [" + itemPosition + "]");
-            }
-
-            @Override
-            public void onClickOtherListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
-                Logger.d("onClickOtherListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
-            }
-
-            @Override
-            public void onLongClickListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
-                Logger.d("onLongClickListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
-            }
-
-            @Override
-            public void onClickListener(Lu_Comment_TextView.Lu_PingLun_info_Entity mLu_pingLun_info_entity, int itemPosition) {
-                Logger.d("onClickListener = [" + mLu_pingLun_info_entity + "], itemPosition = [" + itemPosition + "]");
-                onMoreCircleListener.onCommentClick(moment, position, itemPosition, mLu_pingLun_info_entity);
-            }
-        });
 
         List<PraiseBean> praiseBeanList = new ArrayList<>();
         for (UserInfo userInfo : moment.like_maps.values()) {

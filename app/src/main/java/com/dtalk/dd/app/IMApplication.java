@@ -21,6 +21,7 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.squareup.leakcanary.LeakCanary;
 import com.yixia.camera.VCamera;
 import com.yixia.camera.demo.service.AssertService;
 import com.yixia.camera.util.DeviceUtils;
@@ -51,6 +52,12 @@ public class IMApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Logger.i("Application starts");
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        LeakCanary.install(this);
         MultiDex.install(this);
         startIMService();
         _context = this;
