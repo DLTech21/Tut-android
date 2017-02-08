@@ -170,15 +170,13 @@ public class UserInfoFragment extends MainFragment {
         }
     }
 
-
     private void initBaseProfile() {
         Logger.d("detail#initBaseProfile");
         IMBaseImageView portraitImageView = (IMBaseImageView) curView.findViewById(R.id.user_portrait);
 
         setTextViewContent(R.id.nickName, currentUser.getMainName());
-        setTextViewContent(R.id.userName, "Tut号: tut_"+ Security.getInstance().EncryptMsg(currentUser.getPhone()));
+        setTextViewContent(R.id.userName, "Tut号: tut_"+ encrypt(currentUser.getPhone()));
         //头像设置
-
         portraitImageView.setDefaultImageRes(R.drawable.tt_default_user_portrait_corner);
         portraitImageView.setCorner(8);
         portraitImageView.setImageResource(R.drawable.tt_default_user_portrait_corner);
@@ -342,4 +340,31 @@ public class UserInfoFragment extends MainFragment {
         });
     }
 
+    private String encrypt(String content) {
+        String en_content;
+        en_content = content.replaceAll("1", "t");
+        en_content = en_content.replaceAll("2", "a");
+        en_content = en_content.replaceAll("3", "b");
+        en_content = en_content.replaceAll("4", "h");
+        en_content = en_content.replaceAll("5", "z");
+        en_content = en_content.replaceAll("6", "g");
+        en_content = en_content.replaceAll("7", "j");
+        en_content = en_content.replaceAll("8", "w");
+        en_content = en_content.replaceAll("9", "e");
+        return en_content;
+    }
+
+    public static String decrypt(String content) {
+        String en_content;
+        en_content = content.replaceAll("a", "2");
+        en_content = en_content.replaceAll("b", "3");
+        en_content = en_content.replaceAll("h", "4");
+        en_content = en_content.replaceAll("z", "5");
+        en_content = en_content.replaceAll("g", "6");
+        en_content = en_content.replaceAll("j", "7");
+        en_content = en_content.replaceAll("w", "8");
+        en_content = en_content.replaceAll("e", "9");
+        en_content = en_content.replaceAll("t", "1");
+        return en_content;
+    }
 }

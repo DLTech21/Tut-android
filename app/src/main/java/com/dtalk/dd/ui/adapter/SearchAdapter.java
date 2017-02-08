@@ -26,6 +26,7 @@ import com.dtalk.dd.http.friend.OtherUserInfo;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.imservice.service.IMService;
 import com.dtalk.dd.ui.activity.MainActivity;
+import com.dtalk.dd.ui.fragment.UserInfoFragment;
 import com.dtalk.dd.ui.widget.IMBaseImageView;
 import com.dtalk.dd.ui.widget.IMGroupAvatar;
 import com.dtalk.dd.utils.IMUIHelper;
@@ -69,8 +70,12 @@ public class SearchAdapter extends BaseAdapter implements
         notifyDataSetChanged();
     }
 
-    private void search(final String name) {
-        FriendClient.getFriendInfo(name, new BaseClient.ClientCallback() {
+    private void search(String name) {
+        if (name.contains("tut_")) {
+            name = UserInfoFragment.decrypt(name.substring(4));
+        }
+        final String search_name = name;
+        FriendClient.getFriendInfo(search_name, new BaseClient.ClientCallback() {
 
             @Override
             public void onSuccess(Object data) {
@@ -91,7 +96,7 @@ public class SearchAdapter extends BaseAdapter implements
                     IMUIHelper.openUserProfileActivity(ctx, Integer.valueOf(uid));
                 }
                 else {
-                    if (StringUtils.isMobileNO(name)) {
+                    if (StringUtils.isMobileNO(search_name)) {
                         try {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -100,7 +105,7 @@ public class SearchAdapter extends BaseAdapter implements
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Uri smsToUri = Uri.parse("smsto:" + name);
+                                    Uri smsToUri = Uri.parse("smsto:" + search_name);
                                     Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
                                     intent.putExtra("sms_body", "你的好友邀请你加入1500米；安卓下载地址：http://fir.im/l9m5。苹果下载地址:https://itunes.apple.com/cn/app/1500mi/id1005973178?mt=8");
                                     ctx.startActivity(intent);
