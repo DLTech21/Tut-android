@@ -34,7 +34,7 @@
     <string name="smssdk_contacts_detail">详细资料</string>
     <string name="smssdk_contacts_phones">手机号码: </string>
     <string name="smssdk_choice_invite_phones">选择一个号码发送邀请</string>
-    <string name="smssdk_invite_content">你的好友邀请你加入1500米；安卓下载地址：http://fir.im/l9m5。苹果下载地址:https://itunes.apple.com/cn/app/1500mi/id1005973178?mt=8</string>
+    <string name="smssdk_invite_content">你的好友邀请你加入盼盼；安卓下载地址：http://fir.im/l9m5。苹果下载地址:https://itunes.apple.com/cn/app/1500mi/id1005973178?mt=8</string>
     <string name="smssdk_close_identify_page_dialog">验证码短信可能略有延迟，确定返回并重新开始？</string>
     <string name="smssdk_wait">等待 </string>
     <string name="smssdk_add_contact">添加</string>

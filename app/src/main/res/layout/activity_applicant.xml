@@ -23,7 +23,7 @@
             android:paddingBottom="10dp"
             android:paddingLeft="46dp"
             android:singleLine="true"
-            android:text="1500米号"
+            android:text="盼盼号"
             android:textColor="#484c4c"
             android:textSize="16sp" />
 

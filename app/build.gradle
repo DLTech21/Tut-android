@@ -32,8 +32,8 @@ android {
         applicationId "com.dtalk.dd"
         minSdkVersion MIN_SDK
         targetSdkVersion TARGET_SDK
-        versionCode 16
-        versionName "2.0.11"
+        versionCode 17
+        versionName "2.0.12"
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a'
         }

@@ -124,7 +124,7 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
         iv_photo = (ImageView) findViewById(R.id.iv_photo);
         String xieyi = "<font color=" + "\"" + "#AAAAAA" + "\">" + "点击上面的"
                 + "\"" + "注册" + "\"" + "按钮,即表示你同意" + "</font>" + "<u>"
-                + "<font color=" + "\"" + "#576B95" + "\">" + "《1500米软件许可及服务协议》"
+                + "<font color=" + "\"" + "#576B95" + "\">" + "《盼盼软件许可及服务协议》"
                 + "</font>" + "</u>";
 
         tv_xieyi.setText(Html.fromHtml(xieyi));

@@ -100,14 +100,14 @@ public class SearchAdapter extends BaseAdapter implements
                         try {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                            builder.setMessage("邀请加入1500米？");
+                            builder.setMessage("邀请加入盼盼？");
                             builder.setPositiveButton(ctx.getString(R.string.confirm), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     Uri smsToUri = Uri.parse("smsto:" + search_name);
                                     Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
-                                    intent.putExtra("sms_body", "你的好友邀请你加入1500米；安卓下载地址：http://fir.im/l9m5。苹果下载地址:https://itunes.apple.com/cn/app/1500mi/id1005973178?mt=8");
+                                    intent.putExtra("sms_body", "你的好友邀请你加入盼盼；安卓下载地址：http://fir.im/l9m5。苹果下载地址:https://itunes.apple.com/cn/app/1500mi/id1005973178?mt=8");
                                     ctx.startActivity(intent);
                                 }
                             });
@@ -123,7 +123,7 @@ public class SearchAdapter extends BaseAdapter implements
                         }
                     } else {
                         Toast.makeText(ctx,
-                                "该号码还没有注册1500米", Toast.LENGTH_SHORT).show();
+                                "该号码还没有注册盼盼", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
