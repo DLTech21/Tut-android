@@ -97,6 +97,15 @@ public class RecentInfo {
             case DBConstant.MSG_TYPE_GROUP_VIDEO:
                 latestMsgData = DBConstant.DISPLAY_FOR_VIDEO;
                 break;
+
+            case DBConstant.MSG_TYPE_GROUP_AUDIO:
+            case DBConstant.MSG_TYPE_SINGLE_AUDIO:
+                latestMsgData = DBConstant.DISPLAY_FOR_AUDIO;
+                break;
+            case DBConstant.MSG_TYPE_GROUP_URL:
+            case DBConstant.MSG_TYPE_SINGLE_URL:
+                latestMsgData = DBConstant.DISPLAY_FOR_URL;
+                break;
             default:
                 break;
         }
