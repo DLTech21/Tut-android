@@ -26,6 +26,7 @@ import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.config.UrlConstant;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.protobuf.IMLogin;
@@ -167,7 +168,12 @@ public class LoginActivity extends TTBaseActivity {
                     public void onSuccess(Object data) {
                         UserInfo user = (UserInfo) data;
                         if (user.getStatus() == 1) {
-//                            SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), user, "user");
+                            OtherUserInfoNoRemark userInfoNoRemark = new OtherUserInfoNoRemark();
+                            userInfoNoRemark.setAvatar(user.getAvatar());
+                            userInfoNoRemark.setUid(user.getUid());
+                            userInfoNoRemark.setNickname(user.getNickname());
+                            userInfoNoRemark.setMoment_cover(user.getMoment_cover());
+                            SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), userInfoNoRemark, "user");
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "token", user.getToken());
                             imService.getLoginManager().login(loginIdentity);
                         } else {
@@ -361,7 +367,12 @@ public class LoginActivity extends TTBaseActivity {
                     public void onSuccess(Object data) {
                         UserInfo user = (UserInfo) data;
                         if (user.getStatus() == 1) {
-//                            SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), user, "user");
+                            OtherUserInfoNoRemark userInfoNoRemark = new OtherUserInfoNoRemark();
+                            userInfoNoRemark.setAvatar(user.getAvatar());
+                            userInfoNoRemark.setUid(user.getUid());
+                            userInfoNoRemark.setNickname(user.getNickname());
+                            userInfoNoRemark.setMoment_cover(user.getMoment_cover());
+                            SandboxUtils.getInstance().saveObject(IMApplication.getInstance(), userInfoNoRemark, "user");
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "token", user.getToken());
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "avatar", user.getAvatar());
                             SandboxUtils.getInstance().set(IMApplication.getInstance(), "cover", user.getMoment_cover());
