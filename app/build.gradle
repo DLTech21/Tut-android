@@ -1,13 +1,5 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'com.antfortune.freeline'
-ext {
-    SUPPORT_LIBRARY_VERSION = '24.2.1'
-    BUILD_TOOLS = "24.0.2"
-    TARGET_SDK = 22
-    MIN_SDK = 16
-}
-
 repositories {
     mavenCentral()
     flatDir{
@@ -17,8 +9,8 @@ repositories {
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 24
-    buildToolsVersion BUILD_TOOLS
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     signingConfigs {
         releaseConfig {
             keyAlias 'vikaa.key'
@@ -30,8 +22,8 @@ android {
     defaultConfig {
         multiDexEnabled true
         applicationId "com.dtalk.dd"
-        minSdkVersion MIN_SDK
-        targetSdkVersion TARGET_SDK
+        minSdkVersion rootProject.ext.appMinSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 18
         versionName "2.0.13"
         ndk {
@@ -78,14 +70,14 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-v4:$supportVersion"
     compile project(':mgimlibs')
     compile project(':PhotoPicker')
     compile project(':emoj_library')
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:gridlayout-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:gridlayout-v7:$supportVersion"
     compile 'com.google.protobuf:protobuf-java:2.6.1'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'de.greenrobot:greendao:1.3.7'

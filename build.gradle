@@ -4,9 +4,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.6.2')
-        classpath 'com.antfortune.freeline:gradle:0.8.5'
     }
 }
 
@@ -19,4 +18,16 @@ allprojects {
         }
         maven { url "https://jitpack.io" }
     }
+}
+
+ext {
+    appMinSdkVersion = 17
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+    buildToolsVersion = '26.0.0'
+    supportVersion = '26.+'
+
+    JPUSH_PKGNAME = "com.gdca.cloudsign"
+    JPUSH_APPKEY = "480e481a42dd8c0d303c852f"
+    JPUSH_CHANNEL = "developer-default"
 }
