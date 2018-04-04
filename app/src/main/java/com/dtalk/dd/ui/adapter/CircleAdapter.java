@@ -18,7 +18,6 @@ import com.dtalk.dd.ui.widget.circle.UrlCircleRenderView;
 import com.dtalk.dd.ui.widget.circle.VideoCircleRenderView;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.VideoDisplayLoader;
-import com.yixia.camera.demo.ui.record.VideoPlayerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,9 +142,9 @@ public class CircleAdapter extends BaseAdapter {
                     public void onVideoLoadCompleted(String url, String path) {
                         videoCircleRenderView.getImagePlay().setVisibility(View.VISIBLE);
                         videoCircleRenderView.getImageProgress().hideProgress();
-                        ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class).putExtra(
-                                "path", path).putExtra(
-                                "cover_path", moment.cover).putExtra("justDisplay", true));
+//                        ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class).putExtra(
+//                                "path", path).putExtra(
+//                                "cover_path", moment.cover).putExtra("justDisplay", true));
                     }
                 });
             }

@@ -1,11 +1,9 @@
 package com.dtalk.dd.app;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
 import com.dtalk.dd.imservice.service.IMService;
 import com.dtalk.dd.utils.ImageLoaderUtil;
@@ -20,23 +18,10 @@ import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.lzy.okgo.model.HttpHeaders;
-import com.lzy.okgo.model.HttpParams;
-import com.squareup.leakcanary.LeakCanary;
-import com.yixia.camera.VCamera;
-import com.yixia.camera.demo.service.AssertService;
-import com.yixia.camera.util.DeviceUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Properties;
 
 import cn.jpush.android.api.JPushInterface;
-import im.fir.sdk.FIR;
 
 
 public class IMApplication extends Application {
@@ -62,34 +47,15 @@ public class IMApplication extends Application {
         startIMService();
         _context = this;
         ImageLoaderUtil.initImageLoaderConfig(getApplicationContext());
-        FIR.init(this);
         Fresco.initialize(this, createFrescoConfig());
 
         // 设置拍摄视频缓存路径
         File dcim = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        if (DeviceUtils.isZte()) {
-            if (dcim.exists()) {
-                VCamera.setVideoCachePath(dcim + "/DtalkJuns/");
-            } else {
-                VCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
-                        "/sdcard-ext/")
-                        + "/DtalkJuns/");
-            }
-        } else {
-            VCamera.setVideoCachePath(dcim + "/DtalkJuns/");
-        }
-        // 开启log输出,ffmpeg输出到logcat
-        VCamera.setDebugMode(true);
-        // 初始化拍摄SDK，必须
-        VCamera.initialize(this);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         // 解压assert里面的文件
         String isUpdateCid = SandboxUtils.getInstance().get(this, "theme_parse");
-        if (StringUtils.empty(isUpdateCid)) {
-            startService(new Intent(this, AssertService.class));
-        }
         initOK();
     }
 

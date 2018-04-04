@@ -12,9 +12,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog.Builder;
 import android.content.AsyncQueryHandler;
@@ -44,6 +41,8 @@ import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.widget.MobileSideBar;
 import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.pinyin.PinYin;
+import cn.smssdk.SMSSDK;
+import cn.smssdk.EventHandler;
 
 public class MobileFragment extends TTBaseActivity implements View.OnClickListener {
     private MobileAdapter adapter;

@@ -4,11 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -16,19 +12,14 @@ import android.text.Editable;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +38,6 @@ import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.http.moment.MomentClient;
 import com.dtalk.dd.http.moment.MomentList;
 import com.dtalk.dd.http.user.UserInfo;
-import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.qiniu.utils.QNUploadManager;
@@ -58,36 +48,23 @@ import com.dtalk.dd.ui.plugin.ImageLoadManager;
 import com.dtalk.dd.ui.widget.CustomEditView;
 import com.dtalk.dd.ui.widget.EmoGridView;
 import com.dtalk.dd.ui.widget.Lu_Comment_TextView;
-import com.dtalk.dd.ui.widget.YayaEmoGridView;
 import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
 import com.dtalk.dd.ui.widget.ptrwidget.FriendCirclePtrListView;
 import com.dtalk.dd.ui.widget.ptrwidget.OnLoadMoreRefreshListener;
 import com.dtalk.dd.ui.widget.ptrwidget.OnPullDownRefreshListener;
 import com.dtalk.dd.ui.widget.ptrwidget.PullMode;
-import com.dtalk.dd.utils.ImageLoaderUtil;
 import com.dtalk.dd.utils.KeyboardUtils;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.SandboxUtils;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
-import com.yixia.camera.demo.ui.record.MediaRecorderActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
-import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-
-import static com.yixia.camera.demo.utils.ToastUtils.showToast;
 
 /**
  * Created by Donal on 16/7/29.
@@ -362,8 +339,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                     if (tt_layout_bottom.getVisibility() == View.VISIBLE) {
                         tt_layout_bottom.setVisibility(View.INVISIBLE);
                     }
-                }
-                else {
+                } else {
                     svProgressHUD.showErrorWithStatus(comm.msg);
                 }
             }
@@ -381,11 +357,6 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     }
 
     private void takeShortVideo() {
-        Intent intent = new Intent(getApplication(),
-                MediaRecorderActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.push_up_in,
-                R.anim.push_up_out);
     }
 
     public void onEventMainThread(ShortVideoPubEvent event) {

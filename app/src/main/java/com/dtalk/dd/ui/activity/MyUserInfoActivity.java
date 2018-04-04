@@ -20,23 +20,15 @@ import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
-import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
-import com.dtalk.dd.qiniu.utils.Mac;
-import com.dtalk.dd.qiniu.utils.PutPolicy;
 import com.dtalk.dd.qiniu.utils.QNUploadManager;
 import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.plugin.ImageLoadManager;
-import com.dtalk.dd.utils.MD5Util;
 import com.dtalk.dd.utils.SandboxUtils;
 import com.dtalk.dd.utils.StringUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.yixia.camera.demo.ui.BaseActivity;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -238,7 +230,7 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
         QNUploadManager.getInstance(IMApplication.getInstance()).uploadAvatar(path, null, new QNUploadManager.OnQNUploadCallback() {
             @Override
             public void uploadCompleted(final Map<String, String> uploadedFiles) {
-                String json = "{\"avatar\":"+ "\"" + (String) uploadedFiles.values().toArray()[0] + "\"}";
+                String json = "{\"avatar\":" + "\"" + (String) uploadedFiles.values().toArray()[0] + "\"}";
                 UserClient.updateUserByJson(json, new BaseClient.ClientCallback() {
                     @Override
                     public void onPreConnection() {

@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.dtalk.dd.DB.sp.LoginSp;
-import com.dtalk.dd.NativeRuntime;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.friend.FriendClient;
@@ -15,8 +14,6 @@ import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.imservice.event.ApplicantEvent;
 import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
-import com.dtalk.dd.ui.plugin.UpdateManager;
-import com.dtalk.dd.utils.FileUtils;
 import com.dtalk.dd.R;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.imservice.event.LoginEvent;
@@ -27,7 +24,6 @@ import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.ui.widget.NaviTabButton;
 import com.dtalk.dd.utils.SandboxUtils;
-import com.dtalk.dd.utils.StringUtils;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;

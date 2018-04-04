@@ -65,7 +65,6 @@ import com.dtalk.dd.ui.widget.message.TextRenderView;
 import com.dtalk.dd.ui.widget.message.TimeRenderView;
 import com.dtalk.dd.ui.helper.listener.OnDoubleClickListener;
 import com.squareup.okhttp.internal.Util;
-import com.yixia.camera.demo.ui.record.VideoPlayerActivity;
 
 import java.io.File;
 import java.io.Serializable;
@@ -482,9 +481,7 @@ public class MessageAdapter extends BaseAdapter {
             @Override
             public void onMsgSuccess() {
                 if (StringUtils.notEmpty(shortVideoMessage.getVideo_cover()) && StringUtils.notEmpty(shortVideoMessage.getVideo_path())) {
-                    ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class).putExtra(
-                            "path", shortVideoMessage.getVideo_path()).putExtra(
-                            "cover_path", shortVideoMessage.getVideo_cover()).putExtra("justDisplay", true));
+                    // TODO: 2018/4/4
                 } else {
                     shortVideoRenderView.getImageProgress().showProgress();
                     shortVideoRenderView.getImagePlay().setVisibility(View.INVISIBLE);
@@ -493,9 +490,7 @@ public class MessageAdapter extends BaseAdapter {
                         public void onVideoLoadCompleted(String url, String path) {
                             shortVideoRenderView.getImagePlay().setVisibility(View.VISIBLE);
                             shortVideoRenderView.getImageProgress().hideProgress();
-                            ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class).putExtra(
-                                    "path", path).putExtra(
-                                    "cover_path", shortVideoMessage.getVideo_cover()).putExtra("justDisplay", true));
+                            // TODO: 2018/4/4
                         }
                     });
                 }

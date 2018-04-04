@@ -12,12 +12,6 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     signingConfigs {
-        releaseConfig {
-            keyAlias 'vikaa.key'
-            keyPassword 'donald12234'
-            storeFile file('/Users/Donal/Dropbox/Vikaa/vikaa.key')
-            storePassword 'donald12234'
-        }
     }
     defaultConfig {
         multiDexEnabled true
@@ -39,11 +33,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.releaseConfig
         }
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.releaseConfig
             manifestPlaceholders = [channel_value: "debug_dd"]
         }
     }
@@ -87,12 +79,8 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.alibaba:fastjson:1.2.6'
     compile files('libs/baidumapapi_base_v3_7_0.jar')
-    compile files('libs/Yuntx_FullLib_v5.2.0r2.jar')
-    compile files('libs/Bughd_android_sdk_v1.3.7.jar')
     compile 'com.facebook.fresco:fresco:0.9.0'
     compile 'com.android.support:multidex:1.0.1'
-    compile project(':vitamioRecorderLibrary')
-    compile name: 'SMSSDK-2.1.3', ext: 'aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.bigkoo:svprogresshud:1.0.6'
@@ -105,8 +93,7 @@ dependencies {
     compile 'com.github.razerdp:BasePopup:v1.4.0'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile name: 'SMSSDK-2.1.3', ext: 'aar'
     compile files('libs/MobCommons-2016.1201.1839.jar')
     compile files('libs/MobTools-2016.1201.1839.jar')
 }

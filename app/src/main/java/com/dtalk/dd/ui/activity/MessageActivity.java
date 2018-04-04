@@ -26,7 +26,6 @@ import android.text.Editable;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,18 +48,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.GifEmoEntity;
-import com.dtalk.dd.imservice.entity.ShortVideoMessage;
-import com.dtalk.dd.imservice.event.AddEmoEvent;
-import com.dtalk.dd.imservice.event.GroupEvent;
-import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
-import com.dtalk.dd.ui.widget.CustomeEmoGridView;
-import com.dtalk.dd.utils.RegularUtils;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.DB.entity.MessageEntity;
 import com.dtalk.dd.DB.entity.PeerEntity;
@@ -77,11 +66,14 @@ import com.dtalk.dd.imservice.entity.EmotionMessage;
 import com.dtalk.dd.imservice.entity.FileMessage;
 import com.dtalk.dd.imservice.entity.ImageMessage;
 import com.dtalk.dd.imservice.entity.LocationMessage;
+import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.entity.TextMessage;
 import com.dtalk.dd.imservice.entity.UnreadEntity;
+import com.dtalk.dd.imservice.event.AddEmoEvent;
+import com.dtalk.dd.imservice.event.GroupEvent;
 import com.dtalk.dd.imservice.event.MessageEvent;
 import com.dtalk.dd.imservice.event.PriorityEvent;
-import com.dtalk.dd.imservice.event.SelectEvent;
+import com.dtalk.dd.imservice.event.ShortVideoPubEvent;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.imservice.manager.IMStackManager;
 import com.dtalk.dd.imservice.service.IMService;
@@ -89,13 +81,13 @@ import com.dtalk.dd.imservice.support.IMServiceConnector;
 import com.dtalk.dd.ui.adapter.MessageAdapter;
 import com.dtalk.dd.ui.adapter.album.AlbumHelper;
 import com.dtalk.dd.ui.adapter.album.ImageBucket;
-import com.dtalk.dd.ui.adapter.album.ImageItem;
 import com.dtalk.dd.ui.base.TTBaseActivity;
 import com.dtalk.dd.ui.helper.AudioPlayerHandler;
 import com.dtalk.dd.ui.helper.AudioRecordHandler;
 import com.dtalk.dd.ui.helper.Emoparser;
 import com.dtalk.dd.ui.plugin.FileExplorerActivity;
 import com.dtalk.dd.ui.widget.CustomEditView;
+import com.dtalk.dd.ui.widget.CustomeEmoGridView;
 import com.dtalk.dd.ui.widget.EmoGridView;
 import com.dtalk.dd.ui.widget.EmoGridView.OnEmoGridViewItemClick;
 import com.dtalk.dd.ui.widget.MGProgressbar;
@@ -103,10 +95,13 @@ import com.dtalk.dd.ui.widget.YayaEmoGridView;
 import com.dtalk.dd.utils.CommonUtil;
 import com.dtalk.dd.utils.IMUIHelper;
 import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.RegularUtils;
 import com.dtalk.dd.utils.ViewUtils;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
-import com.yixia.camera.demo.ui.record.MediaRecorderActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -1178,12 +1173,7 @@ public class MessageActivity extends TTBaseActivity
                 addOthersPanelView.setVisibility(View.GONE);
                 break;
             case R.id.take_shortvideo_btn:
-                Intent intent = new Intent(getApplication(),
-                        MediaRecorderActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.push_up_in,
-                        R.anim.push_up_out);
-                addOthersPanelView.setVisibility(View.GONE);
+                // TODO: 2018/4/4
                 break;
         }
     }
