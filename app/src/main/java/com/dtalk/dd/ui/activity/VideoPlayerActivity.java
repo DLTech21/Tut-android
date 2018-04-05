@@ -1,6 +1,8 @@
 package com.dtalk.dd.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +23,13 @@ import com.example.wechatsmallvideoview.SurfaceVideoViewCreator;
 public class VideoPlayerActivity extends TTBaseActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private SurfaceVideoViewCreator surfaceVideoViewCreator;
+
+    public static void open(Context ctx, String path, String cover) {
+        ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class)
+                .putExtra("path", path)
+                .putExtra("cover_path", cover)
+                .putExtra("useCache", false));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

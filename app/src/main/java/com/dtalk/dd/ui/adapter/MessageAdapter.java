@@ -62,8 +62,6 @@ import com.dtalk.dd.utils.DateUtil;
 import com.dtalk.dd.utils.FileUtil;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.ScreenUtil;
-import com.dtalk.dd.utils.StringUtils;
-import com.dtalk.dd.utils.VideoDisplayLoader;
 import com.google.gson.Gson;
 import com.squareup.okhttp.internal.Util;
 
@@ -481,27 +479,7 @@ public class MessageAdapter extends BaseAdapter {
             //DetailPortraitActivity 以前用的是DisplayImageActivity 这个类
             @Override
             public void onMsgSuccess() {
-//                if (StringUtils.notEmpty(shortVideoMessage.getVideo_cover()) && StringUtils.notEmpty(shortVideoMessage.getVideo_path())) {
-                    ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class)
-                            .putExtra("path", shortVideoMessage.getVideo_path_url())
-                            .putExtra("cover_path", shortVideoMessage.getVideo_cover_url())
-                            .putExtra("useCache", false));
-
-//                } else {
-//                    shortVideoRenderView.getImageProgress().showProgress();
-//                    shortVideoRenderView.getImagePlay().setVisibility(View.INVISIBLE);
-//                    VideoDisplayLoader.getIns().display(shortVideoMessage.getVideo_path_url(), new VideoDisplayLoader.VideoDisplayListener() {
-//                        @Override
-//                        public void onVideoLoadCompleted(String url, String path) {
-//                            shortVideoRenderView.getImagePlay().setVisibility(View.VISIBLE);
-//                            shortVideoRenderView.getImageProgress().hideProgress();
-//                            ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class)
-//                                    .putExtra("path", path)
-//                                    .putExtra("cover_path", shortVideoMessage.getVideo_path_url())
-//                                    .putExtra("useCache", true));
-//                        }
-//                    });
-//                }
+                VideoPlayerActivity.open(ctx, shortVideoMessage.getVideo_path_url(), shortVideoMessage.getVideo_cover_url());
             }
         });
 

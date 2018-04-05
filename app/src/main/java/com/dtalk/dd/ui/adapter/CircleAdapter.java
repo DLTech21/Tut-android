@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.ui.activity.CircleActivity;
+import com.dtalk.dd.ui.activity.VideoPlayerActivity;
 import com.dtalk.dd.ui.widget.circle.BaseCircleRenderView;
 import com.dtalk.dd.ui.widget.circle.CircleType;
 import com.dtalk.dd.ui.widget.circle.CommentPopup;
@@ -135,18 +136,7 @@ public class CircleAdapter extends BaseAdapter {
         videoCircleRenderView.setBtnVideoImageListener(new VideoCircleRenderView.BtnVideoImageListener() {
             @Override
             public void onVideo() {
-                videoCircleRenderView.getImageProgress().showProgress();
-                videoCircleRenderView.getImagePlay().setVisibility(View.INVISIBLE);
-                VideoDisplayLoader.getIns().display(moment.content, new VideoDisplayLoader.VideoDisplayListener() {
-                    @Override
-                    public void onVideoLoadCompleted(String url, String path) {
-                        videoCircleRenderView.getImagePlay().setVisibility(View.VISIBLE);
-                        videoCircleRenderView.getImageProgress().hideProgress();
-//                        ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class).putExtra(
-//                                "path", path).putExtra(
-//                                "cover_path", moment.cover).putExtra("justDisplay", true));
-                    }
-                });
+                VideoPlayerActivity.open(ctx, moment.content, moment.cover);
             }
         });
         videoCircleRenderView.getTvMore().setOnClickListener(new View.OnClickListener() {
