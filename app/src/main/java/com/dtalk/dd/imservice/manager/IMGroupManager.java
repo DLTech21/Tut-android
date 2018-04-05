@@ -66,7 +66,7 @@ public class IMGroupManager extends IMManager {
      */
     public void onLocalLoginOk() {
         Logger.i("group#loadFromDb");
-
+        groupMap.clear();
         if (!EventBus.getDefault().isRegistered(inst)) {
             EventBus.getDefault().registerSticky(inst);
         }

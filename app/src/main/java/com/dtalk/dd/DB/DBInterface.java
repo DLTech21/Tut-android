@@ -326,6 +326,15 @@ public class DBInterface {
         dao.insertOrReplaceInTx(entityList);
     }
 
+    public void deleteGroup(int sessionId) {
+        GroupDao sessionDao = openWritableDb().getGroupDao();
+        DeleteQuery<GroupEntity> bd = sessionDao.queryBuilder()
+                .where(GroupDao.Properties.PeerId.eq(sessionId))
+                .buildDelete();
+
+        bd.executeDeleteWithoutDetachingEntities();
+    }
+
     /**-------------------------下面开始session 操作相关---------------------------------------*/
     /**
      * 载入session 表中的所有数据

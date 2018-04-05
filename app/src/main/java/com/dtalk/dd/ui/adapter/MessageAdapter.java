@@ -18,52 +18,53 @@ import android.widget.Toast;
 
 import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.GifEmoEntity;
-import com.dtalk.dd.http.moment.EaluationListBean;
-import com.dtalk.dd.imservice.entity.ShortVideoMessage;
-import com.dtalk.dd.imservice.event.AddEmoEvent;
-import com.dtalk.dd.ui.activity.LookBigPicActivity;
-import com.dtalk.dd.ui.widget.message.GifFileRenderVIew;
-import com.dtalk.dd.ui.widget.message.ShortVideoRenderView;
-import com.dtalk.dd.utils.ScreenUtil;
-import com.dtalk.dd.utils.StringUtils;
-import com.dtalk.dd.utils.VideoDisplayLoader;
-import com.google.gson.Gson;
-import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.DB.entity.MessageEntity;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
+import com.dtalk.dd.config.DBConstant;
+import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.config.MessageConstant;
+import com.dtalk.dd.http.moment.EaluationListBean;
+import com.dtalk.dd.imservice.entity.AudioMessage;
 import com.dtalk.dd.imservice.entity.EmotionMessage;
 import com.dtalk.dd.imservice.entity.FileMessage;
+import com.dtalk.dd.imservice.entity.ImageMessage;
 import com.dtalk.dd.imservice.entity.LocationEntity;
 import com.dtalk.dd.imservice.entity.LocationMessage;
-import com.dtalk.dd.ui.activity.LocationCheckActivity;
-import com.dtalk.dd.ui.helper.AudioPlayerHandler;
-import com.dtalk.dd.config.IntentConstant;
-import com.dtalk.dd.imservice.entity.AudioMessage;
-import com.dtalk.dd.imservice.entity.ImageMessage;
 import com.dtalk.dd.imservice.entity.MixMessage;
+import com.dtalk.dd.imservice.entity.ShortVideoMessage;
 import com.dtalk.dd.imservice.entity.TextMessage;
+import com.dtalk.dd.imservice.event.AddEmoEvent;
 import com.dtalk.dd.imservice.service.IMService;
+import com.dtalk.dd.ui.activity.LocationCheckActivity;
+import com.dtalk.dd.ui.activity.LookBigPicActivity;
 import com.dtalk.dd.ui.activity.PreviewGifActivity;
 import com.dtalk.dd.ui.activity.PreviewTextActivity;
+import com.dtalk.dd.ui.activity.VideoPlayerActivity;
+import com.dtalk.dd.ui.helper.AudioPlayerHandler;
 import com.dtalk.dd.ui.helper.Emoparser;
+import com.dtalk.dd.ui.helper.listener.OnDoubleClickListener;
+import com.dtalk.dd.ui.widget.SpeekerToast;
+import com.dtalk.dd.ui.widget.message.AudioRenderView;
+import com.dtalk.dd.ui.widget.message.EmojiRenderView;
 import com.dtalk.dd.ui.widget.message.FileRenderView;
+import com.dtalk.dd.ui.widget.message.GifFileRenderVIew;
 import com.dtalk.dd.ui.widget.message.GifImageRenderView;
+import com.dtalk.dd.ui.widget.message.ImageRenderView;
 import com.dtalk.dd.ui.widget.message.LocationRenderView;
+import com.dtalk.dd.ui.widget.message.MessageOperatePopup;
+import com.dtalk.dd.ui.widget.message.RenderType;
+import com.dtalk.dd.ui.widget.message.ShortVideoRenderView;
+import com.dtalk.dd.ui.widget.message.TextRenderView;
+import com.dtalk.dd.ui.widget.message.TimeRenderView;
 import com.dtalk.dd.utils.CommonUtil;
 import com.dtalk.dd.utils.DateUtil;
 import com.dtalk.dd.utils.FileUtil;
 import com.dtalk.dd.utils.Logger;
-import com.dtalk.dd.ui.widget.SpeekerToast;
-import com.dtalk.dd.ui.widget.message.AudioRenderView;
-import com.dtalk.dd.ui.widget.message.EmojiRenderView;
-import com.dtalk.dd.ui.widget.message.ImageRenderView;
-import com.dtalk.dd.ui.widget.message.MessageOperatePopup;
-import com.dtalk.dd.ui.widget.message.RenderType;
-import com.dtalk.dd.ui.widget.message.TextRenderView;
-import com.dtalk.dd.ui.widget.message.TimeRenderView;
-import com.dtalk.dd.ui.helper.listener.OnDoubleClickListener;
+import com.dtalk.dd.utils.ScreenUtil;
+import com.dtalk.dd.utils.StringUtils;
+import com.dtalk.dd.utils.VideoDisplayLoader;
+import com.google.gson.Gson;
 import com.squareup.okhttp.internal.Util;
 
 import java.io.File;
@@ -480,20 +481,27 @@ public class MessageAdapter extends BaseAdapter {
             //DetailPortraitActivity 以前用的是DisplayImageActivity 这个类
             @Override
             public void onMsgSuccess() {
-                if (StringUtils.notEmpty(shortVideoMessage.getVideo_cover()) && StringUtils.notEmpty(shortVideoMessage.getVideo_path())) {
-                    // TODO: 2018/4/4
-                } else {
-                    shortVideoRenderView.getImageProgress().showProgress();
-                    shortVideoRenderView.getImagePlay().setVisibility(View.INVISIBLE);
-                    VideoDisplayLoader.getIns().display(shortVideoMessage.getVideo_path_url(), new VideoDisplayLoader.VideoDisplayListener() {
-                        @Override
-                        public void onVideoLoadCompleted(String url, String path) {
-                            shortVideoRenderView.getImagePlay().setVisibility(View.VISIBLE);
-                            shortVideoRenderView.getImageProgress().hideProgress();
-                            // TODO: 2018/4/4
-                        }
-                    });
-                }
+//                if (StringUtils.notEmpty(shortVideoMessage.getVideo_cover()) && StringUtils.notEmpty(shortVideoMessage.getVideo_path())) {
+                    ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class)
+                            .putExtra("path", shortVideoMessage.getVideo_path_url())
+                            .putExtra("cover_path", shortVideoMessage.getVideo_cover_url())
+                            .putExtra("useCache", false));
+
+//                } else {
+//                    shortVideoRenderView.getImageProgress().showProgress();
+//                    shortVideoRenderView.getImagePlay().setVisibility(View.INVISIBLE);
+//                    VideoDisplayLoader.getIns().display(shortVideoMessage.getVideo_path_url(), new VideoDisplayLoader.VideoDisplayListener() {
+//                        @Override
+//                        public void onVideoLoadCompleted(String url, String path) {
+//                            shortVideoRenderView.getImagePlay().setVisibility(View.VISIBLE);
+//                            shortVideoRenderView.getImageProgress().hideProgress();
+//                            ctx.startActivity(new Intent(ctx, VideoPlayerActivity.class)
+//                                    .putExtra("path", path)
+//                                    .putExtra("cover_path", shortVideoMessage.getVideo_path_url())
+//                                    .putExtra("useCache", true));
+//                        }
+//                    });
+//                }
             }
         });
 
@@ -893,7 +901,6 @@ public class MessageAdapter extends BaseAdapter {
         textView.setOnTouchListener(new OnDoubleClickListener() {
             @Override
             public void onClick(View view) {
-                //todo
             }
 
             @Override
@@ -1075,7 +1082,6 @@ public class MessageAdapter extends BaseAdapter {
         textView.setOnTouchListener(new OnDoubleClickListener() {
             @Override
             public void onClick(View view) {
-                //todo
             }
 
             @Override

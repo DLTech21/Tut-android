@@ -60,7 +60,7 @@ public class IMFriendManager extends IMManager {
      */
     public void onLocalLoginOk(){
         Logger.d("contact#loadAllUserInfo");
-
+        userMap.clear();
         List<UserEntity> userlist = dbInterface.loadAllFriendUsers();
         Logger.e("contact#loadAllUserInfo dbsuccess " + userlist.size());
 

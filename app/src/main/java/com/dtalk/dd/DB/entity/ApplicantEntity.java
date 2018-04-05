@@ -20,7 +20,7 @@ public class ApplicantEntity {
     private int msgType;
     private int created;
     private int toSessionId;
-
+    private int toGroupId;
     public ApplicantEntity() {
     }
 
@@ -140,5 +140,13 @@ public class ApplicantEntity {
 
     public void setToSessionId(int toSessionId) {
         this.toSessionId = toSessionId;
+    }
+
+    public int getToGroupId() {
+        return toGroupId;
+    }
+
+    public void setToGroupId(int toGroupId) {
+        this.toGroupId = toGroupId;
     }
 }

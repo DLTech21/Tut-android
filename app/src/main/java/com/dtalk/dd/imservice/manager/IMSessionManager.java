@@ -82,6 +82,7 @@ public class IMSessionManager extends IMManager {
 
     public void onLocalLoginOk(){
         Logger.i("session#loadFromDb");
+        sessionMap.clear();
         List<SessionEntity>  sessionInfoList = dbInterface.loadAllSession();
         for(SessionEntity sessionInfo:sessionInfoList){
             sessionMap.put(sessionInfo.getSessionKey(), sessionInfo);
