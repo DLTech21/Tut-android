@@ -3,6 +3,7 @@ package com.dtalk.dd.imservice.manager;
 import com.dtalk.dd.DB.DBInterface;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.friend.FriendListResp;
 import com.dtalk.dd.http.user.UserInfo;
@@ -104,7 +105,7 @@ public class IMFriendManager extends IMManager {
     /**-----------------------事件驱动---end---------*/
 
     private void reqGetAllFriends() {
-        FriendClient.getFriendList(new BaseClient.ClientCallback() {
+        FriendClient.getFriendList(new ClientCallback() {
             @Override
             public void onPreConnection() {
 

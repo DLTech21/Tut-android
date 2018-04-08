@@ -5,23 +5,29 @@ import android.content.Intent;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
 
+import com.dtalk.dd.BuildConfig;
 import com.dtalk.dd.imservice.service.IMService;
 import com.dtalk.dd.utils.ImageLoaderUtil;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.SandboxUtils;
-import com.dtalk.dd.utils.StringUtils;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.cookie.store.PersistentCookieStore;
+import com.lzy.okgo.cookie.CookieJarImpl;
+import com.lzy.okgo.cookie.store.MemoryCookieStore;
+import com.lzy.okgo.https.HttpsUtils;
+import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.OkHttpClient;
 
 
 public class IMApplication extends Application {
@@ -87,20 +93,31 @@ public class IMApplication extends Application {
     private void initOK() {
         HttpHeaders headers = new HttpHeaders();
         headers.put("User-Agent", "Android-TT");
-        OkGo.init(this);
         try {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.readTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+            builder.writeTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+            builder.connectTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+            builder.cookieJar(new CookieJarImpl(new MemoryCookieStore()));
+            HttpsUtils.SSLParams sslParams1 = HttpsUtils.getSslSocketFactory();
+            builder.sslSocketFactory(sslParams1.sSLSocketFactory, sslParams1.trustManager);
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("tt");
+                loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
+                loggingInterceptor.setColorLevel(Level.WARNING);
+                builder.addInterceptor(loggingInterceptor);
+            }
             OkGo.getInstance()
-                    .debug("OkGo")
-                    .setConnectTimeout(OkGo.DEFAULT_MILLISECONDS)  //全局的连接超时时间
-                    .setReadTimeOut(OkGo.DEFAULT_MILLISECONDS)     //全局的读取超时时间
-                    .setWriteTimeOut(OkGo.DEFAULT_MILLISECONDS)    //全局的写入超时时间
+                    .init(this)
+                    .setOkHttpClient(builder.build())
                     .setCacheMode(CacheMode.NO_CACHE)
                     .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)
-                    .setCookieStore(new PersistentCookieStore())
+                    .setRetryCount(0)
                     .addCommonHeaders(headers);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     private void startIMService() {

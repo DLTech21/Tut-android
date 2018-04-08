@@ -26,6 +26,7 @@ import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.http.user.UserInfo;
 import com.dtalk.dd.ui.adapter.ChatAdapter;
@@ -427,7 +428,7 @@ public class ChatFragment extends MainFragment
                         }
                         String loginUserName = loginIdentity.getLoginName();
                         String loginPwd = loginIdentity.getPwd();
-                        UserClient.doLogin(loginUserName, loginPwd, new BaseClient.ClientCallback() {
+                        UserClient.doLogin(loginUserName, loginPwd, new ClientCallback() {
                             @Override
                             public void onPreConnection() {
 

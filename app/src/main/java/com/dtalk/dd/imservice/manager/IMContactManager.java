@@ -5,6 +5,7 @@ import com.dtalk.dd.DB.entity.DepartmentEntity;
 import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.friend.OtherUserInfo;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
@@ -186,7 +187,7 @@ public class IMContactManager extends IMManager {
     }
 
     public void reqGetDetailUser(String currentUserId) {
-        FriendClient.getFriendInfo(currentUserId + "", new BaseClient.ClientCallback() {
+        FriendClient.getFriendInfo(currentUserId + "", new ClientCallback() {
             @Override
             public void onPreConnection() {
             }

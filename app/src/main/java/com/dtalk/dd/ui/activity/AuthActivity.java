@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Handler.Callback;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +11,11 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.register.RegisterClient;
 import com.dtalk.dd.imservice.event.RegisterEvent;
 import com.dtalk.dd.ui.base.TTBaseActivity;
@@ -91,7 +88,7 @@ public class AuthActivity extends TTBaseActivity implements OnClickListener {
         }
 
         tv_send.setEnabled(false);
-        RegisterClient.sendSmsCode(mobile, "reg", new BaseClient.ClientCallback() {
+        RegisterClient.sendSmsCode(mobile, "reg", new ClientCallback() {
 
             @Override
             public void onSuccess(Object data) {
@@ -131,7 +128,7 @@ public class AuthActivity extends TTBaseActivity implements OnClickListener {
             WarningDialog("手机号码格式不正确");
             return;
         }
-        RegisterClient.confirmSMSCode(mobile, code, new BaseClient.ClientCallback() {
+        RegisterClient.confirmSMSCode(mobile, code, new ClientCallback() {
 
             @Override
             public void onSuccess(Object data) {

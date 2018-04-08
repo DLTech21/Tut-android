@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.dtalk.dd.DB.entity.GroupEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.imservice.event.GroupEvent;
 import com.dtalk.dd.ui.base.TTBaseActivity;
@@ -54,7 +55,7 @@ public class UpdateGroupNameActivity extends TTBaseActivity implements View.OnCl
         dialog.setMessage("正在更新...");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.show();
-        UserClient.updateName(id, newNick, new BaseClient.ClientCallback() {
+        UserClient.updateName(id, newNick, new ClientCallback() {
             @Override
             public void onPreConnection() {
 

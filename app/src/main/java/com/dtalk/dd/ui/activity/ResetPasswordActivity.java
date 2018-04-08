@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.register.RegisterClient;
 import com.dtalk.dd.imservice.event.RegisterEvent;
 import com.dtalk.dd.ui.base.TTBaseActivity;
@@ -85,7 +86,7 @@ public class ResetPasswordActivity extends TTBaseActivity implements OnClickList
         }
 
         tv_send.setEnabled(false);
-        RegisterClient.sendSmsCode(mobile, "reset", new BaseClient.ClientCallback() {
+        RegisterClient.sendSmsCode(mobile, "reset", new ClientCallback() {
 
             @Override
             public void onSuccess(Object data) {
@@ -129,7 +130,7 @@ public class ResetPasswordActivity extends TTBaseActivity implements OnClickList
             WarningDialog("密码不能为空");
             return;
         }
-        RegisterClient.resetPassword(mobile, code, password, new BaseClient.ClientCallback() {
+        RegisterClient.resetPassword(mobile, code, password, new ClientCallback() {
             
             @Override
             public void onSuccess(Object data) {

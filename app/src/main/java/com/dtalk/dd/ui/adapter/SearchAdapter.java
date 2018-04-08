@@ -21,6 +21,7 @@ import com.dtalk.dd.R;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.config.SysConstant;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.friend.OtherUserInfo;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
@@ -75,7 +76,7 @@ public class SearchAdapter extends BaseAdapter implements
             name = UserInfoFragment.decrypt(name.substring(4));
         }
         final String search_name = name;
-        FriendClient.getFriendInfo(search_name, new BaseClient.ClientCallback() {
+        FriendClient.getFriendInfo(search_name, new ClientCallback() {
 
             @Override
             public void onSuccess(Object data) {

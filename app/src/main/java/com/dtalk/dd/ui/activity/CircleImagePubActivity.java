@@ -18,6 +18,7 @@ import com.dtalk.dd.R;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.moment.MomentClient;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
 import com.dtalk.dd.model.Photo4Gallery;
@@ -289,7 +290,7 @@ public class CircleImagePubActivity extends TTBaseActivity implements
     }
 
     private void postImage(List<String> images) {
-        MomentClient.postImageMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), editText.getText().toString(), images, new BaseClient.ClientCallback() {
+        MomentClient.postImageMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), editText.getText().toString(), images, new ClientCallback() {
             @Override
             public void onPreConnection() {
                 svProgressHUD.showWithStatus("发送朋友圈");

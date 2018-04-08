@@ -31,6 +31,7 @@ import com.dtalk.dd.config.SysConstant;
 import com.dtalk.dd.config.UrlConstant;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.register.RegisterClient;
 import com.dtalk.dd.imservice.event.RegisterEvent;
 import com.dtalk.dd.qiniu.utils.Mac;
@@ -270,7 +271,7 @@ public class RegisterActivity extends TTBaseActivity implements View.OnClickList
             Toast.makeText(this, getString(R.string.error_name_required), Toast.LENGTH_SHORT).show();
             return;
         }
-        RegisterClient.registerUser(username, password, nickname, url, new BaseClient.ClientCallback() {
+        RegisterClient.registerUser(username, password, nickname, url, new ClientCallback() {
             @Override
             public void onPreConnection() {
                 ViewUtils.createProgressDialog(getRunningActivity(), "正在注册...", ThemeUtils.getThemeColor()).show();

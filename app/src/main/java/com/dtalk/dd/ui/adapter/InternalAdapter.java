@@ -11,7 +11,6 @@ import com.dtalk.dd.DB.sp.SystemConfigSp;
 import com.dtalk.dd.R;
 import com.dtalk.dd.utils.Logger;
 
-import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

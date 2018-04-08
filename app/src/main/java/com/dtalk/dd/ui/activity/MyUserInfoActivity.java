@@ -18,6 +18,7 @@ import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.imservice.event.UpdateUserInfoEvent;
@@ -231,7 +232,7 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
             @Override
             public void uploadCompleted(final Map<String, String> uploadedFiles) {
                 String json = "{\"avatar\":" + "\"" + (String) uploadedFiles.values().toArray()[0] + "\"}";
-                UserClient.updateUserByJson(json, new BaseClient.ClientCallback() {
+                UserClient.updateUserByJson(json, new ClientCallback() {
                     @Override
                     public void onPreConnection() {
 
@@ -311,7 +312,7 @@ public class MyUserInfoActivity extends TTBaseActivity implements View.OnClickLi
 
     public void updateSex(final String sexnum) {
         String json = "{\"sex\":" + "\"" + sexnum + "\"}";
-        UserClient.updateUserByJson(json, new BaseClient.ClientCallback() {
+        UserClient.updateUserByJson(json, new ClientCallback() {
             @Override
             public void onPreConnection() {
 

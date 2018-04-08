@@ -26,6 +26,7 @@ import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.config.UrlConstant;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.http.user.UserInfo;
@@ -153,7 +154,7 @@ public class LoginActivity extends TTBaseActivity {
                 }
                 String loginUserName = loginIdentity.getLoginName();
                 String loginPwd = loginIdentity.getPwd();
-                UserClient.doLogin(loginUserName, loginPwd, new BaseClient.ClientCallback() {
+                UserClient.doLogin(loginUserName, loginPwd, new ClientCallback() {
                     @Override
                     public void onPreConnection() {
                         showProgress(true);
@@ -352,7 +353,7 @@ public class LoginActivity extends TTBaseActivity {
 //				boolean pwdChanged = true;
                 final String username = loginName.trim();
                 final String password = mPassword.trim();
-                UserClient.doLogin(username, password, new BaseClient.ClientCallback() {
+                UserClient.doLogin(username, password, new ClientCallback() {
                     @Override
                     public void onPreConnection() {
                         showProgress(true);

@@ -11,6 +11,7 @@ import com.dtalk.dd.DB.entity.UserEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
 import com.dtalk.dd.http.user.UserInfo;
@@ -47,7 +48,7 @@ public class UpdateNickActivity extends TTBaseActivity implements View.OnClickLi
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.show();
         String json = "{\"nickname\":" + "\"" + newNick + "\"}";
-        UserClient.updateUserByJson(json, new BaseClient.ClientCallback() {
+        UserClient.updateUserByJson(json, new ClientCallback() {
             @Override
             public void onPreConnection() {
 

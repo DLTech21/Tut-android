@@ -1,14 +1,5 @@
 package com.dtalk.dd.qiniu.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.util.Base64;
 
 public class EncodeUtils {
@@ -68,20 +59,4 @@ public class EncodeUtils {
 		return b64;
 	}
 
-	public static String encodeParams(Object params) {
-		if (params instanceof String) {
-			return (String) params;
-		}
-		if (params instanceof HashMap<?, ?>) {
-			@SuppressWarnings("unchecked")
-			Map<String, String> map = (HashMap<String, String>) params;
-			ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
-			for (Entry<String, String> entry : map.entrySet()) {
-				list.add(new BasicNameValuePair(entry.getKey(), entry
-						.getValue()));
-			}
-			return URLEncodedUtils.format(list, "UTF-8");
-		}
-		return null;
-	}
 }

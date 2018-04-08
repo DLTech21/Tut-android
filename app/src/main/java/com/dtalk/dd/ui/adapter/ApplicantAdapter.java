@@ -15,6 +15,7 @@ import com.dtalk.dd.DB.entity.ApplicantEntity;
 import com.dtalk.dd.R;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.imservice.event.ApplicantEvent;
 import com.dtalk.dd.imservice.event.LoginEvent;
@@ -129,7 +130,7 @@ public class ApplicantAdapter extends BaseAdapter implements
     }
 
     private void confirFriend(final ApplicantEntity applicantEntity, final ApplicantHolder applicantHolder) {
-        FriendClient.confirmFriend(applicantEntity.getUid() + "", new BaseClient.ClientCallback() {
+        FriendClient.confirmFriend(applicantEntity.getUid() + "", new ClientCallback() {
             @Override
             public void onPreConnection() {
                 ViewUtils.createProgressDialog((Activity) ctx, "添加好友...", ThemeUtils.getThemeColor()).show();

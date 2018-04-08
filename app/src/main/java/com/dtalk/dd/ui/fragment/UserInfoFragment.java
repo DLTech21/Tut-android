@@ -18,6 +18,7 @@ import com.dtalk.dd.config.DBConstant;
 import com.dtalk.dd.config.IntentConstant;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.http.moment.MomentClient;
@@ -254,7 +255,7 @@ public class UserInfoFragment extends MainFragment {
     }
 
     private void applyFriend() {
-        FriendClient.applyFriend(currentUserId + "", "", new BaseClient.ClientCallback() {
+        FriendClient.applyFriend(currentUserId + "", "", new ClientCallback() {
             @Override
             public void onPreConnection() {
                 ViewUtils.createProgressDialog(getActivity(), "", ThemeUtils.getThemeColor()).show();
@@ -298,7 +299,7 @@ public class UserInfoFragment extends MainFragment {
     }
 
     private void getMoment(final String last, String fid) {
-        MomentClient.fetchOnesMoment(fid, last, "10", new BaseClient.ClientCallback() {
+        MomentClient.fetchOnesMoment(fid, last, "10", new ClientCallback() {
 
             @Override
             public void onSuccess(Object data) {

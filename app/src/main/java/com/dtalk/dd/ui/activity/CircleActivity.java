@@ -31,8 +31,8 @@ import com.dtalk.dd.DB.sp.SystemConfigSp;
 import com.dtalk.dd.R;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.config.SysConstant;
-import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.moment.Comment;
 import com.dtalk.dd.http.moment.Moment;
 import com.dtalk.dd.http.moment.MomentClient;
@@ -319,7 +319,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
         }
         final Moment moment = (Moment) messageEdt.getTag();
         final String moment_id = moment.moment_id;
-        MomentClient.commentMoment(moment_id, replyCommentUid, content, new BaseClient.ClientCallback() {
+        MomentClient.commentMoment(moment_id, replyCommentUid, content, new ClientCallback() {
             public void onPreConnection() {
                 svProgressHUD.show();
             }
@@ -402,7 +402,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
 
     private void fetchMoments(final String last) {
         if (isSelf) {
-            MomentClient.fetchOnesMoment(fid, last, "10", new BaseClient.ClientCallback() {
+            MomentClient.fetchOnesMoment(fid, last, "10", new ClientCallback() {
 
                 @Override
                 public void onSuccess(Object data) {
@@ -447,7 +447,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
                 }
             });
         } else {
-            MomentClient.fetchMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), last, "10", new BaseClient.ClientCallback() {
+            MomentClient.fetchMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), last, "10", new ClientCallback() {
 
                 @Override
                 public void onSuccess(Object data) {
@@ -577,7 +577,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     };
 
     private void postVideo(String videoUrl, String videoCover, String localPath) {
-        MomentClient.postVideoMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), videoUrl, videoCover, localPath, new BaseClient.ClientCallback() {
+        MomentClient.postVideoMoment((String.valueOf(IMLoginManager.instance().getLoginId())), SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"), videoUrl, videoCover, localPath, new ClientCallback() {
             @Override
             public void onPreConnection() {
                 svProgressHUD.showWithStatus("发送朋友圈");
@@ -664,7 +664,7 @@ public class CircleActivity extends TTBaseActivity implements View.OnClickListen
     }
 
     private void favor(final Moment moment) {
-        MomentClient.likeMoment(moment.moment_id, !moment.isFavor, new BaseClient.ClientCallback() {
+        MomentClient.likeMoment(moment.moment_id, !moment.isFavor, new ClientCallback() {
             @Override
             public void onPreConnection() {
             }

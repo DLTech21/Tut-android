@@ -3,13 +3,8 @@ package com.dtalk.dd.ui.widget;
 import android.os.AsyncTask;
 
 import com.dtalk.dd.utils.CommonUtil;
-import com.dtalk.dd.utils.Logger;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.internal.DiskLruCache;
-import com.squareup.okhttp.internal.Util;
+import com.dtalk.dd.utils.EncryptUtils;
+import com.dtalk.dd.utils.FileUtils;
 
 import org.apache.commons.io.IOUtils;
 
@@ -24,6 +19,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.internal.Util;
 
 /**
  * Created by zhujian on 15/3/26.
@@ -93,8 +93,8 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
             client = new OkHttpClient();
 //            Cache responseCache = new Cache(CommonUtil.getImageSavePath(), 2 * 1024 * 1024);
 //            client.setCache(responseCache);
-            client.setReadTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
-            client.setConnectTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
+//            client.setReadTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
+//            client.setConnectTimeout(30, java.util.concurrent.TimeUnit.SECONDS);
         }
         InputStream inputStream = getFromCache(urlString);
         if (inputStream != null) {
@@ -156,7 +156,7 @@ public class GifLoadTask extends AsyncTask<String, Void, byte[]> {
         File dir = CommonUtil.getImageSavePath();
         String savePath = dir.getAbsolutePath();
         String localPath;
-        localPath = savePath + "/" + Util.hash(remoteUrl);
+        localPath = savePath + "/" + EncryptUtils.getMD5(remoteUrl);
         return localPath;
     }
 }

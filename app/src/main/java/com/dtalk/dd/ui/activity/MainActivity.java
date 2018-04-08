@@ -9,6 +9,7 @@ import android.view.Window;
 import com.dtalk.dd.DB.sp.LoginSp;
 import com.dtalk.dd.app.IMApplication;
 import com.dtalk.dd.http.base.BaseClient;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.http.friend.FriendClient;
 import com.dtalk.dd.http.friend.OtherUserInfoNoRemark;
 import com.dtalk.dd.http.user.UserClient;
@@ -263,7 +264,7 @@ public class MainActivity extends FragmentActivity {
             UserClient.updateUserPush(rid, null);
 //				}
         }
-        FriendClient.getFriendInfo(loginId + "", new BaseClient.ClientCallback() {
+        FriendClient.getFriendInfo(loginId + "", new ClientCallback() {
             @Override
             public void onPreConnection() {
 

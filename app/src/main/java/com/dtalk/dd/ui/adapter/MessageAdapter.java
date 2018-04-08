@@ -59,11 +59,11 @@ import com.dtalk.dd.ui.widget.message.TextRenderView;
 import com.dtalk.dd.ui.widget.message.TimeRenderView;
 import com.dtalk.dd.utils.CommonUtil;
 import com.dtalk.dd.utils.DateUtil;
+import com.dtalk.dd.utils.EncryptUtils;
 import com.dtalk.dd.utils.FileUtil;
 import com.dtalk.dd.utils.Logger;
 import com.dtalk.dd.utils.ScreenUtil;
 import com.google.gson.Gson;
-import com.squareup.okhttp.internal.Util;
 
 import java.io.File;
 import java.io.Serializable;
@@ -1341,7 +1341,7 @@ public class MessageAdapter extends BaseAdapter {
         File dir = CommonUtil.getImageSavePath();
         String savePath = dir.getAbsolutePath();
         String localPath;
-        localPath = savePath + "/" + Util.hash(remoteUrl);
+        localPath = savePath + "/" + EncryptUtils.getMD5(remoteUrl);
         if (new File(localPath).exists()) {
             return localPath;
         }

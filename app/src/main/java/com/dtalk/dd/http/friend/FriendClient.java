@@ -3,20 +3,15 @@ package com.dtalk.dd.http.friend;
 
 import com.alibaba.fastjson.JSON;
 import com.dtalk.dd.app.IMApplication;
-import com.dtalk.dd.utils.SandboxUtils;
-import com.dtalk.dd.utils.StringUtils;
 import com.dtalk.dd.http.base.BaseClient;
 import com.dtalk.dd.http.base.BaseResponse;
+import com.dtalk.dd.http.base.ClientCallback;
 import com.dtalk.dd.imservice.manager.IMLoginManager;
-import com.dtalk.dd.utils.Logger;
+import com.dtalk.dd.utils.SandboxUtils;
+import com.dtalk.dd.utils.StringUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
-import com.lzy.okgo.request.BaseRequest;
 
-import org.json.JSONObject;
-
-import okhttp3.Call;
 import okhttp3.Response;
 
 /**
@@ -25,7 +20,7 @@ import okhttp3.Response;
 public class FriendClient extends BaseClient {
 
 
-    public static void applyFriend(String tid, String msg, final BaseClient.ClientCallback callback) {
+    public static void applyFriend(String tid, String msg, final ClientCallback callback) {
         HttpParams params = new HttpParams();
         params.put("uid", (String.valueOf(IMLoginManager.instance().getLoginId())));
         params.put("friendid", tid);
@@ -33,72 +28,84 @@ public class FriendClient extends BaseClient {
         params.put("nickname", IMLoginManager.instance().getLoginInfo().getMainName());
         params.put("msg", msg);
         params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
-        OkGo.post(getAbsoluteUrl("/Api/Friend/apply"))
-                .params(params)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onBefore(BaseRequest request) {
-                        super.onBefore(request);
-                        callback.onPreConnection();
-                    }
+        postRequest(getAbsoluteUrl("/Api/Friend/apply"), params, new ClientCallback() {
+            @Override
+            public void onPreConnection() {
+                super.onPreConnection();
+                onStart(callback);
+            }
 
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        callback.onCloseConnection();
-                        try {
-                            BaseResponse res = JSON.parseObject(s, BaseResponse.class);
-                            callback.onSuccess(res);
-                        } catch (Exception e) {
-                            callback.onException(e);
-                        }
-                    }
+            @Override
+            public void onCloseConnection() {
+                super.onCloseConnection();
+                onFinish(callback);
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callback.onCloseConnection();
-                        callback.onFailure(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onSuccess(Object data) {
+                try {
+                    BaseResponse res = JSON.parseObject((String) data, BaseResponse.class);
+                    onRequestSuccess(callback, res);
+                } catch (Exception e) {
+                    onRequestException(callback, e);
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                onRequestFailure(callback, message);
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
     }
 
-    public static void confirmFriend(String tid, final BaseClient.ClientCallback callback) {
+    public static void confirmFriend(String tid, final ClientCallback callback) {
         HttpParams params = new HttpParams();
         params.put("uid", (String.valueOf(IMLoginManager.instance().getLoginId())));
         params.put("friendid", (tid));
         params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
-        OkGo.post(getAbsoluteUrl("/Api/Friend/confirm"))
-                .params(params)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onBefore(BaseRequest request) {
-                        super.onBefore(request);
-                        callback.onPreConnection();
-                    }
+        postRequest(getAbsoluteUrl("/Api/Friend/confirm"), params, new ClientCallback() {
+            @Override
+            public void onPreConnection() {
+                super.onPreConnection();
+                onStart(callback);
+            }
 
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        callback.onCloseConnection();
-                        try {
-                            BaseResponse res = JSON.parseObject(s, BaseResponse.class);
-                            callback.onSuccess(res);
-                        } catch (Exception e) {
-                            callback.onException(e);
-                        }
-                    }
+            @Override
+            public void onCloseConnection() {
+                super.onCloseConnection();
+                onFinish(callback);
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callback.onCloseConnection();
-                        callback.onFailure(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onSuccess(Object data) {
+                try {
+                    BaseResponse res = JSON.parseObject((String) data, BaseResponse.class);
+                    onRequestSuccess(callback, res);
+                } catch (Exception e) {
+                    onRequestException(callback, e);
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                onRequestFailure(callback, message);
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
     }
 
-    public static void getFriendList(final BaseClient.ClientCallback callback) {
+    public static void getFriendList(final ClientCallback callback) {
         HttpParams params = new HttpParams();
-        callback.onPreConnection();
+        onStart(callback);
         params.put("uid", IMLoginManager.instance().getLoginId());
         params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
         try {
@@ -106,21 +113,22 @@ public class FriendClient extends BaseClient {
             if (response.isSuccessful()) {
                 try {
                     FriendListResp res = JSON.parseObject(response.body().string(), FriendListResp.class);
-                    callback.onSuccess(res);
+                    onRequestSuccess(callback, res);
                 } catch (Exception e) {
-                    callback.onException(e);
+                    onRequestException(callback, e);
                 }
             } else {
 
             }
+            onFinish(callback);
         } catch (Exception e) {
-            callback.onException(e);
+            onFinish(callback);
+            onRequestException(callback, e);
         }
     }
 
-    public static void getFriendInfo(String username, final BaseClient.ClientCallback callback) {
+    public static void getFriendInfo(String username, final ClientCallback callback) {
         HttpParams params = new HttpParams();
-        callback.onPreConnection();
         params.put("uid", IMLoginManager.instance().getLoginId());
         params.put("token", SandboxUtils.getInstance().get(IMApplication.getInstance(), "token"));
         if (StringUtils.isMobileNO(username)) {
@@ -128,41 +136,38 @@ public class FriendClient extends BaseClient {
         } else {
             params.put("friendid", username);
         }
-        OkGo.post(getAbsoluteUrl("/Api/Friend/search"))
-                .params(params)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onBefore(BaseRequest request) {
-                        super.onBefore(request);
-                        callback.onPreConnection();
-                    }
+        postRequest(getAbsoluteUrl("/Api/Friend/search"), params, new ClientCallback() {
+            @Override
+            public void onPreConnection() {
+                super.onPreConnection();
+                onStart(callback);
+            }
 
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        callback.onCloseConnection();
-                        try {
-                            Logger.e(s);
-//                            JSONObject jsonObject = new JSONObject(s);
-//                            if (jsonObject.has("remarks")) {
-//                                Logger.e("remarks");
-//                                OtherUserInfo res = JSON.parseObject(s, OtherUserInfo.class);
-//                                callback.onSuccess(res);
-//                            } else {
-                                OtherUserInfoNoRemark res = JSON.parseObject(s, OtherUserInfoNoRemark.class);
-                                callback.onSuccess(res);
-//                            }
-                        } catch (Exception e) {
-                            Logger.e(e);
-                            callback.onException(e);
-                        }
-                    }
+            @Override
+            public void onCloseConnection() {
+                super.onCloseConnection();
+                onFinish(callback);
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callback.onCloseConnection();
-                        callback.onFailure(e.getLocalizedMessage());
-                    }
-                });
+            @Override
+            public void onSuccess(Object data) {
+                try {
+                    OtherUserInfoNoRemark res = JSON.parseObject((String) data, OtherUserInfoNoRemark.class);
+                    onRequestSuccess(callback, res);
+                } catch (Exception e) {
+                    onRequestException(callback, e);
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                onRequestFailure(callback, message);
+            }
+
+            @Override
+            public void onException(Exception e) {
+
+            }
+        });
     }
 }

@@ -18,7 +18,6 @@ import com.dtalk.dd.utils.Logger;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.apache.http.Header;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.json.JSONException;
@@ -162,12 +161,12 @@ public class IMSocketManager extends IMManager {
      */
     public void reqMsgServerAddrs() {
         Logger.d("socket#reqMsgServerAddrs.");
-        OkGo.get(SystemConfigSp.instance().getStrConfig(SystemConfigSp.SysCfgDimension.LOGINSERVER))
+        OkGo.<String>get(SystemConfigSp.instance().getStrConfig(SystemConfigSp.SysCfgDimension.LOGINSERVER))
                 .execute(new StringCallback() {
                     @Override
-                    public void onSuccess(String s, Call call, Response response) {
+                    public void onSuccess(com.lzy.okgo.model.Response<String> response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(s);
+                            JSONObject jsonObject = new JSONObject(response.body());
                             MsgServerAddrsEntity msgServer = onRepLoginServerAddrs(jsonObject);
                             if(msgServer == null){
                                 triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_FAILED);
@@ -182,8 +181,8 @@ public class IMSocketManager extends IMManager {
                     }
 
                     @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
+                    public void onError(com.lzy.okgo.model.Response<String> response) {
+                        super.onError(response);
                         triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_FAILED);
                     }
                 });
