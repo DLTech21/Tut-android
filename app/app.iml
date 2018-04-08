@@ -137,71 +137,77 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="com.android.support:multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/baidumapapi_search_v3_7_0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="com.theartofdev.edmodo:android-image-cropper-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="com.squareup.okhttp3:okhttp:3.10.0@jar" level="project" />
     <orderEntry type="library" exported="" name="com.squareup.okio:okio:1.14.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:appcompat-v7-27.1.1" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:design-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/MobTools-2016.1201.1839.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.code.gson:gson:2.4@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:appcompat-v7-26.0.0-alpha1" level="project" />
     <orderEntry type="library" exported="" name="com.facebook.fresco:fresco-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/baidumapapi_radar_v3_7_0.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-media-compat-26.0.0-alpha1" level="project" />
     <orderEntry type="library" exported="" name="com.qiniu:qiniu-android-sdk:7.2.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:transition-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="com.facebook.fresco:fbcore-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="com.nineoldandroids:library:2.4.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:recyclerview-v7-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/baidumapapi_cloud_v3_7_0.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-compat-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-core-utils-26.0.0-alpha1" level="project" />
     <orderEntry type="library" exported="" name="de.greenrobot:greendao:1.3.7@jar" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/baidumapapi_base_v3_7_0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/xUtils-2.6.7.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="top.zibin:Luban-1.0.9" level="project" />
+    <orderEntry type="library" exported="" name="com.google.code.gson:gson:2.8.2@jar" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/universal-image-loader-1.9.3.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:gridlayout-v7-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="com.parse.bolts:bolts-android:1.1.4@jar" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/MobCommons-2016.1201.1839.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-vector-drawable-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:animated-vector-drawable-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-annotations:26.0.0-alpha1@jar" level="project" />
     <orderEntry type="library" exported="" name="com.afollestad.material-dialogs:commons-0.9.1.0" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/locSDK_6.13.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:transition-26.0.0-alpha1" level="project" />
+    <orderEntry type="library" exported="" name="android.arch.lifecycle:viewmodel-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-core-utils-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="com.facebook.fresco:imagepipeline-base-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="in.srain.cube:ultra-ptr-1.0.11" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-annotations:27.1.1@jar" level="project" />
     <orderEntry type="library" exported="" name="pl.droidsonroids.gif:android-gif-drawable-1.2.3" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:gridlayout-v7-26.0.0-alpha1" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:animated-vector-drawable-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="com.github.razerdp:BasePopup-v1.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.android.support:support-v13-25.0.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="com.android.support:multidex-instrumentation-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="com.facebook.fresco:imagepipeline-0.9.0" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:recyclerview-v7-26.0.0-alpha1" level="project" />
+    <orderEntry type="library" exported="" name="android.arch.core:common:1.1.0@jar" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/baidumapapi_map_v3_7_0.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-v4-26.0.0-alpha1" level="project" />
     <orderEntry type="library" exported="" name="com.qiniu:happy-dns:0.2.7@jar" level="project" />
     <orderEntry type="library" exported="" name="com.google.protobuf:protobuf-java:2.6.1@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:design-26.0.0-alpha1" level="project" />
     <orderEntry type="library" exported="" name="com.afollestad.material-dialogs:core-0.9.1.0" level="project" />
     <orderEntry type="library" exported="" name="com.lzy.net:okgo-3.0.4" level="project" />
     <orderEntry type="library" exported="" name="me.zhanghai.android.materialprogressbar:library-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/netty-3.6.6.Final.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="com.facebook.fresco:drawee-0.9.0" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-vector-drawable-27.1.1" level="project" />
+    <orderEntry type="library" exported="" name="android.arch.lifecycle:runtime-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="SMSSDK-2.1.3:@aar" level="project" />
+    <orderEntry type="library" exported="" name="android.arch.lifecycle:common:1.1.0@jar" level="project" />
     <orderEntry type="library" exported="" name="commons-io:commons-io:2.4@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.alibaba:fastjson:1.2.6@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.alibaba:fastjson:1.2.13@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-core-ui-27.1.1" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-compat-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="com.bigkoo:svprogresshud-1.0.6" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-core-ui-26.0.0-alpha1" level="project" />
+    <orderEntry type="library" exported="" name="android.arch.lifecycle:livedata-core-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="com.github.af913337456:WeChatVideoView-1.0" level="project" />
     <orderEntry type="library" exported="" name="de.greenrobot:eventbus:2.4.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-fragment-26.0.0-alpha1" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-fragment-27.1.1" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-media-compat-27.1.1" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:/Users/donal/develop/Tut-android/app/libs/baidumapapi_util_v3_7_0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="cn.jiguang:jpush-2.1.8" level="project" />
     <orderEntry type="library" exported="" name="com.github.bumptech.glide:glide:3.7.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="android.arch.core:runtime-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:support-v4-27.1.1" level="project" />
     <orderEntry type="module" module-name="emoj_library" exported="" />
     <orderEntry type="module" module-name="mgimlibs" exported="" />
     <orderEntry type="module" module-name="PhotoPicker" exported="" />
-    <orderEntry type="library" exported="" name="android-android-26" level="project" />
+    <orderEntry type="library" exported="" name="android-android-27" level="project" />
   </component>
 </module>
