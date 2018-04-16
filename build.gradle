@@ -35,7 +35,4 @@ ext {
     buildToolsVersion = '27.0.3'
     supportVersion = '27.1.1'
 
-    JPUSH_PKGNAME = "com.gdca.cloudsign"
-    JPUSH_APPKEY = "480e481a42dd8c0d303c852f"
-    JPUSH_CHANNEL = "developer-default"
 }
