@@ -178,7 +178,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/displayImage"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name="com.dtalk.dd.ui.activity.PickAvatarPhotoActivity"

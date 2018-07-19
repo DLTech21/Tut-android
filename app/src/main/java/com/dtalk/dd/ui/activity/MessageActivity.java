@@ -113,6 +113,7 @@ import java.util.TimerTask;
 import de.greenrobot.event.EventBus;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
@@ -483,9 +484,15 @@ public class MessageActivity extends TTBaseActivity
                 }
             } else {
                 final File imgFile = new File(item);
-                Luban.get(MessageActivity.this)
+                Luban.with(this)
                         .load(imgFile)
-                        .putGear(Luban.THIRD_GEAR)
+                        .ignoreBy(100)
+                        .filter(new CompressionPredicate() {
+                            @Override
+                            public boolean apply(String path) {
+                                return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
+                            }
+                        })
                         .setCompressListener(new OnCompressListener() {
                             @Override
                             public void onStart() {

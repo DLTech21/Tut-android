@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
@@ -198,9 +200,15 @@ public class CircleImagePubActivity extends TTBaseActivity implements
         final List<String> compressedFiles = new ArrayList<>();
         for (String item : list) {
             final File imgFile = new File(item);
-            Luban.get(CircleImagePubActivity.this)
+            Luban.with(this)
                     .load(imgFile)
-                    .putGear(Luban.THIRD_GEAR)
+                    .ignoreBy(100)
+                    .filter(new CompressionPredicate() {
+                        @Override
+                        public boolean apply(String path) {
+                            return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
+                        }
+                    })
                     .setCompressListener(new OnCompressListener() {
                         @Override
                         public void onStart() {
